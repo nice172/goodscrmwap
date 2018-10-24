@@ -150,12 +150,24 @@
     }
     function send(e) {
         if (!isNaN(e) && e !== null && e !== '') {
-            if(confirm("确认发送？")){
+            //if(confirm("确认发送？")){
                 if (!isNaN(e) && e !== null && e !== '') {
                     var data={name:'delone',gid:e};
-                    $.sycToAjax("{:url('send')}", data);
+                    //$.sycToAjax("{:url('send')}", data);
+                    var title = '发送邮件';
+                    bDialog.open({
+                        title : title,
+                        height: 560,
+                        width:960,
+                        url : '{:url(\'email\')}',
+                        callback:function(data){
+                            if(data && data.results && data.results.length > 0 ) {
+                                window.location.reload();
+                            }
+                        }
+                    });
                 }
-            };
+            //};
             return false;
         }
     }

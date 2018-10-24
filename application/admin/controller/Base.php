@@ -163,6 +163,12 @@
          $this->error('方法不存在');
      }
      
+     public function email(){
+     	$id = $this->request->param('id');
+     	
+     	return $this->fetch('public/email');
+     }
+     
      protected function upload_file($subDir=''){
      	// 获取表单上传文件 例如上传了001.jpg
      	$file = request()->file('file');

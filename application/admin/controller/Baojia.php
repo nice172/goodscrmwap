@@ -22,7 +22,7 @@ class Baojia extends Base {
 	    'email.email' => 'E-Mail格式不正确',
 	    'order_handle.require' => '请选择跟单员'
 	];
-	
+		
 	public function index(){
 	    $company_short = $this->request->param('company_short'); // 企业名称查询
 	    $start_time = $this->request->param('start_time'); // 企业名称查询
