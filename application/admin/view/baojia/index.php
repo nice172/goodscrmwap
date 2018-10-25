@@ -159,7 +159,7 @@
                         title : title,
                         height: 560,
                         width:960,
-                        url : '{:url(\'email\')}',
+                        url : "{:url('email')}?type=baojia&id="+e,
                         callback:function(data){
                             if(data && data.results && data.results.length > 0 ) {
                                 window.location.reload();

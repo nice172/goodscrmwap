@@ -164,9 +164,23 @@
      }
      
      public function email(){
-     	$id = $this->request->param('id');
-     	
+     	$type = strtolower($this->request->param('type'));
+     	$id = intval($this->request->param('id'));
+     	$data = [];
+     	if ($type == 'baojia'){
+     		$data['files'] = $this->_createPDF($id,1);
+     		$data['email'] = $this->send_email;
+     	}elseif ($type == 'order'){
+     		
+     	}elseif ($type == 'purchase'){
+     		
+     	}
+     	$this->assign('data',$data);
      	return $this->fetch('public/email');
+     }
+     
+     public function sendemail(){
+     	p($_POST);
      }
      
      protected function upload_file($subDir=''){

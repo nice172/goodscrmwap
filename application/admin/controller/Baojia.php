@@ -237,9 +237,9 @@ class Baojia extends Base {
 	    return $this->fetch();
 	}
 	
-	private $send_email = '';
+	protected $send_email = '';
 	
-	private function _createPDF($id,$type=0){
+	protected function _createPDF($id,$type=0){
 	    $order = db('baojia')->where(['id' => $id,'status' => ['neq','-1']])->find();
 	    if (empty($order)) $this->error('报价单不存在');
 	    $goodsInfo = db('baojia_goods')->where(['baojia_id' => $order['id']])->order('goods_id asc')->select();
