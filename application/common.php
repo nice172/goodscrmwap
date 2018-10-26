@@ -271,7 +271,7 @@ function getFileParams($id){
     return $find['file'];
 }
 
-function send_email($user,$Subject='',$file='',$Body='',$AltBody=''){
+function send_email($user,$Subject='',$file='',$Body='',$copyTo='',$AltBody=''){
     $mail = new PHPMailer\PHPMailer();
     try {
         //Server settings
@@ -297,8 +297,17 @@ function send_email($user,$Subject='',$file='',$Body='',$AltBody=''){
         }
         // 	        $mail->addAddress('ellen@example.com');               // Name is optional
         // 	        $mail->addReplyTo('info@example.com', 'Information');
-        // 	        $mail->addCC('cc@example.com');
-        // 	        $mail->addBCC('bcc@example.com');
+        
+        if (!empty($copyTo)){
+            if (is_array($copyTo)){
+                foreach ($copyTo as $val){
+                    $mail->addCC($val);
+                }
+            }else{
+                $mail->addCC($copyTo); //抄送
+            }
+        }
+        // 	$mail->addBCC('bcc@example.com'); //密送
         
         //Attachments
         if (!empty($file)){

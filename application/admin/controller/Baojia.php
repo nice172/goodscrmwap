@@ -65,7 +65,8 @@ class Baojia extends Base {
 		        'email' => $this->request->post('email'),
 		        'contacts' => $this->request->post('contacts'),
 		        'order_remark' => $this->request->post('order_remark'),
-		        'status' => $send_type=='save'?0:1,
+		        //'status' => $send_type=='save'?0:1,
+		        'status' => 0,
 		        'order_handle' => $this->request->post('order_handle'),
 		        'create_time' => time(),
 		        'update_time' => time()
@@ -92,11 +93,17 @@ class Baojia extends Base {
 		            ]);
 		        }
 		        if ($send_type != 'save'){
+		            /*
 		            if ($this->_send_pdf($baojia_id)){
 		                $this->success('生成PDF文件并发送成功',url('index'));
 		            }else{
 		                $this->success('保存成功，邮件发送失败',url('index'));
 		            }
+		            */
+		            $this->success('保存成功返回发送信息',url('index'),[
+		                'id' => $baojia_id,
+		                'type' => 'baojia'
+		            ]);
 		        }
 		        $this->success('保存成功',url('info',['gid' => $baojia_id]));
 		    }else{
@@ -129,7 +136,8 @@ class Baojia extends Base {
 	            'order_handle' => $this->request->post('order_handle'),
 	            'contacts' => $this->request->post('contacts'),
 	            'order_remark' => $this->request->post('order_remark'),
-	            'status' => $send_type=='save'?0:1,
+	            //'status' => $send_type=='save'?0:1,
+	            'status' => 0,
 	            'update_time' => time()
 	        ];
 	        $validate = new Validate($this->rules, $this->message);
@@ -181,11 +189,17 @@ class Baojia extends Base {
 	                }
 	            }
 	            if ($send_type != 'save'){
+	                /*
 	                if($this->_send_pdf($data['id'])){
 	                    $this->success('生成PDF文件并发送成功',url('index'));
 	                }else{
 	                    $this->success('保存成功，邮件发送失败',url('index'));
 	                }
+	                */
+	                $this->success('保存成功返回发送信息',url('index'),[
+	                    'id' => $data['id'],
+	                    'type' => 'baojia'
+	                ]);
 	            }
 	            $this->success('保存成功',url('index'));
 	        }else{

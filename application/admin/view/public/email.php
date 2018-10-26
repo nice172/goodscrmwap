@@ -11,6 +11,8 @@
     <div class="row">
         <div class="col-lg-12">
   <form class="form-horizontal" id="sendemail" method="post" action="<?php echo url('sendemail');?>">
+        <input type="hidden" name="type" value="<?php echo $data['type'];?>" />
+        <input type="hidden" name="id" value="<?php echo $data['id'];?>" />
         <div class="modal-body">
         
 						<div class="sub-button-line form-horizontal">
@@ -18,7 +20,7 @@
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">收件人：</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" placeholder="多个邮箱用“;”隔开" value="<?php echo $data['email'];?>" id="email" name="email[]" />
+      <input type="text" class="form-control" placeholder="多个邮箱用“;”隔开" value="<?php echo $data['email'];?>" id="email" name="email" />
     </div>
   </div>
   <div class="form-group">
@@ -30,7 +32,7 @@
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">主题：</label>
     <div class="col-sm-10">
-      <input type="text" name="subject" class="form-control" id="subject" />
+      <input type="text" name="subject" class="form-control" placeholder="请输入主题" id="subject" />
       <input type="hidden" name="files" value="<?php echo $data['files'];?>" />
       <p style="padding-top:10px;">附件：<a target="_blank" href="<?php echo mb_substr($data['files'], 1);?>"><?php echo mb_substr($data['files'], 6);?></a></p>
     </div>
@@ -56,7 +58,7 @@
 
         </div>
         <div class="modal-footer" style="border:none;">
-        	<button type="submit" class="btn btn-primary">发送</button>
+        	<button type="submit" class="btn btn-primary clicksend">发送</button>
 			<button class="btn btn-default windowClose">关闭</button>
         </div>
 </form>
@@ -74,11 +76,22 @@ $(document).ready(function () {
 	});
 
 $('#sendemail').submit(function(){
+	$('.clicksend').attr('disabled','disabled');
 	$(this).ajaxSubmit({
 		data: {content: editor.txt.html()},
 		success: function(res){
-			
-		}
+			if(res.code == 0){
+				toastr.error(res.msg);
+				}else{
+				toastr.success(res.msg);
+				}
+		},
+	     complete: function(XMLHttpRequest, textStatus) { 
+				//toastr.success('ok');
+				$('.clicksend').removeAttr('disabled');
+		     },
+	     error: function(){
+	    	 toastr.error('网络错误!');} 
 	});
 	return false;
 });

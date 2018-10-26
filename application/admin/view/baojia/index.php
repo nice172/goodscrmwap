@@ -154,18 +154,7 @@
                 if (!isNaN(e) && e !== null && e !== '') {
                     var data={name:'delone',gid:e};
                     //$.sycToAjax("{:url('send')}", data);
-                    var title = '发送邮件';
-                    bDialog.open({
-                        title : title,
-                        height: 560,
-                        width:960,
-                        url : "{:url('email')}?type=baojia&id="+e,
-                        callback:function(data){
-                            if(data && data.results && data.results.length > 0 ) {
-                                window.location.reload();
-                            }
-                        }
-                    });
+					send_email('baojia',e);
                 }
             //};
             return false;

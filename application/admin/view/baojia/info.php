@@ -195,13 +195,14 @@
 <script type="text/javascript">
 function send(_this,e) {
     if (!isNaN(e) && e !== null && e !== '') {
-        if(confirm("确认发送？")){
+        //if(confirm("确认发送？")){
             if (!isNaN(e) && e !== null && e !== '') {
-            	$(_this).attr('disabled','disabled').text('正在发送...');
-                var data={name:'delone',gid:e};
-                $.sycToAjax("{:url('send')}", data);
+            	//$(_this).attr('disabled','disabled').text('正在发送...');
+                //var data={name:'delone',gid:e};
+                //$.sycToAjax("{:url('send')}", data);
+                send_email('baojia',e);
             }
-        };
+        //};
         return false;
     }
 }

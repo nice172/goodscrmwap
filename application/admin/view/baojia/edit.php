@@ -327,7 +327,7 @@ $('input[name=save]').click(function(){
 
 $('input[name=saveemail]').click(function(){
 	$('.modal-footer button,.modal-footer input').attr('disabled','disabled');
-	$(this).val('正在发送邮件...');
+	//$(this).val('正在发送邮件...');
 	_ajaxSubmit('saveemail');
 	return false;
 });
@@ -338,14 +338,15 @@ function _ajaxSubmit(type){
 			data:{goods_info:goods_info,type:type},
 			success: function(res){
 				$('.modal-footer button,.modal-footer input').removeAttr('disabled');
-				if(type == 'saveemail'){$('input[name=saveemail]').val('生成PDF文件并发送');}
+				//if(type == 'saveemail'){$('input[name=saveemail]').val('生成PDF文件并发送');}
 				if(res.code == 1){
-					toastr.success(res.msg);
-					if(res.url != '' && typeof res.url != 'undefined'){
-						setTimeout(function(){window.location.href = res.url;},2000);
-						}else{
-							setTimeout(function(){window.location.reload();},2000);
-							}
+					send_email(res.data.type,res.data.id);
+// 					toastr.success(res.msg);
+// 					if(res.url != '' && typeof res.url != 'undefined'){
+// 						setTimeout(function(){window.location.href = res.url;},2000);
+// 						}else{
+// 							setTimeout(function(){window.location.reload();},2000);
+// 							}
 				}else{
 					toastr.error(res.msg);
 					}

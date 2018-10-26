@@ -175,12 +175,32 @@
      	}elseif ($type == 'purchase'){
      		
      	}
+     	$data['type'] = $type;
+     	$data['id'] = $id;
      	$this->assign('data',$data);
      	return $this->fetch('public/email');
      }
      
      public function sendemail(){
-     	p($_POST);
+         if ($this->request->isAjax()){
+             $type = strtolower($this->request->param('type'));
+             $id = intval($this->request->param('id'));
+             $email = $this->request->param('email');
+             $copyto = $this->request->param('copyto');
+             $subject = $this->request->param('subject');
+             $files = $this->request->param('files');
+             $content = $this->request->param('content');
+             $email = explode(';', $email);
+             if (empty($email)) $this->error('邮箱不能为空');
+             if (empty($subject)) $this->error('主题不能为空');
+             if(send_email($email,$subject,$files, $content, $copyto)){
+                 if ($type == 'baojia'){
+                     db('baojia')->where(['id' => $id])->update(['status' => 1,'send_email_time' => time()]);
+                 }
+                 $this->success('发送成功');
+             }
+             $this->error('发送失败');
+         }
      }
      
      protected function upload_file($subDir=''){
