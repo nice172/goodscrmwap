@@ -166,14 +166,16 @@
      public function email(){
      	$type = strtolower($this->request->param('type'));
      	$id = intval($this->request->param('id'));
-     	$data = [];
+     	$email = $this->request->param('email');
+     	$data['files'] = '';
      	if ($type == 'baojia'){
      		$data['files'] = $this->_createPDF($id,1);
      		$data['email'] = $this->send_email;
      	}elseif ($type == 'order'){
      		
      	}elseif ($type == 'purchase'){
-     		
+     		$data['files'] = $this->create_pdf($id,1);
+     		$data['email'] = $email;
      	}
      	$data['type'] = $type;
      	$data['id'] = $id;
@@ -190,12 +192,18 @@
              $subject = $this->request->param('subject');
              $files = $this->request->param('files');
              $content = $this->request->param('content');
-             $email = explode(';', $email);
+             $email = explode(';', trim($email,';'));
+             $copyto = explode(';', trim($copyto,';'));
              if (empty($email)) $this->error('邮箱不能为空');
              if (empty($subject)) $this->error('主题不能为空');
              if(send_email($email,$subject,$files, $content, $copyto)){
-                 if ($type == 'baojia'){
-                     db('baojia')->where(['id' => $id])->update(['status' => 1,'send_email_time' => time()]);
+                 switch ($type){
+                 	case 'baojia':
+                 		db('baojia')->where(['id' => $id])->update(['status' => 1,'send_email_time' => time()]);
+                 		break;
+                 	case 'purchase':
+                 		db('purchase')->where(['id' => $id])->setField('status',2);
+                 		break;
                  }
                  $this->success('发送成功');
              }
@@ -203,7 +211,7 @@
          }
      }
      
-     protected function upload_file($subDir=''){
+     protected function upload_file($subDir='',$type=true){
      	// 获取表单上传文件 例如上传了001.jpg
      	$file = request()->file('file');
      	if (empty($file)){
@@ -226,7 +234,11 @@
      	                'filename' => $info->getFilename()
      	            ];
      	        }else{
-     	            $this->error($obj->getError());
+     	            if($type){
+     	            	$this->error($obj->getError());
+     	            }else{
+     	            	return $obj->getError();
+     	            }
      	        }
      	    }
      	    return $files;
@@ -241,7 +253,11 @@
          		];
          	}else{
          		// 上传失败获取错误信息
-         	    $this->error($file->getError());
+         	    if ($type){
+         	    	$this->error($file->getError());
+         	    }else{
+         	    	return $file->getError();
+         	    }
          	}
      	}
      }

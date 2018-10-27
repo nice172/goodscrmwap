@@ -62,15 +62,16 @@ $('.ajaxForm').submit(function(){
 	});
 	return false;});
 });
-function send_email(type,e){
+function send_email(type,e,email){
 	if(!type) type = '';
 	if(!e) e = '';
+	if(!email) email = '';
     var title = '发送邮件';
     bDialog.open({
         title : title,
         height: 560,
         width:960,
-        url : "{:url('email')}?type="+type+"&id="+e,
+        url : "{:url('email')}?type="+type+"&id="+e+'&email='+email,
         callback:function(data){
             if(data && data.results && data.results.length > 0 ) {
                 window.location.reload();

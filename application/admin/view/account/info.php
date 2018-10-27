@@ -33,7 +33,7 @@
                             </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="total_money">金额总计 :</label>
-                                	<input name="total_money" id="total_money" disabled="disabled" value="{$receivables.total_money}" class="ipt form-control" />
+                                	<input name="total_money" id="total_money" disabled="disabled" value="{$receivables.total_money}" style="width: 110px;" class="ipt form-control" />
                                 </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">对账单号 :</label>
@@ -41,9 +41,20 @@
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="invoice_date">对账日期 :</label>
-                                    <input name="invoice_date" id="invoice_date" value="{$receivables.invoice_date}" class="ipt form-control">
+                                    <input name="invoice_date" id="invoice_date" value="{$receivables.invoice_date}" style="width: 100px;" class="ipt form-control">
                                 </div>
-                                 
+                                <div class="form-group">
+                                	<label class="control-label" for="confirm_money">确认金额 :</label>
+                                	<input name="confirm_money" value="{$receivables.confirm_money}" id="confirm_money" style="width: 110px;" class="ipt form-control" />
+                                </div>
+                                <div class="form-group">
+                                <label class="control-label" for="files">附件 :</label>
+                                <?php if (!empty($receivables['files'])){?>
+                                <a href="<?php echo $receivables['files']['path'];?>" target="_blank">
+                                <?php echo $receivables['files']['name'];?>
+                                </a>
+                                <?php }?>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -62,6 +73,7 @@
                                 <th>商品名称</th>
                                 <th>单位</th>
                                 <th>单价</th>
+                                <th>是否对账</th>
                                 <th>交货数量</th>
                             </tr>
                             </thead>
@@ -77,6 +89,11 @@
                                 <td style="text-align:left;" >{$vo.goods_name}</td>
                                 <td>{$vo.unit}</td>
                                 <td>{$vo.goods_price}</td>
+                                <td>
+                                {if condition="$receivables.is_confirm"}
+                                	已对账
+                                {else}未对账{/if}
+                                </td>
                                 <td>{$vo.current_send_number}</td>
                                 </tr>
                             {/volist}
@@ -112,7 +129,7 @@
             var laydate = layui.laydate;
             //日期选择器
             laydate.render({
-                elem: '#invoice_date'
+                //elem: '#invoice_date'
                 //,type: 'date' //默认，可不填
             });
         });

@@ -48,11 +48,11 @@
                         <div class="col-lg-12">
                               <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">发票号码 :</label>
-                                	<input name="invoice_sn" id="invoice_sn" class="ipt form-control" style="width: 188px;"  data-toggle="tooltip" data-placement="top" title="发票号码">
+                                	<input name="invoice_sn" id="invoice_sn" class="ipt form-control" value="PR{:StrOrderOne()}" style="width: 188px;"  data-toggle="tooltip" data-placement="top" title="发票号码">
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="invoice_date">发票日期 :</label>
-                                    <input name="invoice_date" id="invoice_date" class="ipt form-control">
+                                    <input name="invoice_date" id="invoice_date" value="<?php echo date('Y-m-d');?>" class="ipt form-control">
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="last_date">到期日期 :</label>

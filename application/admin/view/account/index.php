@@ -106,21 +106,28 @@
                                 <td>
                                 	<a href="{:url('info',['id' => $vo['id']])}">详情</a>
                                 	{if condition="$vo['status']!=0"}
-                                		{if condition="!$vo['is_open'] && $vo['status']==2"}
-                                		<span class="text-explode">|</span>
-                                		<a href="javascript:;" onclick="_open({$vo['id']})">已开票</a>
-                                		{/if}
-                                		{if condition="$vo['status']==1"}
-                                    	<span class="text-explode">|</span>
-                                    	<a href="javascript:;" onclick="_status({$vo['id']})">已核销</a>
+                                		{if condition="$vo['is_confirm']"}
+	                                		{if condition="!$vo['is_open']"}
+	                                		<span class="text-explode">|</span>
+	                                		<a href="javascript:;" onclick="_open({$vo['id']})">开发票</a>
+	                                		{/if}
+	                                		{if condition="$vo['status']==1 && $vo['is_open']==1"}
+	                                    	<span class="text-explode">|</span>
+	                                    	<a href="javascript:;" onclick="_status({$vo['id']})">已核销</a>
+	                                    	{/if}
+                                    	{else}
+	                                    	<span class="text-explode">|</span>
+	                                    	<a href="javascript:;" onclick="_confirm({$vo['id']})">确认</a>
                                     	{/if}
                                 		{if condition="$vo['status']==1 || !$vo['is_open']"}
                                 		<span class="text-explode">|</span>
                                 		<a href="javascript:;" onclick="_close({$vo['id']})">关闭</a>
                                 		{/if}
                                 	{/if}
+                                	{if condition="!$vo['is_confirm']"}
                                 	<span class="text-explode">|</span>
                                 	<a href="{:url('edit',['id' => $vo['id']])}">编辑</a>
+                                	{/if}
                                 	<span class="text-explode">|</span>
                                 	<a href="javascript:;" onclick="deleteOrdersOne({$vo['id']})">删除</a>
                                 </td>
@@ -197,12 +204,24 @@
     });
     //单条订单操作
     function _open(e) {
-        if(confirm("确认操作？")){
+        //if(confirm("确认操作？")){
             if (!isNaN(e) && e !== null && e !== '') {
                 var data={name:'scrap',id:e};
-                $.sycToAjax("{:url('open')}", data);
+                //$.sycToAjax("{:url('open')}", data);
+            	var title = '新增发票记录';
+                bDialog.open({
+                    title : title,
+                    height: 450,
+                    width:410,
+                    url : '{:url(\'openticket\')}?id='+e,
+                    callback:function(data){
+                        if(data && data.results && data.results.length > 0 ) {
+                            window.location.reload();
+                        }
+                    }
+                });
             }
-        };
+        //};
         return false;
     }
     function _status(e) {
@@ -210,6 +229,15 @@
             if (!isNaN(e) && e !== null && e !== '') {
                 var data={name:'scrap',id:e};
                 $.sycToAjax("{:url('status')}", data);
+            }
+        };
+        return false;
+    }
+    function _confirm(e) {
+        if(confirm("确认操作？")){
+            if (!isNaN(e) && e !== null && e !== '') {
+                var data={name:'scrap',id:e};
+                $.sycToAjax("{:url('confirm')}", data);
             }
         };
         return false;

@@ -5,7 +5,7 @@ use think\Validate;
 
 class Purchase extends Base {
 	
-	private $send_email = '';
+	protected $send_email = '';
 	
 	public function index(){
 		$supplier_name = $this->request->param('supplier_name');
@@ -253,7 +253,7 @@ class Purchase extends Base {
 		exit;
 	}
 	
-	private function create_pdf($id,$type=0){
+	protected function create_pdf($id,$type=0){
 		if ($id <= 0) $this->error('参数错误');
 		$purchase = db('purchase')->where(['id' => $id,'status' => ['neq','-1']])->find();
 		if (empty($purchase)) $this->error('采购单不存在');
@@ -416,7 +416,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 		$mpdf->WriteHTML($stylesheet, 1);
 		$mpdf->WriteHTML($strContent);
 		if ($type == 1){
-			$savePath = './pdf/P'.str_replace('/', '-', $order['order_sn']).'.pdf';
+			$savePath = './pdf/P'.str_replace('/', '-', $purchase['po_sn']).'.pdf';
 			$mpdf->Output($savePath,'F');
 			return $savePath;
 		}
@@ -430,16 +430,12 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 			$purchase = db('purchase')->where(['id' => $id,'status' => ['neq','-1']])->find();
 			if (empty($purchase)) $this->error('采购单不存在');
 			if ($this->request->post('type') == 'send'){
-				if ($purchase['status'] == 1){
+				if ($purchase['status'] > 0){
 					$email_list = $this->request->post('send_email_list');
-					if (!empty($email_list)){
-					   $email_list = explode(',', $email_list);
-					}
-					if (empty($email_list)) {
-					    //$this->error('请至少选择一个联系人');
-					    $email_list[] = $purchase['email'];
-					}
-					$email_list = array_unique($email_list);
+					$email_list = trim($purchase['email'].';'.$email_list,';');
+					
+					$this->success('处理发送邮件','',['email_list' => $email_list,'id' => $id,'type' => 'purchase']);
+					/*
 					if (send_email($email_list,'采购单',$this->create_pdf($purchase['id'],1))){
 						if(!db('purchase')->where(['id' => $purchase['id']])->setField('status',2)){
 							$this->error('PDF发送成功,处理状态失败');
@@ -448,6 +444,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 					}else{
 						$this->error('PDF发送失败请重试');
 					}
+					*/
 				}
 				$this->error('生成PDF失败');
 				return;

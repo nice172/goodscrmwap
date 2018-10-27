@@ -403,7 +403,7 @@ function https_request($url, $data = null){
 if (!function_exists('StrOrderOne'))
 {
     function StrOrderOne() {
-        $y = '2015';
+        $y = date('Y');
         $upper = array('1'=>'01','2'=>'02','3'=>'03','4'=>'04','5'=>'05','6'=>'06');
         $unde  = array('1'=>'07','2'=>'08','3'=>'09','4'=>'10','5'=>'11','6'=>'12');
         $date_y = date('Y') - $y;
@@ -426,7 +426,7 @@ if (!function_exists('StrOrderOne'))
         $orders = '100' + $yea . $half . $key . $date_d  . implode('',$arr);
         
         //$orders = $date_h;
-        return $orders;
+        return date('Y').(mt_rand(100000,999999)+$orders);
     }
 }
 

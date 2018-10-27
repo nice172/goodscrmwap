@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-<form class="ajaxForm" action="" method="post">
+<form class="ajaxForm" action="" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="form-inline marginTop10">
                         <div class="col-lg-12">
@@ -34,24 +34,31 @@
                             </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="total_money">金额总计 :</label>
-                                	<input name="total_money" id="total_money" disabled="disabled" value="{$total_money}" class="ipt form-control" />
+                                	<input name="total_money" id="total_money" disabled="disabled" value="{$total_money}" style="width: 110px;" class="ipt form-control" />
                                 </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">对账单号 :</label>
-                                	<input name="invoice_sn" id="invoice_sn" class="ipt form-control" data-toggle="tooltip" data-placement="top" title="对账单号">
+                                	<input name="invoice_sn" id="invoice_sn" class="ipt form-control" readonly="readonly" value="AR{:StrOrderOne()}" data-toggle="tooltip" data-placement="top" title="对账单号">
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="invoice_date">对账日期 :</label>
-                                    <input name="invoice_date" id="invoice_date" class="ipt form-control">
+                                    <input name="invoice_date" id="invoice_date" value="<?php echo date('Y-m-d');?>" style="width: 100px;" class="ipt form-control">
                                 </div>
-                                 
+                                <div class="form-group">
+                                	<label class="control-label" for="confirm_money">确认金额 :</label>
+                                	<input name="confirm_money" id="confirm_money" style="width: 110px;" class="ipt form-control" />
+                                </div>
+                                <div class="form-group">
+                                	<label class="control-label" for="account_file">附件 :</label>
+                                	<input type="file" name="file" id="account_file" class="ipt form-control"/>
+                                </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <table class="table table-hover syc-table">
+                        <table class="table table-hover syc-table border">
                             <thead>
                             <tr>
                                 <th>送货单号</th>

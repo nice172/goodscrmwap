@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-<form class="ajaxForm" action="" method="post">
+<form class="ajaxForm" action="" method="post" enctype="multipart/form-data">
 <input type="hidden" name="id" value="{$receivables.id}" />
                 <div class="row">
                     <div class="form-inline marginTop10">
@@ -35,7 +35,7 @@
                             </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="total_money">金额总计 :</label>
-                                	<input name="total_money" id="total_money" disabled="disabled" value="{$receivables.total_money}" class="ipt form-control" />
+                                	<input name="total_money" id="total_money" disabled="disabled" value="{$receivables.total_money}" style="width: 110px;" class="ipt form-control" />
                                 </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">对账单号 :</label>
@@ -43,9 +43,16 @@
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="invoice_date">对账日期 :</label>
-                                    <input name="invoice_date" id="invoice_date" value="{$receivables.invoice_date}" class="ipt form-control">
+                                    <input name="invoice_date" id="invoice_date" value="{$receivables.invoice_date}" style="width: 100px;" class="ipt form-control">
                                 </div>
-                                 
+                                <div class="form-group">
+                                	<label class="control-label" for="confirm_money">确认金额 :</label>
+                                	<input name="confirm_money" value="{$receivables.confirm_money}" id="confirm_money" style="width: 110px;" class="ipt form-control" />
+                                </div>
+                                <div class="form-group">
+                                	<label class="control-label" for="account_file">附件 :</label>
+                                	<input type="file" name="file" id="account_file" class="ipt form-control"/>
+                                </div>
                         </div>
                     </div>
                 </div>

@@ -31,6 +31,38 @@ class Account extends Base {
         return $this->fetch();
     }
     
+    public function openticket(){
+    	if ($this->request->isAjax()){
+    		$id = intval($this->request->param('id'));
+    		$ticket_date = $this->request->param('ticket_date');
+    		$ticket_sn = $this->request->param('ticket_sn');
+    		$money = $this->request->param('money');
+    		$remark = $this->request->param('remark');
+    		$res = db('receivables')->where(['id' => $id,'is_delete' => 0])->find();
+    		if (empty($res)) $this->error('开票数据错误');
+    		$total_money = db('receivable_ticket')->where(['rec_id' => $id])->sum('money');
+    		if($res['confirm_money'] - $total_money < $money){
+    			$this->error('开票金额错误');
+    		}
+    		$data = [
+    			'admin_uid' => $this->userinfo['id'],
+    			'rec_id' => $id,
+    			'ticket_date' => $ticket_date,
+    			'ticket_sn' => $ticket_sn,
+    			'money' => _formatMoney($money),
+    			'remark' => $remark,
+    			'create_time' => time()
+    		];
+    		if (db('receivable_ticket')->insert($data)){
+    			$this->success('新增发票成功');
+    		}else{
+    			$this->error('新增发票失败');
+    		}
+    		return;
+    	}
+    	return $this->fetch('open_ticket');
+    }
+    
     public function delete(){
         if ($this->request->isAjax()){
             $id = $this->request->param('id',0,'intval');
@@ -77,11 +109,23 @@ class Account extends Base {
         }
     }
     
+    public function confirm(){
+    	if ($this->request->isAjax()){
+    		$id = $this->request->param('id',0,'intval');
+    		if ($id <= 0) $this->error('参数错误');
+    		if (db('receivables')->where(['id' => $id])->setField('is_confirm',1)){
+    			$this->success('操作成功');
+    		}
+    		$this->error('操作失败');
+    	}
+    }
+    
     public function info(){
         $id = $this->request->param('id',0,'intval');
         if (empty($id)) $this->error('参数错误');
         $receivables = db('receivables')->where(['id' => $id,'is_delete' => 0])->find();
         if (empty($receivables)) $this->error('数据信息不存在');
+        $receivables['files'] = json_decode($receivables['files'],true);
         $this->assign('receivables',$receivables);
         $ids = $receivables['delivery_ids'];
         $db = db('delivery_order do');
@@ -109,15 +153,22 @@ class Account extends Base {
         if ($this->request->isAjax()){
             $invoice_sn = $this->request->post('invoice_sn');
             $invoice_date = $this->request->post('invoice_date');
+            $confirm_money = $this->request->post('confirm_money');
             $id = $this->request->post('id');
             if (empty($invoice_sn)) $this->error('发票号码不能为空');
             if (empty($invoice_date)) $this->error('开票日期不能为空');
+            if (empty($confirm_money)) $this->error('确认金额不能为空');
+            $file = $this->upload_file('',false);
             $data = [
                 'id' => intval($id),
                 'invoice_sn' => $invoice_sn,
                 'invoice_date' => $invoice_date,
+            	'confirm_money' => $confirm_money,
                 'update_time' => time()
             ];
+            if (is_array($file) && !empty($file)){
+            	$data['files'] = json_encode(['path' => $file['path'],'name' => $file['oldfilename']]);
+            }
             if (db('receivables')->where(['id' => ['neq',$data['id']],'invoice_sn' => $invoice_sn])->find()){
                 $this->error('发票号码已存在');
             }
@@ -270,17 +321,20 @@ class Account extends Base {
     		if ($this->request->isAjax()){
     			$invoice_sn = $this->request->post('invoice_sn');
     			$invoice_date = $this->request->post('invoice_date');
+    			$confirm_money = $this->request->post('confirm_money');
     			//$delivery_ids = $this->request->post('delivery_ids');
     			if (empty($invoice_sn)) $this->error('发票号码不能为空');
     			if (empty($invoice_date)) $this->error('开票日期不能为空');
     			if (db('receivables')->where(['invoice_sn' => $invoice_sn])->find()){
     			    $this->error('发票号码已存在');
     			}
+    			if (empty($confirm_money)) $this->error('确认金额不能为空');
     			$delivery_ids = [];
     			foreach ($result as $key => $value){
     				$delivery_ids[] = $value['id'];
     			}
     			$delivery_ids = array_unique($delivery_ids);
+    			$file = $this->upload_file('',false);
     			$data = [
     				'admin_uid' => $this->userinfo['id'],
     				'cus_id' => $cus_id,
@@ -289,8 +343,10 @@ class Account extends Base {
     				'invoice_sn' => $invoice_sn,
     				'invoice_date' => $invoice_date,
     				'total_money' => _formatMoney($total_money),
+    				'confirm_money' => $confirm_money,
     				'pay_money' => 0,'diff_money' => 0,
     				'is_open' => 0,'status' => 1,
+    				'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
     				'update_time' => time(),'create_time' => time()
     			];
     			if (db('receivables')->insert($data)){

@@ -441,10 +441,10 @@ $('.confirmSend').click(function(){
 	var input = $('input[name=send_email_list]');
 	input.each(function(index){
 		if($(input).eq(index).is(':checked')){
-			send_email_list += $(input).eq(index).val()+',';
+			send_email_list += $(input).eq(index).val()+';';
 		}
 	});
-	if(send_email_list == '' || send_email_list.split(',').length == 0){
+	if(send_email_list == '' || send_email_list.split(';').length == 0){
 		//alert('请至少选择一个联系人');
 		//return false;
 	}
@@ -457,12 +457,17 @@ function _ajaxSubmit(send,send_email_list){
 		data:{send_email_list:send_email_list,type:send},
 		success: function(res){
 			if(res.code == 1){
-				toastr.success(res.msg);
-				if(res.url != '' && typeof res.url != 'undefined'){
-					setTimeout(function(){window.location.href = res.url;},2000);
+				if(res.data.type){
+					$('.modal-footer .btn-default').click();
+					send_email(res.data.type,res.data.id,res.data.email_list);
+				}else{
+					toastr.success(res.msg);
+					if(res.url != '' && typeof res.url != 'undefined'){
+						setTimeout(function(){window.location.href = res.url;},2000);
 					}else{
-						setTimeout(function(){window.location.reload();},2000);
+							setTimeout(function(){window.location.reload();},2000);
 						}
+				}
 			}else{
 				toastr.error(res.msg);
 				}
