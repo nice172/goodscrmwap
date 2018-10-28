@@ -77,8 +77,8 @@
                                 	<input type="text" class="form-control w300" name="require_time" value="{$data.require_time|date='Y-m-d',###}" id="LAY-component-form-group-date">
                                 </td>
                                 <td width="15%" class="right-color"><span class="text-danger">*</span><span>上传附件:</span></td>
-                                <td width="35%">
-                                        <input type="file" name="Filedata[]" multiple="multiple"/>
+                                <td width="35%" class="filelist">
+                                        <input type="file" class="changefile" name="Filedata[]" multiple="multiple"/>
                                     </td>
                                 </tr>
                                 <?php if (!empty($data['attachment'])){?>
@@ -395,6 +395,32 @@ function _delete(index){
 		$('.page-box').hide();
 	}
 }
+
+$('.changefile').change(function(){
+	var _this = $(this);
+	$('.ajaxForm2').ajaxSubmit({
+		data:{type:'file'},
+		success: function(res){
+			if(res.code == 1){
+				//toastr.success(res.msg);
+				var html = '';
+				for(var i in res.data){
+					html += '<p style="padding-bottom: 10px;">';
+					html += '<input type="hidden" name="files[]" value="'+res.data[i]['path']+'" />';
+					html += '<a target="_blank" href="'+res.data[i]['path']+'">'+res.data[i]['oldfilename']+'</a><span style="padding-left:5px;cursor:pointer;">删除</span></p>';
+				}
+				_this.before(html);
+			}else{
+				toastr.error(res.msg);
+			}
+		}
+	});
+});
+
+$('body').on('click','.filelist p span',function(){
+	$(this).parents('p').remove();
+});
+
 $('button[type=submit]').click(function(){
 	var send = $(this).attr('send');
 	$('.ajaxForm2').ajaxSubmit({

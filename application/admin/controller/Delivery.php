@@ -249,6 +249,9 @@ class Delivery extends Base {
             $goods_info = $this->request->param('goods_info/a');
             if (empty($goods_info)) $this->error('商品信息不能为空');
             foreach ($goods_info as $key => $value){
+            	if ($value['goods_price'] <= 0){
+            		$this->error('“'.$value['goods_name'].'”商品价格必须大于0');
+            	}
             	if ($value['current_send_number'] <= 0){
             		$this->error('“'.$value['goods_name'].'”本次送货数量不能小于1');
             	}

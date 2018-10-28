@@ -76,8 +76,9 @@
                                 	<input type="text" class="form-control w300" name="require_time" id="LAY-component-form-group-date">
                                 </td>
                                 <td width="15%" class="right-color"><span class="text-danger">*</span><span>上传附件:</span></td>
-                                <td width="35%">
-                                        <input style="width:365px;" type="file" name="Filedata[]" multiple="multiple" />
+                                	<td width="35%" class="filelist">
+
+                                        <input style="width:365px;" class="changefile" type="file" name="Filedata[]" multiple="multiple" />
                                     </td>
                                 </tr>
                                    <tr>
@@ -113,7 +114,11 @@
                             <tbody class="goodsList"></tbody>
                             <tfoot>
                             	<tr>
-                            	<td colspan="20"><a href="javascript:;" class="get_goods">请选择商品</a>
+                            	<td colspan="6">
+                            	<a href="javascript:;" class="get_goods">请选择商品</a>
+                            	</td>
+                            	<td class="total_money">总计：0.00</td>
+                            	<td colspan="4">
                             	<div class="pull-right page-box" style="display: none;"><button type="button" class="btn btn-primary saveAll">全部保存</button></div></td>
                             	</tr>
                             </tfoot>
@@ -272,6 +277,7 @@ function goods(data){
 
 function goodsList(goods_info){
 	var html = '';
+	var total_money = 0;
 	for(var j in goods_info){
 		var num = parseInt(j)+1;
 		var show_input = goods_info[j]['show_input']==true?'inline':'none';
@@ -292,8 +298,10 @@ function goodsList(goods_info){
 		html += '<td width="20%" class="remark"><input type="text" name="remark" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['remark']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['remark']+'</span></td>';
 		html += '<td width="15%"><a href="javascript:;" onclick="update('+j+')" class="update">'+text_update+'</a><span class="text-explode">|</span><a href="javascript:;" onclick="_delete('+j+')" class="delete">删除</a></td>';
 		html += '</tr>';
+		total_money += parseFloat(goods_info[j]['shop_price'])*parseInt(goods_info[j]['goods_number']);
 	}
 	$('.goodsList').html(html);
+	$('.total_money').text('总计：'+_formatMoney(total_money));
 }
 
 function update(index){
@@ -402,6 +410,32 @@ function _delete(index){
 		$('.page-box').hide();
 	}
 }
+
+$('.changefile').change(function(){
+	var _this = $(this);
+	$('.ajaxForm2').ajaxSubmit({
+		data:{type:'file'},
+		success: function(res){
+			if(res.code == 1){
+				//toastr.success(res.msg);
+				var html = '';
+				for(var i in res.data){
+					html += '<p style="padding-bottom: 10px;">';
+					html += '<input type="hidden" name="files[]" value="'+res.data[i]['path']+'" />';
+					html += '<a target="_blank" href="'+res.data[i]['path']+'">'+res.data[i]['oldfilename']+'</a><span style="padding-left:5px;cursor:pointer;">删除</span></p>';
+				}
+				_this.before(html);
+			}else{
+				toastr.error(res.msg);
+			}
+		}
+	});
+});
+
+$('body').on('click','.filelist p span',function(){
+	$(this).parents('p').remove();
+});
+
 $('button[type=submit]').click(function(){
 	var send = $(this).attr('send');
 	$('.ajaxForm2').ajaxSubmit({

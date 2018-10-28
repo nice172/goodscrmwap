@@ -107,6 +107,8 @@
                                 	<a href="{:url('info',['id' => $vo['id']])}">详情</a>
                                 	{if condition="$vo['status']!=0"}
                                 		{if condition="$vo['is_confirm']"}
+                                			<span class="text-explode">|</span>
+                                			<a href="{:url('ticketrecrod',['id' => $vo['id']])}">发票记录</a>
 	                                		{if condition="!$vo['is_open']"}
 	                                		<span class="text-explode">|</span>
 	                                		<a href="javascript:;" onclick="_open({$vo['id']})">开发票</a>

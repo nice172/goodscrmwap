@@ -364,7 +364,11 @@ function goodsList(goods_info){
 		<?php }?>
 		html += '<td class="purchase_number"><input type="text" data-purchase_number="'+goods_info[j]['purchase_number']+'" oninput="checkNum2(this)" name="purchase_number" style="width:80px;display:none;" value="'+goods_info[j]['purchase_number']+'" /><span class="inputspan">'+goods_info[j]['purchase_number']+'</span></td>';
 		html += '<td class="send_number"><span class="span">'+goods_info[j]['send_num']+'</span></td>';
-		html += '<td class="store_number"><span class="span">'+goods_info[j]['store_number']+'</span></td>';
+		if(goods_info[j]['store_number'] != 0){
+			html += '<td class="store_number"><span class="span" style="color:#06C;">'+goods_info[j]['store_number']+'</span></td>';
+		}else{
+			html += '<td class="store_number"><span class="span">'+goods_info[j]['store_number']+'</span></td>';
+		}
 		html += '<td class="totalMoney"><span class="span">'+goods_info[j]['totalMoney']+'</span></td>';
 		//html += '<td><a href="javascript:;" onclick="update('+j+')" class="update">修改</a><span class="text-explode">|</span><a href="javascript:;" onclick="_delete('+j+')" class="delete">删除</a></td>';
 		html += '</tr>';

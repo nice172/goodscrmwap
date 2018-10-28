@@ -63,6 +63,15 @@ class Account extends Base {
     	return $this->fetch('open_ticket');
     }
     
+    public function ticketrecrod(){
+    	$id = intval($this->request->param('id'));
+    	$data = db('receivable_ticket r')->join('__USERS__ u','r.admin_uid=u.id')
+    	->where(['r.rec_id' => $id])->field('r.*,u.user_nick')->order('create_time desc')->select();
+    	$this->assign('list',$data);
+    	$this->assign('title','发票记录');
+    	return $this->fetch();
+    }
+    
     public function delete(){
         if ($this->request->isAjax()){
             $id = $this->request->param('id',0,'intval');

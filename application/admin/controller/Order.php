@@ -284,6 +284,15 @@ class Order extends Base {
     public function add(){
         if ($this->request->isAjax()){
             $type = $this->request->param('type');
+            if ($type == 'file'){
+            	$file = $this->upload_file();
+            	if (is_array($file) && !empty($file)){
+            		$this->success('ok','',$file);
+            	}else{
+            		$this->error('error');
+            	}
+            	return;
+            }
             $data = [
                 'create_uid' => $this->userinfo['id'],
             	'con_id' => $this->request->post('con_id'),
@@ -323,7 +332,8 @@ class Order extends Base {
                 //}
             }
             
-            $attachment = $this->upload_file();
+            //$attachment = $this->upload_file();
+            $attachment = isset($_POST['files']) ? $_POST['files'] : [];
             $data['attachment'] = json_encode($attachment);
             
             $order_id = db('order')->insertGetId($data);
@@ -582,6 +592,15 @@ class Order extends Base {
     public function edit(){
         if ($this->request->isAjax()){
             $type = $this->request->param('type');
+            if ($type == 'file'){
+            	$file = $this->upload_file();
+            	if (is_array($file) && !empty($file)){
+            		$this->success('ok','',$file);
+            	}else{
+            		$this->error('error');
+            	}
+            	return;
+            }
             $data = [
                 'id' => $this->request->post('id'),
             	'con_id' => $this->request->post('con_id'),
@@ -632,7 +651,8 @@ class Order extends Base {
             }
             
             $oldfile = $this->request->param('oldfile/a');
-            $attachment = $this->upload_file();
+            //$attachment = $this->upload_file();
+            $attachment = isset($_POST['files']) ? $_POST['files'] : [];
             $fileArr = [];
             if (!empty($oldfile)){
                 $order_attachment = db('order')->where(['id' => $data['id'],'status' => ['neq','-1']])->value('attachment');
@@ -735,7 +755,7 @@ class Order extends Base {
         if ($cus_short != ''){
             $where .= " and cus_short like '%{$cus_short}%'";
         }
-        $data = $Customers->where($where)->paginate('', false, ['query' => $query ]);
+        $data = $Customers->where($where)->paginate(config('PAGE_SIZE'), false, ['query' => $query ]);
         // 获取分页显示
         $page = $data->render();
         $this->assign('page',$page);
@@ -745,6 +765,22 @@ class Order extends Base {
         
         $this->assign('order_ren',$order_ren);
         return $this->fetch();
+    }
+    
+    //成交记录
+    public function history_record(){
+    	$goods_id = $this->request->param('goods_id');
+    	$order_id = $this->request->param('order_id');
+    	$cus_id = $this->request->param('cus_id');
+    	$result = db('order o')->join('__ORDER_GOODS__ g','o.id=g.order_id')
+    	->where(['o.cus_id' => $cus_id,
+    			 'o.id' => $order_id,
+    			 //'g.goods_id' => $goods_id
+    			
+    	])->paginate(config('PAGE_SIZE'),false);
+    	$this->assign('list',$result->all());
+    	$this->assign('page',$result->render());
+    	return $this->fetch();
     }
     
     public function get_goods(){
@@ -778,9 +814,11 @@ class Order extends Base {
             //$lists[$key]['brand_name'] = $brand['brand_name'];
             $lists[$key]['brand_name'] = '';
             $lists[$key]['purchase_number'] = 0;
-            $last_price = db('order o')->join('__ORDER_GOODS__ og','o.id=og.order_id')->where(['o.cus_id' => $cus_id,'og.goods_id' => $value['goods_id']])
-            ->where("o.status=2 OR o.status=3")->order('o.create_time desc')->value('goods_price');
-            $lists[$key]['last_price'] = $last_price;
+            $row = db('order o')->join('__ORDER_GOODS__ og','o.id=og.order_id')->where(['o.cus_id' => $cus_id,'og.goods_id' => $value['goods_id']])
+            ->where("o.status=2 OR o.status=3")->order('o.create_time desc')->field('og.order_id,og.goods_price,og.create_time')->find();
+            $lists[$key]['order_id'] = $row['order_id']?:0;
+            $lists[$key]['last_price'] = $row['goods_price'];
+            $lists[$key]['last_time'] = !empty($row['create_time']) ? date('Y-m-d H:i:s',$row['create_time']) : '';
         }
         
         $this->assign('data',$lists);

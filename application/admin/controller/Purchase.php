@@ -54,6 +54,23 @@ class Purchase extends Base {
 		return $this->fetch();
 	}
 	
+	public function query(){
+		$supplier_name = $this->request->param('supplier_name');
+		$start_time = $this->request->param('start_time');
+		$end_time = $this->request->param('end_time');
+		$delivery_company = $this->request->param('delivery_company');
+		$goods_name = $this->request->param('goods_name');
+		$result = db('purchase p')->join('__DELIVERY_ORDER__ d','p.id=d.purchase_id')
+		->join('__SUPPLIER__ s','p.supplier_id=s.id')->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
+		->field('p.create_time,p.po_sn,s.supplier_name,d.cus_name,g.goods_name')->paginate(config('page_size'),false);
+		echo db()->getLastSql();
+		exit;
+		$this->assign('list',[]);
+		$this->assign('page','');
+		$this->assign('title','查询采购单');
+		return $this->fetch();
+	}
+	
 	public function info(){
 		$id = $this->request->param('id',0,'intval');
 		if ($id <= 0) $this->error('参数错误');

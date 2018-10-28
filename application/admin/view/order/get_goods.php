@@ -56,6 +56,8 @@
                                     <th>单位</th>
                                     <th>标准单价</th>
                                     <th>最新成交价</th>
+                                    <th>最新成交日期</th>
+                                    <th>成交历史</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,6 +70,8 @@
                                     <td>{$vo.unit}</td>
                                     <td>{$vo.market_price}</td>
                                     <td>{$vo.last_price}</td>
+                                    <td>{$vo.last_time}</td>
+                                    <td><a href="javascript:history_record({$vo['goods_id']},{$vo['order_id']});">查看</a></td>
                                 </tr>
                             {/volist}
                             </tbody>
@@ -101,7 +105,8 @@
 </div>
 <script>
 $(document).ready(function () {
-	$('.selected_goods').click(function(){
+	$('.selected_goods').click(function(e){
+		if($(e.target).text() != '查看'){
 		var goods = {
 			'goods_name': $(this).attr('data-goods_name'),
 			//'shop_price': $(this).attr('data-shop_price'), //实际价格
@@ -116,11 +121,28 @@ $(document).ready(function () {
 			'show_input':true
 		};
 		parent.window.goods(goods);
+		}
 	});
 	$('.windowClose').click(function(){
 		bDialog.close();
 	});
+	
 });
+function history_record(goods_id,order_id){
+	var cus_id = <?php echo isset($_GET['cus_id']) ? $_GET['cus_id'] : 0;?>;
+	var title = '成交记录';
+    bDialog.open({
+        title : title,
+        height: 560,
+        width:"95%",
+        url: '{:url(\'history_record\')}?cus_id='+cus_id+'&goods_id='+goods_id+'&order_id='+order_id,
+        callback:function(data){
+            if(data && data.results && data.results.length > 0 ) {
+                window.location.reload();
+            }
+        }
+    });
+}
 </script>
 </body>
 </html>
