@@ -35,7 +35,7 @@
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>入库单号:</span></td>
                                     <td width="35%">
-                                        <input type="text" class="form-control w300" readonly="readonly" name="store_sn" id="store_sn">
+                                        <input type="text" class="form-control w300" readonly="readonly" value="IV{:StrOrderOne()}" name="store_sn" id="store_sn">
                                     </td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>入库时间:</span></td>
                                     <td width="35%"><input type="text" class="form-control w300" readonly="readonly" value="<?php echo date('Y-m-d');?>" name="create_date" id="create_date"></td>
@@ -233,6 +233,13 @@ function _formatMoney(num){
 
     });
 
+function put(data){
+	$('#po_sn').val(data.po_sn);
+	$('#cus_name').val(data.cus_name);
+	$('#purchase_date').val(data.create_date);
+	$('#supplier_name').val(data.supplier_name);
+}
+    
 function client_info(data){
 	$('#cus_phome').val(data.cus_phome);
 	$('#fax').val(data.fax);

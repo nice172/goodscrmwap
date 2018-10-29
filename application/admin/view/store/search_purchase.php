@@ -68,15 +68,16 @@
                             </thead>
                             <tbody>
                             {volist name="list" id="vo" empty="$empty"}
-                                <tr>
+                                <tr class="select_row" style="cursor: pointer;" data-index="{$key}">
                                 <td>{$vo.po_sn}</td>
-                                <td>{$vo.create_time}</td>
+                                <td>{$vo.create_time|date='Y-m-d',###}</td>
                                 <td>{$vo.supplier_name}</td>
                                 <td>{$vo.cus_name}</td>
                                 <td>{$vo.goods_name}</td>
                                 <td>{$vo.unit}</td>
                                 <td>{$vo.goods_price}</td>
                                 <td>{$vo.goods_number}</td>
+                                <td>{$vo.input_store}</td>
                                 </tr>
                             {/volist}
                             </tbody>
@@ -96,6 +97,14 @@
             </div>
 <script type="text/javascript">
     $(document).ready(function() {
+
+		var json = {$pjson};
+		$('.select_row').click(function(){
+			var index = $(this).attr('data-index');
+			parent.window.put(json[index]);
+			bDialog.close();
+		});
+        
         // 当前页面分类高亮
         $("#sidebar-purchase").addClass("sidebar-nav-active"); // 大分类
         $("#purchase-index").addClass("active"); // 小分类

@@ -154,31 +154,47 @@ class Store extends Base {
     }
     
     public function search_purchase(){
+    	$po_sn = $this->request->param('po_sn');
         $supplier_name = $this->request->param('supplier_name');
         $start_time = $this->request->param('start_time');
         $end_time = $this->request->param('end_time');
         $delivery_company = $this->request->param('delivery_company');
         $goods_name = $this->request->param('goods_name');
-        $db = db('purchase p');
-        if ($supplier_name != '') {
-            $db->where("(s.supplier_name like '%{$supplier_name}%' OR s.supplier_short like '%{$supplier_name}%')");
+        $list = [];
+        $page = '';
+        if ($po_sn != '' || $supplier_name != '' || ($start_time!='' && $end_time!='') || $delivery_company != '' || $goods_name != ''){
+	        $db = db('purchase p');
+	        if ($po_sn != '') {
+	        	$db->where(['p.po_sn' => $po_sn]);
+	        }
+	        if ($supplier_name != '') {
+	            $db->where("(s.supplier_name like '%{$supplier_name}%' OR s.supplier_short like '%{$supplier_name}%')");
+	        }
+	        if (strtotime($start_time) && strtotime($end_time)){
+	            $db->where(['p.create_time' => ['egt',strtotime($start_time)]]);
+	            $db->where(['p.create_time' => ['elt',strtotime($end_time.' 23:59:59')]]);
+	        }
+	        if ($delivery_company != ''){
+	            $db->where(['d.cus_name' => ['like',"%{$delivery_company}%"]]);
+	        }
+	        if ($goods_name != ''){
+	            $db->where(['g.goods_name' => ['like',"%{$goods_name}%"]]);
+	        }
+	        $db->where("(g.goods_number-g.input_store) > 0");
+	        $result = $db->join('__SUPPLIER__ s','p.supplier_id=s.id')->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
+	        ->join('__CUSTOMERS__ c','p.cus_id=c.cus_id')
+	        ->field('p.create_time,p.po_sn,s.supplier_name,c.cus_name,g.goods_name,g.unit,g.goods_price,g.goods_number,g.input_store')
+	        ->paginate(config('page_size'),false,['query' => $this->request->param()]);
+	        $list = $result->all();
+	        foreach ($list as $key => $value){
+	        	$list[$key]['create_date'] = date('Y-m-d',$value['create_time']);
+	        }
+	        $page = $result->render();
         }
-        if (strtotime($start_time) && strtotime($end_time)){
-            $db->where(['p.create_time' => ['egt',strtotime($start_time)]]);
-            $db->where(['p.create_time' => ['elt',strtotime($end_time.' 23:59:59')]]);
-        }
-        if ($delivery_company != ''){
-            $db->where(['d.cus_name' => ['like',"%{$delivery_company}%"]]);
-        }
-        if ($goods_name != ''){
-            $db->where(['g.goods_name' => ['like',"%{$goods_name}%"]]);
-        }
-        $db->where("(g.goods_number-g.input_store) > 0");
-        $result = $db->join('__SUPPLIER__ s','p.supplier_id=s.id')->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
-        ->field('p.create_time,p.po_sn,s.supplier_name,g.goods_name,g.unit,g.goods_price,g.goods_number,g.input_store')
-        ->paginate(config('page_size'),false,['query' => $this->request->param()]);
-        $this->assign('list',$result->all());
-        $this->assign('page',$result->render());
+        $this->assign('pjson',json_encode($list));
+        $this->assign('list',$list);
+        $this->assign('page',$page);
+        
         $this->assign('title','查询采购单');
         return $this->fetch();
     }
