@@ -141,4 +141,59 @@ class Store extends Base {
         }
     }
     
+    public function purchase(){
+        $this->assign('title','采购入库');
+        $this->assign('list',[]);
+        $this->assign('page','');
+        return $this->fetch();
+    }
+    
+    public function add(){
+        $this->assign('title','新增采购入库');
+        return $this->fetch();
+    }
+    
+    public function search_purchase(){
+        $supplier_name = $this->request->param('supplier_name');
+        $start_time = $this->request->param('start_time');
+        $end_time = $this->request->param('end_time');
+        $delivery_company = $this->request->param('delivery_company');
+        $goods_name = $this->request->param('goods_name');
+        $db = db('purchase p');
+        if ($supplier_name != '') {
+            $db->where("(s.supplier_name like '%{$supplier_name}%' OR s.supplier_short like '%{$supplier_name}%')");
+        }
+        if (strtotime($start_time) && strtotime($end_time)){
+            $db->where(['p.create_time' => ['egt',strtotime($start_time)]]);
+            $db->where(['p.create_time' => ['elt',strtotime($end_time.' 23:59:59')]]);
+        }
+        if ($delivery_company != ''){
+            $db->where(['d.cus_name' => ['like',"%{$delivery_company}%"]]);
+        }
+        if ($goods_name != ''){
+            $db->where(['g.goods_name' => ['like',"%{$goods_name}%"]]);
+        }
+        $db->where("(g.goods_number-g.input_store) > 0");
+        $result = $db->join('__SUPPLIER__ s','p.supplier_id=s.id')->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
+        ->field('p.create_time,p.po_sn,s.supplier_name,g.goods_name,g.unit,g.goods_price,g.goods_number,g.input_store')
+        ->paginate(config('page_size'),false,['query' => $this->request->param()]);
+        $this->assign('list',$result->all());
+        $this->assign('page',$result->render());
+        $this->assign('title','查询采购单');
+        return $this->fetch();
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

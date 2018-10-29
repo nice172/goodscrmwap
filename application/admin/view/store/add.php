@@ -29,119 +29,44 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
-    <input type="hidden" name="order_id" value=""  id="id" />
-    <input type="hidden" name="cus_id" value=""  id="cus_id" />
-								
+    <input type="hidden" name="po_id" value=""  id="id" />
                     <table class="table contact-template-form">
                                 <tbody>
                                 <tr>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>PO号码:</span></td>
+                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>入库单号:</span></td>
                                     <td width="35%">
-                                        <input type="hidden" class="form-control w300" readonly="readonly" value="{$po_sn}" name="po_sn" id="po_sn">
-                                        <span>{$po_sn}</span>
+                                        <input type="text" class="form-control w300" readonly="readonly" name="store_sn" id="store_sn">
                                     </td>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>订购日期:</span></td>
+                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>入库时间:</span></td>
                                     <td width="35%"><input type="text" class="form-control w300" readonly="readonly" value="<?php echo date('Y-m-d');?>" name="create_date" id="create_date"></td>
                                 </tr>
-                                <tr>
+								<tr>
+                                <td width="15%" class="right-color"><span class="text-danger">*</span><span>采购单号:</span></td>
+                                <td width="35%">
+                                	<input type="text" class="form-control w300" style="display:inline-block;" name="po_sn" id="po_sn">
+                                	<button type="button" class="btn btn-primary search_company" style="margin-top:-4px;">查找</button>
+                                </td>
                                 <td width="15%" class="right-color"><span class="text-danger">*</span><span>供应商:</span></td>
                                 <td width="35%">
-                                	<select class="form-control w350" name="supplier_id" id="supplier_id">
-                                		<option value="">请选择供应商</option>
-                                		{foreach name="$supplier" item="v"}
-                                		<option value="{$v.id}">{$v.supplier_name}</option>
-                                		{/foreach}
-                                	</select>
-                                </td>
-                               <td width="15%" class="right-color"><span class="text-danger">*</span><span>客户订单号:</span></td>
-                                <td width="35%">
-                                        <input type="text" class="form-control w300" name="cus_order_sn" id="cus_order_sn">
+                                        <input type="text" class="form-control w300"  name="supplier_name" id="supplier_name">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>采购日期:</span></td>
+                                    <td width="35%"><input type="text" class="form-control w300" name="purchase_date" value="" id="purchase_date"></td>
+                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>送货公司:</span></td>
+                                    <td width="35%">
+                                        <input type="text" class="form-control w300" name="cus_name" value="" id="cus_name">
                                     </td>
                                 </tr>
                                 
                                 <tr>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>联系人:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="contacts" value="" id="contacts"></td>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>电话号码:</span></td>
-                                    <td width="35%">
-                                        <input type="text" class="form-control w300" name="cus_phome" value="" id="cus_phome">
-                                    </td>
-                                </tr>
-                                
-                                <tr>
-                                    <td width="15%" class="right-color">传真号码:</span></td>
-                                    <td width="35%">
-                                        <input type="text" class="form-control w300" value="" name="fax" id="fax">
-                                    </td>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>E-Mail:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="email" value="" id="email"></td>
-                                </tr> 
-                               <tr>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>交易类别:</span></td>
-                                    <td width="35%">
-                                        <select name="transaction_type" class="form-control w300" id="">
-                                        	<option value="">请选择交易类别</option>
-                                  		{foreach name="$trans_type" item="v"}
-                                		<option value="{$v}">{$v}</option>
-                                		{/foreach}
-                                        </select>
-                                    </td>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>付款条件:</span></td>
-                                    <td width="35%">
-                                      <select name="payment" class="form-control w300" id="payment_type">
-                                        	<option value="">请选择付款条件</option>
-                                  		{foreach name="$payment" item="v"}
-                                		<option value="{$v}">{$v}</option>
-                                		{/foreach}
-                                        </select>
-                                    </td>
-                                </tr> 
-                                 <tr>
-                                    <td width="15%" class="right-color"><span class="text-danger"></span><span>送货公司:</span></td>
-                                    <td width="35%">
-                                        <input type="text" class="form-control w300" value="" name="delivery_company" id="delivery_company">
-                                    </td>
-                                <td width="15%" class="right-color"><span class="text-danger">*</span><span>交货方式:</span></td>
-                                <td width="35%">
-                                	<select class="form-control w300" name="delivery_type" id="">
-                                	<option value="">请选择交货方式</option>
-                                  		{foreach name="$delivery_type" item="v"}
-                                		<option value="{$v}">{$v}</option>
-                                		{/foreach}
-                                        </select>
-                                </td>
-                                </tr>
-                                <tr>
-                                	<td width="15%" class="right-color"><span class="text-danger"></span><span>送货地址:</span></td>
-                                    <td width="35%">
-                                        <input type="text" class="form-control w300" value="" name="delivery_address" id="delivery_address">
-                                    </td>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>税率:</span></td>
-                                    <td width="35%">
-                                    <select class="form-control w300" name="tax" id="">
-                                	<option value="">请选择税率</option>
-                                  		{foreach name="$tax" item="v"}
-                                		<option value="{$v}">{$v}</option>
-                                		{/foreach}
-                                        </select>
+                                    <td width="15%" class="right-color"><span class="text-danger"></span><span>备注:</span></td>
+                                    <td colspan="3">
+                                        <input type="text" class="form-control" name="remark" value="" id="remark">
                                     </td>
                                 </tr> 
 								
-								<tr>
-                                    <td width="15%" class="right-color">收货联系人:</span></td>
-                                    <td width="35%">
-                                        <input type="text" class="form-control w300" value="" name="receiver" id="receiver">
-                                    </td>
-                                    <td width="15%" class="right-color"><span>收货人电话:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="receivernum" value="" id="receivernum"></td>
-                                </tr>
-								
-                                
-                                 <tr>
-                                    <td width="15%" class="right-color"><span>备注:</span></td>
-                                    <td colspan="3"><textarea class="form-control" name="remark" id="remark" rows="6">{$remark}</textarea> </td>
-                                </tr>
-                                
                     </tbody>
                     </table>
     </div>
@@ -277,12 +202,12 @@ function _formatMoney(num){
         });
 
         $(".search_company").click(function () {
-            var title = '查找客户';
+            var title = '查找采购单';
             bDialog.open({
                 title : title,
                 height: 560,
-                width:960,
-                url : '{:url(\'search_company\')}',
+                width:"90%",
+                url : '{:url(\'search_purchase\')}',
                 callback:function(data){
                     if(data && data.results && data.results.length > 0 ) {
                         window.location.reload();

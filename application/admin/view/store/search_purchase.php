@@ -1,45 +1,39 @@
-{extend name="public/base"}
-{block name="header"}
-
-{/block}
-
-{block name="main"}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+{include file="public/header-model"}
+<link href="/assets/plugins/fileinput/fileinput.css" rel="stylesheet" type="text/css" />
+<script src="/assets/plugins/fileinput/fileinput.js" type="text/javascript"></script>
+</head>
+<body>
             <div class="container-fluid">
                 <!--内容开始-->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="console-title console-title-border clearfix">
-                            <div class="pull-left">
-                                <h5><span>{$title}</span></h5>
-                            </div>
-                            <div class="pull-right">
-                                
-                                <a href="javascript:window.location.reload();" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-refresh"></span>
-                                    <span>刷新</span></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row">
                     <div class="form-inline marginTop10">
                         <div class="col-lg-12">
                         
                         	<form action="" method="get">
-                        
+                        	
+                            <div class="form-group">
+                                <label class="control-label" for="po_sn">采购单号 :</label>
+                                <input name="po_sn" id="po_sn" class="ipt form-control" value="<?php if(isset($_GET['po_sn'])){echo $_GET['po_sn'];}?>"/>
+                            </div>
+
                             <div class="form-group">
                                 <label class="control-label" for="supplier_name">供应商 :</label>
-                                <input name="supplier_name" id="supplier_name" class="ipt form-control" value="<?php if(isset($_GET['supplier_name'])){echo $_GET['supplier_name'];}?>" data-toggle="tooltip" data-placement="top" title="供应商">
+                                <input name="supplier_name" id="supplier_name" class="ipt form-control" value="<?php if(isset($_GET['supplier_name'])){echo $_GET['supplier_name'];}?>"/>
                                 
                             </div>
-                                                    
+                            <div class="form-group">
+                                <label class="control-label" for="store_sn">商品名称 :</label>
+                                <input name="store_sn" id="store_sn" class="ipt form-control" value="<?php if(isset($_GET['goods_name'])){echo $_GET['goods_name'];}?>"/>
+                            </div>                    
                             <div class="form-group">
                                 <label class="control-label" for="delivery_company">送货公司 :</label>
-                                <input name="delivery_company" id="delivery_company" class="ipt form-control" value="<?php if(isset($_GET['delivery_company'])){echo $_GET['delivery_company'];}?>" data-toggle="tooltip" data-placement="top" title="送货公司">
+                                <input name="delivery_company" id="delivery_company" class="ipt form-control" value="<?php if(isset($_GET['delivery_company'])){echo $_GET['delivery_company'];}?>" />
                                 
                             </div>
-                            	<div class="form-group">
+                              <div class="form-group">
                                     <label class="control-label" for="projectNameInput">采购日期 :</label>
                                     <input name="start_time" id="start_time" <?php if (isset($_GET['start_time'])):?>value="<?php echo $_GET['start_time'];?>"<?php endif;?> style="width:110px;" class="ipt form-control">
                                     <span>到</span>
@@ -48,11 +42,7 @@
                                 <div class="form-group">
                                     <input name="end_time" id="end_time" <?php if (isset($_GET['end_time'])):?>value="<?php echo $_GET['end_time'];?>"<?php endif;?> style="width:110px;" class="ipt form-control">
                                 </div>
-                            <div class="form-group">
-                                <label class="control-label" for="goods_name">商品名称 :</label>
-                                <input name="goods_name" id="goods_name" class="ipt form-control" value="<?php if(isset($_GET['goods_name'])){echo $_GET['goods_name'];}?>" data-toggle="tooltip" data-placement="top" title="商品名称">
-                                
-                            </div>
+                            
                                 <button type="submit" class="btn btn-primary" id="searchprojectName">查询</button>
                                 </form>
                         </div>
@@ -64,21 +54,23 @@
                         <table class="table table-hover syc-table border">
                             <thead>
                             <tr>
-                                <th>采购日期</th>
                                 <th>采购单号</th>
+                                <th>采购日期</th>
                                 <th>供应商</th>
                                 <th>送货公司</th>
                                 <th>商品名称</th>
                                 <th>单位</th>
-                                <th>采购单价</th>
+                                <th>单价</th>
                                 <th>采购数量</th>
+                            <!--<th>备注</th>-->
+                                <th>已入库数</th>
                             </tr>
                             </thead>
                             <tbody>
                             {volist name="list" id="vo" empty="$empty"}
                                 <tr>
-                                <td>{$vo.create_time|date='Y-m-d',###}</td>
                                 <td>{$vo.po_sn}</td>
+                                <td>{$vo.create_time}</td>
                                 <td>{$vo.supplier_name}</td>
                                 <td>{$vo.cus_name}</td>
                                 <td>{$vo.goods_name}</td>
@@ -91,9 +83,7 @@
                             <tfoot>
                             <tr>
                                 <td colspan="20">
-                                    <div class="pull-left">
-                                        
-                                    </div>
+                                    <div class="pull-left"></div>
                                     <div class="pull-right page-box">{$page}</div>
                                 </td>
                             </tr>
@@ -104,8 +94,6 @@
 
                 <!--内容结束-->
             </div>
-{/block}
-{block name="footer"}
 <script type="text/javascript">
     $(document).ready(function() {
         // 当前页面分类高亮
@@ -189,4 +177,5 @@
         return false;
     }
 </script>
-{/block}
+</body>
+</html>

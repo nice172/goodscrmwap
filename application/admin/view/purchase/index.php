@@ -110,6 +110,8 @@
                                 	{/if}
                                 	{if condition="$vo['status']>=1"}
                                 	<span class="text-explode">|</span>
+                                	<a href="javascript:cancel_confirm({$vo['id']});">取消确认</a>
+                                	<span class="text-explode">|</span>
                                 	<a href="{:url('view',['id' => $vo['id']])}" target="_blank">查看文件</a>
                                 	{/if}
                                 </td>
@@ -190,6 +192,16 @@
             if (!isNaN(e) && e !== null && e !== '') {
                 var data={name:'scrap',id:e};
                 $.sycToAjax("{:url('cancel')}", data);
+            }
+        };
+        return false;
+    }
+
+    function cancel_confirm(e){
+        if(confirm("是否确认取消？")){
+            if (!isNaN(e) && e !== null && e !== '') {
+                var data={name:'scrap',id:e};
+                $.sycToAjax("{:url('cancel_confirm')}", data);
             }
         };
         return false;

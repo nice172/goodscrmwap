@@ -60,13 +60,31 @@ class Purchase extends Base {
 		$end_time = $this->request->param('end_time');
 		$delivery_company = $this->request->param('delivery_company');
 		$goods_name = $this->request->param('goods_name');
-		$result = db('purchase p')->join('__DELIVERY_ORDER__ d','p.id=d.purchase_id')
-		->join('__SUPPLIER__ s','p.supplier_id=s.id')->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
-		->field('p.create_time,p.po_sn,s.supplier_name,d.cus_name,g.goods_name')->paginate(config('page_size'),false);
-		echo db()->getLastSql();
-		exit;
-		$this->assign('list',[]);
-		$this->assign('page','');
+		if ($supplier_name != '' || ($start_time!='' && $end_time!='') || $delivery_company != '' || $goods_name != ''){
+		    $db = db('purchase p');
+		    if ($supplier_name != '') {
+		        $db->where("(s.supplier_name like '%{$supplier_name}%' OR s.supplier_short like '%{$supplier_name}%')");
+		    }
+		    if (strtotime($start_time) && strtotime($end_time)){
+		        $db->where(['p.create_time' => ['egt',strtotime($start_time)]]);
+		        $db->where(['p.create_time' => ['elt',strtotime($end_time.' 23:59:59')]]);
+		    }
+		    if ($delivery_company != ''){
+		        $db->where(['d.cus_name' => ['like',"%{$delivery_company}%"]]);
+		    }
+		    if ($goods_name != ''){
+		        $db->where(['g.goods_name' => ['like',"%{$goods_name}%"]]);
+		    }
+		    $result = $db->join('__DELIVERY_ORDER__ d','p.id=d.purchase_id')
+    		->join('__SUPPLIER__ s','p.supplier_id=s.id')->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
+    		->field('p.create_time,p.po_sn,s.supplier_name,d.cus_name,g.goods_name,g.unit,g.goods_price,g.goods_number')
+		    ->paginate(config('page_size'),false,['query' => $this->request->param()]);
+    		$this->assign('list',$result->all());
+    		$this->assign('page',$result->render());
+		}else{
+		    $this->assign('list',[]);
+		    $this->assign('page','');
+		}
 		$this->assign('title','查询采购单');
 		return $this->fetch();
 	}
@@ -438,6 +456,17 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 			return $savePath;
 		}
 		return $mpdf;
+	}
+	
+	public function cancel_confirm(){
+	    if ($this->request->isAjax()){
+	        $id = $this->request->param('id',0,'intval');
+	        if ($id <= 0) $this->error('参数错误');
+	        if (db('purchase')->where(['id' => $id])->setField('status',0)){
+	            $this->success('取消确认成功');
+	        }
+	        $this->error('取消确认失败');
+	    }
 	}
 	
 	public function confirm(){
