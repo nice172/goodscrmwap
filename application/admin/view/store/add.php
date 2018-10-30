@@ -29,7 +29,8 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="home">
-    <input type="hidden" name="po_id" value=""  id="id" />
+    <input type="hidden" name="po_id" id="po_id" />
+    <input type="hidden" name="supplier_id" id="supplier_id" />
                     <table class="table contact-template-form">
                                 <tbody>
                                 <tr>
@@ -63,7 +64,7 @@
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger"></span><span>备注:</span></td>
                                     <td colspan="3">
-                                        <input type="text" class="form-control" name="remark" value="" id="remark">
+                                        <input type="text" class="form-control" name="store_remark" value="" id="store_remark" />
                                     </td>
                                 </tr> 
 								
@@ -78,27 +79,17 @@
                         <table class="table table-hover syc-table border">
                             <thead>
                                 <tr>
-                                    <th width="5%">序号</th>
-                                    <th width="35%">商品名称</th>
+                                    <th width="10%">序号</th>
+                                    <th width="30%">商品名称</th>
                                     <th width="10%">单位</th>
                                     <th width="10%">单价</th>
-                                    <!-- <th>订单数量</th> -->
                                     <th width="10%">采购数量</th>
-                                    <th width="10%">库存数量</th>
-                                    <th width="10%">总金额</th>
-                                    <th width="10%">操作</th>
+                                    <th width="10%">入库数量</th>
+                                    <th width="20%">备注</th>
                                 </tr>
                             </thead>
                             <tbody class="goodsList"></tbody>
-                            <tfoot>
-                            	<tr>
-                            	<td colspan="20"><a href="javascript:;" class="get_goods">请选择商品</a>
-                            	<div class="pull-right page-box" style="display: none;"><button type="button" class="btn btn-primary saveAll">全部保存</button></div>
-                            	</td>
-                            	</tr>
-                            </tfoot>
                         </table>
-
                 <!--内容结束-->
             </div>
         </div>
@@ -234,10 +225,15 @@ function _formatMoney(num){
     });
 
 function put(data){
+	$('#po_id').val(data.id);
 	$('#po_sn').val(data.po_sn);
 	$('#cus_name').val(data.cus_name);
 	$('#purchase_date').val(data.create_date);
 	$('#supplier_name').val(data.supplier_name);
+	$('#supplier_id').val(data.supplier_id);
+	$.get("{:url('load')}?po_id="+data.id,{},function(res){
+		goodsList(res.data);
+	});
 }
     
 function client_info(data){
@@ -285,12 +281,11 @@ function goodsList(goods_info){
 		html += '<td>'+num+'</td>';
 		html += '<td>'+goods_info[j]['goods_name']+'</td>';
 		html += '<td>'+goods_info[j]['unit']+'</td>';
-		html += '<td class="shop_price" style="text-align:center;"><input type="text" data-shop_price="'+goods_info[j]['shop_price']+'" oninput="checkNum(this)" name="shop_price" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['shop_price']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['shop_price']+'</span></td>';
+		html += '<td class="goods_price" style="text-align:center;"><input type="text" data-goods_price="'+goods_info[j]['goods_price']+'" oninput="checkNum(this)" name="goods_price" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['goods_price']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['goods_price']+'</span></td>';
 		//html += '<td class="goods_number"><span class="span">'+goods_info[j]['goods_number']+'</span></td>';
-		html += '<td class="purchase_number" style="text-align:center;"><input type="text" data-purchase_number="'+goods_info[j]['purchase_number']+'" oninput="checkNum2(this)" name="purchase_number" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['purchase_number']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['purchase_number']+'</span></td>';
-		html += '<td class="store_number"><span class="span">'+goods_info[j]['store_number']+'</span></td>';
-		html += '<td class="totalMoney"><span class="span">'+goods_info[j]['totalMoney']+'</span></td>';
-		html += '<td><a href="javascript:;" onclick="update('+j+')" class="update">'+text_update+'</a><span class="text-explode">|</span><a href="javascript:;" onclick="_delete('+j+')" class="delete">删除</a></td>';
+		html += '<td class="purchase_number" style="text-align:center;"><input type="text" data-purchase_number="'+goods_info[j]['goods_number']+'" oninput="checkNum2(this)" name="goods_number" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['goods_number']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['goods_number']+'</span></td>';
+		html += '<td class="store_number"><span class="span"><input type="text" oninput="checkNum2(this)" name="input_store['+goods_info[j]['goods_id']+'][]" value="'+goods_info[j]['input_store']+'"/></span></td>';
+		html += '<td><input type="text" name="remark['+goods_info[j]['goods_id']+'][]"/></td>';
 		html += '</tr>';
 	}
 	$('.goodsList').html(html);

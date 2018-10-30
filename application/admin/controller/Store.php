@@ -149,8 +149,82 @@ class Store extends Base {
     }
     
     public function add(){
+        if ($this->request->isAjax()){
+            $data = [
+                'admin_uid' => $this->userinfo['id'],
+                'po_id' => $this->request->post('po_id'),
+                'store_sn' => $this->request->post('store_sn'),
+                'po_sn' => $this->request->post('po_sn'),
+                'cus_name' => $this->request->post('cus_name'),
+                'supplier_id' => $this->request->post('supplier_id'),
+                'remark' => $this->request->post('store_remark'),
+                'purchase_date' => $this->request->post('purchase_date'),
+                'update_time' => time(),
+                'create_time' => time()
+            ];
+            if (empty($data['store_sn'])) $this->error('入库单号不能为空');
+            if (empty($data['po_sn'])) $this->error('采购单号不能为空');
+            if (empty($data['cus_name'])) $this->error('送货公司不能为空');
+            $input_id = db('input_store')->insertGetId($data);
+            $goods = $this->_get_goods($data['po_id']);
+            if ($input_id && !empty($goods)){
+                $input_store = $this->request->post('input_store/a');
+                $remark = $this->request->post('remark/a');
+                $temp = [];
+                foreach ($goods as $key => $value){
+                    $m = [
+                        'input_id' => $input_id,
+                        'goods_id' => $value['goods_id'],
+                        'goods_name' => $value['goods_name'],
+                        'unit' => $value['unit'],
+                        'goods_price' => $value['goods_price'],
+                        'create_time' => time()
+                    ];
+                    
+                    if (isset($input_store[$value['goods_id']])){
+                        $v = $input_store[$value['goods_id']][0];
+                        if ($value['goods_number'] - $value['input_store'] < $v) {
+                            $v = $value['goods_number'] - $value['input_store'];
+                        }
+                        $m['goods_number'] = $v;
+                    }
+                    if (isset($remark[$value['goods_id']])){
+                        $m['remark'] = $remark[$value['goods_id']];
+                    }
+                    
+                    $temp[] = $m;
+                }
+                db('input_goods')->insertAll($temp);
+                $this->success('新增成功');
+            }else{
+                $this->error('新增失败');
+            }
+            return;
+        }
         $this->assign('title','新增采购入库');
         return $this->fetch();
+    }
+    
+    private function _get_goods($po_id){
+        $db = db('purchase p');
+        $db->where(['p.id' => $po_id]);
+        $db->where("(g.goods_number-g.input_store) > 0");
+        $result = $db->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
+        ->field('p.create_time,p.po_sn,g.goods_name,g.unit,g.goods_id,g.goods_price,g.goods_number,g.input_store')
+        ->select();
+        foreach ($result as $key => $value){
+            $result[$key]['create_date'] = date('Y-m-d',$value['create_time']);
+        }
+        return $result;
+    }
+    
+    public function load(){
+      $po_id = $this->request->param('po_id',0,'intval');
+      if ($po_id > 0){
+          $result = $this->_get_goods($po_id);
+          $this->success('ok','',$result);
+      }
+      $this->error('error');
     }
     
     public function search_purchase(){
@@ -183,7 +257,7 @@ class Store extends Base {
 	        $db->where("(g.goods_number-g.input_store) > 0");
 	        $result = $db->join('__SUPPLIER__ s','p.supplier_id=s.id')->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
 	        ->join('__CUSTOMERS__ c','p.cus_id=c.cus_id')
-	        ->field('p.create_time,p.po_sn,s.supplier_name,c.cus_name,g.goods_name,g.unit,g.goods_price,g.goods_number,g.input_store')
+	        ->field('p.id,g.purchase_id,p.create_time,p.po_sn,s.supplier_name,s.id as supplier_id,c.cus_name,g.goods_name,g.unit,g.goods_price,g.goods_number,g.input_store')
 	        ->paginate(config('page_size'),false,['query' => $this->request->param()]);
 	        $list = $result->all();
 	        foreach ($list as $key => $value){

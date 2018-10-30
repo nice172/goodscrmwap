@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2018-10-29 18:05:00
+Date: 2018-10-30 15:28:23
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1460,11 +1460,14 @@ CREATE TABLE `syc_input_goods` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `input_id` (`input_id`,`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='入库商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='入库商品表';
 
 -- ----------------------------
 -- Records of syc_input_goods
 -- ----------------------------
+INSERT INTO `syc_input_goods` VALUES ('4', '8', '31', '长春干膜 FF-9040S 15.500 *600FT *2卷', '箱', '722.30', '0', '', '1540884373');
+INSERT INTO `syc_input_goods` VALUES ('5', '8', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '箱', '932.00', '0', '', '1540884373');
+INSERT INTO `syc_input_goods` VALUES ('6', '8', '41', '长春干膜 FF-9040S 20.500 *600FT *2卷', '箱', '955.30', '0', '', '1540884373');
 
 -- ----------------------------
 -- Table structure for syc_input_store
@@ -1474,19 +1477,22 @@ CREATE TABLE `syc_input_store` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `admin_uid` int(10) unsigned NOT NULL DEFAULT '0',
   `store_sn` varchar(100) NOT NULL DEFAULT '',
+  `po_id` int(10) unsigned NOT NULL DEFAULT '0',
   `po_sn` varchar(100) NOT NULL DEFAULT '',
   `cus_name` varchar(255) NOT NULL DEFAULT '',
   `supplier_id` int(10) unsigned NOT NULL DEFAULT '0',
   `remark` varchar(255) NOT NULL DEFAULT '',
+  `purchase_date` varchar(50) NOT NULL DEFAULT '',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `store_sn` (`store_sn`,`po_sn`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='入库表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='入库表';
 
 -- ----------------------------
 -- Records of syc_input_store
 -- ----------------------------
+INSERT INTO `syc_input_store` VALUES ('8', '2', 'IV201810164979569', '40', 'PO201810070208081008', '惠州市利贞电子有限公司', '3', '', '2018-10-07', '1540884373', '1540884373');
 
 -- ----------------------------
 -- Table structure for syc_logistics
