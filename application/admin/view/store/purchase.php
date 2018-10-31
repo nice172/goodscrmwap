@@ -70,7 +70,6 @@
                                 <th>入库单号</th>
                                 <th>入库时间</th>
                                 <th>采购单号</th>
-                                <th>送货公司</th>
                                 <th>供应商</th>
                                 <th>送货公司</th>
                                 <th>商品名称</th>
@@ -84,6 +83,7 @@
                             <tbody>
                             {volist name="list" id="vo" empty="$empty"}
                                 <tr>
+                                <td>{$vo.store_sn}</td>
                                 <td>{$vo.create_time|date='Y-m-d',###}</td>
                                 <td>{$vo.po_sn}</td>
                                 <td>{$vo.supplier_name}</td>
@@ -92,6 +92,17 @@
                                 <td>{$vo.unit}</td>
                                 <td>{$vo.goods_price}</td>
                                 <td>{$vo.goods_number}</td>
+                                <td>{$vo.goods_remark}</td>
+                                <td>
+                                	{if condition="$vo['is_cancel']"}
+                                	<!-- <a href="javascript:_delete({$vo['id']});">删除</a> -->
+                                	--
+                                	{else}
+                                	<a href="">编辑</a>
+                                	<span class="text-explode">|</span>
+                                	<a href="javascript:cancel({$vo['id']});">取消</a>
+                                	{/if}
+                                </td>
                                 </tr>
                             {/volist}
                             </tbody>
@@ -165,10 +176,10 @@
     });
     //单条订单操作
     function cancel(e) {
-        if(confirm("是否取消此订单？")){
+        if(confirm("是否取消此入库单？")){
             if (!isNaN(e) && e !== null && e !== '') {
                 var data={name:'scrap',id:e};
-                $.sycToAjax("{:url('cancel')}", data);
+                $.sycToAjax("{:url('cancelpur')}", data);
             }
         };
         return false;
@@ -186,11 +197,11 @@
     }
 
     //单条删除订单操作
-    function deleteOrdersOne(e) {
-        if(confirm("确定删除订单？")){
+    function _delete(e) {
+        if(confirm("确定删除入库单？")){
             if (!isNaN(e) && e !== null && e !== '') {
-                var data={name:'scrap',pid:e};
-                $.sycToAjax("{:Url('orders/delete')}", data);
+                var data={name:'scrap',id:e};
+                $.sycToAjax("{:url('deletepur')}", data);
             }
         };
         return false;

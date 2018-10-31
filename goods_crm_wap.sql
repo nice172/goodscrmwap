@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2018-10-30 15:28:23
+Date: 2018-10-31 16:07:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1465,9 +1465,6 @@ CREATE TABLE `syc_input_goods` (
 -- ----------------------------
 -- Records of syc_input_goods
 -- ----------------------------
-INSERT INTO `syc_input_goods` VALUES ('4', '8', '31', '长春干膜 FF-9040S 15.500 *600FT *2卷', '箱', '722.30', '0', '', '1540884373');
-INSERT INTO `syc_input_goods` VALUES ('5', '8', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '箱', '932.00', '0', '', '1540884373');
-INSERT INTO `syc_input_goods` VALUES ('6', '8', '41', '长春干膜 FF-9040S 20.500 *600FT *2卷', '箱', '955.30', '0', '', '1540884373');
 
 -- ----------------------------
 -- Table structure for syc_input_store
@@ -1483,6 +1480,7 @@ CREATE TABLE `syc_input_store` (
   `supplier_id` int(10) unsigned NOT NULL DEFAULT '0',
   `remark` varchar(255) NOT NULL DEFAULT '',
   `purchase_date` varchar(50) NOT NULL DEFAULT '',
+  `is_cancel` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '1取消',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -1492,7 +1490,6 @@ CREATE TABLE `syc_input_store` (
 -- ----------------------------
 -- Records of syc_input_store
 -- ----------------------------
-INSERT INTO `syc_input_store` VALUES ('8', '2', 'IV201810164979569', '40', 'PO201810070208081008', '惠州市利贞电子有限公司', '3', '', '2018-10-07', '1540884373', '1540884373');
 
 -- ----------------------------
 -- Table structure for syc_logistics
@@ -2257,7 +2254,7 @@ CREATE TABLE `syc_store_log` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `delivery_id` int(10) unsigned NOT NULL DEFAULT '0',
   `order_id` int(10) unsigned NOT NULL DEFAULT '0',
-  `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1入库，2出库，3报溢，4报损',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1入库，2出库，3报溢，4报损，5采购入库',
   `goods_id` int(10) unsigned NOT NULL DEFAULT '0',
   `goods_name` varchar(255) NOT NULL DEFAULT '',
   `number` int(10) unsigned NOT NULL DEFAULT '0',
@@ -2428,7 +2425,7 @@ CREATE TABLE `syc_users` (
 -- Records of syc_users
 -- ----------------------------
 INSERT INTO `syc_users` VALUES ('1', 'asdasd', 'sha256:1000:X2vbzkCcKSScvZZ5ZUDs7DvTmergIc5u:fQt8UQynrp5psap5MoOq4scNMLNhcjIl', '开发者', '1', '354575573@qq.com', '/uploads/avatar/582d3a26a3369.jpg', '2017-01-01', '180', '1451577600', '1538191190', '127.0.0.1', '127.0.0.1', '16', '1');
-INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '69', '1533480247', '1540805053', '192.168.1.225', '', '16', '1');
+INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '71', '1533480247', '1540972087', '192.168.1.225', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('3', 'nice172', 'sha256:1000:GM0kcPbE+QNRSpmsG58qckJUkekhvpwi:XwmDtVMPAfE8DDYUdVW5DF5AOLljRm8q', '测试号', '1', 'nice172@163.com', '', '2018-08-06', '9', '1533526543', '1536806739', '10.10.0.99', '', '14', '1');
 INSERT INTO `syc_users` VALUES ('4', 'tom', 'sha256:1000:VqFfxce0SSP92ZahxbPXg7BTznRFzDk9:o/oG8udat6G/OTMVUaxT+UXp+QaGoU1p', '彭立新', '1', 'tompeng@qq.com', '', '2015-09-01', '24', '1536054353', '1539048764', '183.4.133.164', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('5', 'wzc1997', 'sha256:1000:+78wHUCJ2i0Pqv/BtFpJNezAZSrysrl3:2M4x66/txhRftgPkD+Zzjvvux4k69OG4', '韦宗超', '1', '11418212@qq.com', '', '2018-09-01', '2', '1536058218', '1536216215', '183.4.133.164', '', '16', '1');

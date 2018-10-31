@@ -142,10 +142,71 @@ class Store extends Base {
     }
     
     public function purchase(){
+        $start_time = strtotime($this->request->param('start_time'));
+        $end_time = $this->request->param('end_time');
+        $po_sn = $this->request->param('po_sn');
+        $store_sn = $this->request->param('store_sn');
+        $supplier_name = $this->request->param('supplier_name');
+        $cus_name = $this->request->param('delivery_company');
+        $db = db('input_store i');
+        if ($start_time && strtotime($end_time)){
+            $db->where(['i.create_time' => ['egt',$start_time]]);
+            $db->where(['i.create_time' => ['elt',strtotime($end_time.' 23:59:59')]]);
+        }
+        if ($po_sn != '') {
+            $db->where(['i.po_sn' => $po_sn]);
+        }
+        if ($store_sn != ''){
+            $db->where(['i.store_sn' => $store_sn]);
+        }
+        if ($cus_name != '') {
+            $db->where(['i.cus_name' => $cus_name]);
+        }
+        if ($supplier_name != ''){
+            $db->where(['s.supplier_name',['like',"%{$supplier_name}%"]]);
+            $db->where(['s.supplier_short', ['like',"%{$supplier_name}%"]]);
+        }
+        $result = $db->join('__INPUT_GOODS__ g','i.id=g.input_id')
+        ->join('__SUPPLIER__ s','s.id=i.supplier_id')->field('i.*,s.supplier_name,g.goods_id,g.goods_name,g.unit,g.goods_price,g.goods_number,g.remark as goods_remark')
+        ->paginate(config('page_size'),false,['query' => $this->request->param()]);
+        
         $this->assign('title','采购入库');
-        $this->assign('list',[]);
-        $this->assign('page','');
+        $this->assign('list',$result->all());
+        $this->assign('page',$result->render());
         return $this->fetch();
+    }
+    
+    public function cancelpur(){
+        if ($this->request->isAjax()){
+            $id = $this->request->param('id',0,'intval');
+            if ($id <= 0) $this->error('参数错误');
+            if (db('input_store')->where(['id' => $id])->setField('is_cancel',1)){
+                $info = db('input_store')->where(['id' => $id])->find();
+                if ($info['po_id']){
+                    $goodslist = db('input_goods')->where(['input_id' => $id])->select();
+                    foreach ($goodslist as $key => $value){
+                       db('purchase_goods')->where([
+                           'goods_id' => $value['goods_id'],
+                           'purchase_id' => $info['po_id']
+                       ])->setDec('input_store',$value['goods_number']);
+                    }
+                }
+                $this->success('取消成功');
+            }
+            $this->error('取消失败');
+        }
+    }
+    
+    public function deletepur(){
+        if ($this->request->isAjax()){
+            $id = $this->request->param('id',0,'intval');
+            if ($id <= 0) $this->error('参数错误');
+            if (db('input_store')->where(['id' => $id])->delete()){
+                db('input_goods')->where(['input_id' => $id])->delete();
+                $this->success('删除成功');
+            }
+            $this->error('删除失败');
+        }
     }
     
     public function add(){
@@ -165,8 +226,9 @@ class Store extends Base {
             if (empty($data['store_sn'])) $this->error('入库单号不能为空');
             if (empty($data['po_sn'])) $this->error('采购单号不能为空');
             if (empty($data['cus_name'])) $this->error('送货公司不能为空');
-            $input_id = db('input_store')->insertGetId($data);
             $goods = $this->_get_goods($data['po_id']);
+            db()->startTrans();
+            $input_id = db('input_store')->insertGetId($data);
             if ($input_id && !empty($goods)){
                 $input_store = $this->request->post('input_store/a');
                 $remark = $this->request->post('remark/a');
@@ -187,6 +249,7 @@ class Store extends Base {
                             $v = $value['goods_number'] - $value['input_store'];
                         }
                         $m['goods_number'] = $v;
+                        db('purchase_goods')->where(['purchase_id' => $data['po_id'],'goods_id' => $value['goods_id']])->setInc('input_store',$v);
                     }
                     if (isset($remark[$value['goods_id']])){
                         $m['remark'] = $remark[$value['goods_id']];
@@ -194,8 +257,12 @@ class Store extends Base {
                     
                     $temp[] = $m;
                 }
-                db('input_goods')->insertAll($temp);
-                $this->success('新增成功');
+                $res = db('input_goods')->insertAll($temp);
+                if ($res){
+                    db()->commit();
+                    $this->success('新增成功');
+                }
+                db()->rollback();
             }else{
                 $this->error('新增失败');
             }
