@@ -98,7 +98,7 @@
                                 	<!-- <a href="javascript:_delete({$vo['id']});">删除</a> -->
                                 	--
                                 	{else}
-                                	<a href="">编辑</a>
+                                	<a href="{:url('edit',['id' => $vo['id']])}">编辑</a>
                                 	<span class="text-explode">|</span>
                                 	<a href="javascript:cancel({$vo['id']});">取消</a>
                                 	{/if}

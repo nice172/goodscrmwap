@@ -43,10 +43,11 @@ class Store extends Base {
         $goods_id = $this->request->param('goods_id',0,'intval');
         $order_id = $this->request->param('order_id',0,'intval');
         $delivery_order = db('delivery_order')->where(['order_id' => $order_id])->find();
-        $result = db('store_log l')->where(['l.order_id' => $order_id,'l.goods_id' => $goods_id])
+        //['l.order_id' => $order_id,'l.goods_id' => $goods_id]
+        $result = db('store_log l')->where("(l.order_id={$order_id} OR type=3 OR type=4 OR type=5) and l.goods_id=".$goods_id)
         ->join('__GOODS__ g','l.goods_id=g.goods_id')
         ->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
-        ->field('l.*,gc.category_name')->order('l.create_time desc')->paginate(config('page_size'));
+        ->field('l.*,gc.category_name')->order('l.create_time desc')->paginate(config('page_size'), false, ['query' => $this->request->param()]);
         $this->assign('page',$result->render());
         $this->assign('data',$result->all());
         return $this->fetch();
@@ -227,11 +228,25 @@ class Store extends Base {
             if (empty($data['po_sn'])) $this->error('采购单号不能为空');
             if (empty($data['cus_name'])) $this->error('送货公司不能为空');
             $goods = $this->_get_goods($data['po_id']);
+            $input_store = $this->request->post('input_store/a');
+            $remark = $this->request->post('remark/a');
+            foreach ($goods as $key => $value){
+                if (isset($input_store[$value['goods_id']])){
+                    $x = $input_store[$value['goods_id']][0];
+                    if ($x > $value['goods_number'] && $value['input_store']!=0) {
+                        $this->error('“'.$value['goods_name'].'”入库数量不能大于采购数量');
+                    }
+                    if ($value['goods_number'] < $x+$value['input_store']) {
+                        $this->error('“'.$value['goods_name'].'”本次入库数量+已入库数量不能大于采购数量');
+                    }
+                }else{
+                    $this->error('“'.$value['goods_name'].'”不存在');
+                }
+            }
+            
             db()->startTrans();
             $input_id = db('input_store')->insertGetId($data);
             if ($input_id && !empty($goods)){
-                $input_store = $this->request->post('input_store/a');
-                $remark = $this->request->post('remark/a');
                 $temp = [];
                 foreach ($goods as $key => $value){
                     $m = [
@@ -250,6 +265,14 @@ class Store extends Base {
                         }
                         $m['goods_number'] = $v;
                         db('purchase_goods')->where(['purchase_id' => $data['po_id'],'goods_id' => $value['goods_id']])->setInc('input_store',$v);
+                        db('store_log')->insert([
+                            'input_id' => $input_id,
+                            'goods_id' => $value['goods_id'],
+                            'goods_name' => $value['goods_name'],
+                            'type' => 5, //采购入库
+                            'number' => $v,
+                            'create_time' => time()
+                        ]);
                     }
                     if (isset($remark[$value['goods_id']])){
                         $m['remark'] = $remark[$value['goods_id']];
@@ -303,7 +326,7 @@ class Store extends Base {
         $goods_name = $this->request->param('goods_name');
         $list = [];
         $page = '';
-        if ($po_sn != '' || $supplier_name != '' || ($start_time!='' && $end_time!='') || $delivery_company != '' || $goods_name != ''){
+        //if ($po_sn != '' || $supplier_name != '' || ($start_time!='' && $end_time!='') || $delivery_company != '' || $goods_name != ''){
 	        $db = db('purchase p');
 	        if ($po_sn != '') {
 	        	$db->where(['p.po_sn' => $po_sn]);
@@ -331,7 +354,7 @@ class Store extends Base {
 	        	$list[$key]['create_date'] = date('Y-m-d',$value['create_time']);
 	        }
 	        $page = $result->render();
-        }
+        //}
         $this->assign('pjson',json_encode($list));
         $this->assign('list',$list);
         $this->assign('page',$page);
@@ -340,7 +363,16 @@ class Store extends Base {
         return $this->fetch();
     }
     
-    
+    public function edit(){
+        $id = $this->request->param('id',0,'intval');
+        $data = db('input_store')->where(['id' => $id])->find();
+        if (empty($data)) $this->error('采购入库单信息不存在');
+        $goodslist = db('input_goods')->where(['input_id' => $id])->select();
+        $this->assign('data',$data);
+        $this->assign('goodslist',json_encode($goodslist));
+        $this->assign('title','编辑采购入库');
+        return $this->fetch();
+    }
     
     
     
