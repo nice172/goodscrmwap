@@ -21,7 +21,7 @@ body{
 	border:none;
 }
 .weui-form-preview{
-	margin-bottom:10px;
+	margin-bottom:5px;
 }
 .button-block{
 	border-top:1px solid #f6f6f6;
@@ -137,11 +137,15 @@ body{
 {/foreach}
 
 {if condition="$total_page > 1"}
-<div class="weui-loadmore">
+<div class="weui-loadmore loadmore-loading">
   <i class="weui-loading"></i>
   <span class="weui-loadmore__tips">正在加载</span>
 </div>
 {/if}
+
+<div class="weui-loadmore weui-loadmore_line" style="display: none;">
+  <span class="weui-loadmore__tips">暂无数据</span>
+</div>
 
 </div>
 <div class="bottom" onclick="window.location.href='{:url('add')}'">新 建</div>
@@ -172,7 +176,12 @@ body{
 				url: "{:url('index')}?page="+(current_page+1)+"&"+params,
 				success: function(res){
 					loading = false;
-					$(".weui-loadmore").before(res);
+					if(typeof res == 'object' && res.code == 1){
+						$('.weui-loadmore_line').show();
+						$('.loadmore-loading').hide();
+						return;
+					}
+					$(".loadmore-loading").before(res);
 				}
 	      });
 	    });

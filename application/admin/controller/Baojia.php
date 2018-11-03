@@ -41,10 +41,10 @@ class Baojia extends Base {
 	            $db->where("create_time",'<=',$end_time);
 	        }
 	    }
-	    $data = $db->order('create_time desc')->paginate(config('PAGE_SIZE'), false, ['query' => $this->request->param() ]);
+	    $data = $db->order('create_time desc')->paginate(config('page_size'), false, ['query' => $this->request->param() ]);
 	    
 	    $this->assign('current_page', $data->getCurrentPage());
-	    $this->assign('total_page', $data->total());
+	    $this->assign('total_page', $data->lastPage());
 	    $this->assign('params', $this->request->query());
 	    $page = $data->render();
 	    $this->assign('page',$page);
@@ -52,6 +52,7 @@ class Baojia extends Base {
 		if ($this->request->isMobile()) {
 			$this->assign('title','报价管理');
 			if ($this->request->isAjax()) {
+				if (empty($data)) $this->success('ok','');
 				return $this->fetch('load');
 			}
 		}else{
