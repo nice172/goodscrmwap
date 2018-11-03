@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : localhost3306
 Source Server Version : 50714
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : goods_crm_wap
 
 Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2018-10-31 16:07:05
+Date: 2018-11-03 17:53:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -2252,6 +2252,7 @@ INSERT INTO `syc_storage_charge` VALUES ('24', 'H-06', '包边座', '0.45', '5.4
 DROP TABLE IF EXISTS `syc_store_log`;
 CREATE TABLE `syc_store_log` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `input_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '采购入库id',
   `delivery_id` int(10) unsigned NOT NULL DEFAULT '0',
   `order_id` int(10) unsigned NOT NULL DEFAULT '0',
   `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1入库，2出库，3报溢，4报损，5采购入库',
@@ -2266,70 +2267,70 @@ CREATE TABLE `syc_store_log` (
 -- ----------------------------
 -- Records of syc_store_log
 -- ----------------------------
-INSERT INTO `syc_store_log` VALUES ('55', '27', '26', '2', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '5', '1535815507');
-INSERT INTO `syc_store_log` VALUES ('56', '27', '26', '1', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '0', '1535815507');
-INSERT INTO `syc_store_log` VALUES ('57', '28', '26', '2', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '5', '1535815744');
-INSERT INTO `syc_store_log` VALUES ('58', '28', '26', '1', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '0', '1535815744');
-INSERT INTO `syc_store_log` VALUES ('59', '29', '27', '2', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '5', '1535815842');
-INSERT INTO `syc_store_log` VALUES ('60', '29', '27', '1', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '0', '1535815842');
-INSERT INTO `syc_store_log` VALUES ('61', '30', '30', '2', '11', 'FF-9040S 20.250”*600FT*2卷', '10', '1536067579');
-INSERT INTO `syc_store_log` VALUES ('62', '30', '30', '1', '11', 'FF-9040S 20.250”*600FT*2卷', '0', '1536067579');
-INSERT INTO `syc_store_log` VALUES ('63', '30', '30', '2', '12', 'FF-9040S 22.000\"*600FT*2卷', '5', '1536067579');
-INSERT INTO `syc_store_log` VALUES ('64', '30', '30', '1', '12', 'FF-9040S 22.000\"*600FT*2卷', '0', '1536067579');
-INSERT INTO `syc_store_log` VALUES ('65', '30', '30', '2', '13', 'FF-9050S  16.000\"*500FT*2卷', '2', '1536067579');
-INSERT INTO `syc_store_log` VALUES ('66', '30', '30', '1', '13', 'FF-9050S  16.000\"*500FT*2卷', '0', '1536067579');
-INSERT INTO `syc_store_log` VALUES ('67', '31', '32', '2', '11', 'FF-9040S 20.250”*600FT*2卷', '40', '1536157333');
-INSERT INTO `syc_store_log` VALUES ('68', '31', '32', '1', '11', 'FF-9040S 20.250”*600FT*2卷', '0', '1536157333');
-INSERT INTO `syc_store_log` VALUES ('69', '32', '33', '2', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '50', '1536214273');
-INSERT INTO `syc_store_log` VALUES ('70', '32', '33', '1', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '0', '1536214273');
-INSERT INTO `syc_store_log` VALUES ('71', '32', '33', '2', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '42', '1536214273');
-INSERT INTO `syc_store_log` VALUES ('72', '32', '33', '1', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '0', '1536214273');
-INSERT INTO `syc_store_log` VALUES ('73', '33', '34', '2', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '200', '1536219231');
-INSERT INTO `syc_store_log` VALUES ('74', '33', '34', '1', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '0', '1536219231');
-INSERT INTO `syc_store_log` VALUES ('75', '33', '34', '2', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '1000', '1536219231');
-INSERT INTO `syc_store_log` VALUES ('76', '33', '34', '1', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '0', '1536219231');
-INSERT INTO `syc_store_log` VALUES ('77', '34', '37', '2', '21', '长春干膜 FF-9040S 23.250“ *600FT *1卷', '10', '1537104795');
-INSERT INTO `syc_store_log` VALUES ('78', '34', '37', '1', '21', '长春干膜 FF-9040S 23.250“ *600FT *1卷', '0', '1537104795');
-INSERT INTO `syc_store_log` VALUES ('79', '34', '37', '2', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '10', '1537104795');
-INSERT INTO `syc_store_log` VALUES ('80', '34', '37', '1', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '0', '1537104795');
-INSERT INTO `syc_store_log` VALUES ('81', '34', '37', '2', '23', '长春干膜 FF-9040S 24.000 *600FT *1卷', '30', '1537104795');
-INSERT INTO `syc_store_log` VALUES ('82', '34', '37', '1', '23', '长春干膜 FF-9040S 24.000 *600FT *1卷', '0', '1537104795');
-INSERT INTO `syc_store_log` VALUES ('83', '34', '37', '2', '24', '长春干膜 FF-9040S 24.250“ *600FT *1卷', '20', '1537104795');
-INSERT INTO `syc_store_log` VALUES ('84', '34', '37', '1', '24', '长春干膜 FF-9040S 24.250“ *600FT *1卷', '0', '1537104795');
-INSERT INTO `syc_store_log` VALUES ('85', '35', '41', '2', '11', 'FF-9040S 20.250”*600FT*2卷', '10', '1538116716');
-INSERT INTO `syc_store_log` VALUES ('86', '35', '41', '1', '11', 'FF-9040S 20.250”*600FT*2卷', '0', '1538116716');
-INSERT INTO `syc_store_log` VALUES ('87', '35', '41', '2', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '10', '1538116716');
-INSERT INTO `syc_store_log` VALUES ('88', '35', '41', '1', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '0', '1538116716');
-INSERT INTO `syc_store_log` VALUES ('89', '35', '41', '2', '24', '长春干膜 FF-9040S 24.250“ *600FT *1卷', '10', '1538116716');
-INSERT INTO `syc_store_log` VALUES ('90', '35', '41', '1', '24', '长春干膜 FF-9040S 24.250“ *600FT *1卷', '0', '1538116716');
-INSERT INTO `syc_store_log` VALUES ('91', '36', '41', '2', '11', 'FF-9040S 20.250”*600FT*2卷', '10', '1538116911');
-INSERT INTO `syc_store_log` VALUES ('92', '36', '41', '1', '11', 'FF-9040S 20.250”*600FT*2卷', '0', '1538116911');
-INSERT INTO `syc_store_log` VALUES ('93', '36', '41', '2', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '10', '1538116911');
-INSERT INTO `syc_store_log` VALUES ('94', '36', '41', '1', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '0', '1538116911');
-INSERT INTO `syc_store_log` VALUES ('95', '37', '44', '2', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '45', '1538386709');
-INSERT INTO `syc_store_log` VALUES ('96', '37', '44', '1', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '0', '1538386709');
-INSERT INTO `syc_store_log` VALUES ('97', '37', '44', '2', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '12', '1538386709');
-INSERT INTO `syc_store_log` VALUES ('98', '37', '44', '1', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '0', '1538386709');
-INSERT INTO `syc_store_log` VALUES ('99', '38', '45', '2', '14', 'FR-4 TG140 CTI≥600 1.00MM H/H 41”*49“ 含铜厚 黄料 无水印', '10', '1538387064');
-INSERT INTO `syc_store_log` VALUES ('100', '38', '45', '1', '14', 'FR-4 TG140 CTI≥600 1.00MM H/H 41”*49“ 含铜厚 黄料 无水印', '0', '1538387064');
-INSERT INTO `syc_store_log` VALUES ('101', '38', '45', '2', '15', 'FR-4 TG135 1.50MM 2/0 41”*49“ 含铜厚 黄料 无水印', '12', '1538387064');
-INSERT INTO `syc_store_log` VALUES ('102', '38', '45', '1', '15', 'FR-4 TG135 1.50MM 2/0 41”*49“ 含铜厚 黄料 无水印', '0', '1538387064');
-INSERT INTO `syc_store_log` VALUES ('103', '39', '47', '2', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '42', '1538390830');
-INSERT INTO `syc_store_log` VALUES ('104', '39', '47', '1', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '0', '1538390830');
-INSERT INTO `syc_store_log` VALUES ('105', '39', '47', '2', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '32', '1538390830');
-INSERT INTO `syc_store_log` VALUES ('106', '39', '47', '1', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '0', '1538390830');
-INSERT INTO `syc_store_log` VALUES ('107', '40', '48', '2', '31', '长春干膜 FF-9040S 15.500 *600FT *2卷', '1', '1538925414');
-INSERT INTO `syc_store_log` VALUES ('108', '40', '48', '1', '31', '长春干膜 FF-9040S 15.500 *600FT *2卷', '0', '1538925414');
-INSERT INTO `syc_store_log` VALUES ('109', '40', '48', '2', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '3', '1538925414');
-INSERT INTO `syc_store_log` VALUES ('110', '40', '48', '1', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '0', '1538925414');
-INSERT INTO `syc_store_log` VALUES ('111', '40', '48', '2', '41', '长春干膜 FF-9040S 20.500 *600FT *2卷', '3', '1538925414');
-INSERT INTO `syc_store_log` VALUES ('112', '40', '48', '1', '41', '长春干膜 FF-9040S 20.500 *600FT *2卷', '0', '1538925414');
-INSERT INTO `syc_store_log` VALUES ('113', '41', '49', '2', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '1', '1539011119');
-INSERT INTO `syc_store_log` VALUES ('114', '41', '49', '1', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '0', '1539011119');
-INSERT INTO `syc_store_log` VALUES ('115', '41', '49', '2', '53', '长春干膜 FF-9040S 14.000 *600FT *2卷', '1', '1539011119');
-INSERT INTO `syc_store_log` VALUES ('116', '41', '49', '1', '53', '长春干膜 FF-9040S 14.000 *600FT *2卷', '0', '1539011119');
-INSERT INTO `syc_store_log` VALUES ('117', '41', '49', '2', '54', '长春干膜 FF-9040S 18.500 *600FT *2卷', '1', '1539011119');
-INSERT INTO `syc_store_log` VALUES ('118', '41', '49', '1', '54', '长春干膜 FF-9040S 18.500 *600FT *2卷', '0', '1539011119');
+INSERT INTO `syc_store_log` VALUES ('55', '0', '27', '26', '2', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '5', '1535815507');
+INSERT INTO `syc_store_log` VALUES ('56', '0', '27', '26', '1', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '0', '1535815507');
+INSERT INTO `syc_store_log` VALUES ('57', '0', '28', '26', '2', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '5', '1535815744');
+INSERT INTO `syc_store_log` VALUES ('58', '0', '28', '26', '1', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '0', '1535815744');
+INSERT INTO `syc_store_log` VALUES ('59', '0', '29', '27', '2', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '5', '1535815842');
+INSERT INTO `syc_store_log` VALUES ('60', '0', '29', '27', '1', '9', 'FR4 1.4MM H/H 37\"*49\" 含铜 黄料', '0', '1535815842');
+INSERT INTO `syc_store_log` VALUES ('61', '0', '30', '30', '2', '11', 'FF-9040S 20.250”*600FT*2卷', '10', '1536067579');
+INSERT INTO `syc_store_log` VALUES ('62', '0', '30', '30', '1', '11', 'FF-9040S 20.250”*600FT*2卷', '0', '1536067579');
+INSERT INTO `syc_store_log` VALUES ('63', '0', '30', '30', '2', '12', 'FF-9040S 22.000\"*600FT*2卷', '5', '1536067579');
+INSERT INTO `syc_store_log` VALUES ('64', '0', '30', '30', '1', '12', 'FF-9040S 22.000\"*600FT*2卷', '0', '1536067579');
+INSERT INTO `syc_store_log` VALUES ('65', '0', '30', '30', '2', '13', 'FF-9050S  16.000\"*500FT*2卷', '2', '1536067579');
+INSERT INTO `syc_store_log` VALUES ('66', '0', '30', '30', '1', '13', 'FF-9050S  16.000\"*500FT*2卷', '0', '1536067579');
+INSERT INTO `syc_store_log` VALUES ('67', '0', '31', '32', '2', '11', 'FF-9040S 20.250”*600FT*2卷', '40', '1536157333');
+INSERT INTO `syc_store_log` VALUES ('68', '0', '31', '32', '1', '11', 'FF-9040S 20.250”*600FT*2卷', '0', '1536157333');
+INSERT INTO `syc_store_log` VALUES ('69', '0', '32', '33', '2', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '50', '1536214273');
+INSERT INTO `syc_store_log` VALUES ('70', '0', '32', '33', '1', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '0', '1536214273');
+INSERT INTO `syc_store_log` VALUES ('71', '0', '32', '33', '2', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '42', '1536214273');
+INSERT INTO `syc_store_log` VALUES ('72', '0', '32', '33', '1', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '0', '1536214273');
+INSERT INTO `syc_store_log` VALUES ('73', '0', '33', '34', '2', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '200', '1536219231');
+INSERT INTO `syc_store_log` VALUES ('74', '0', '33', '34', '1', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '0', '1536219231');
+INSERT INTO `syc_store_log` VALUES ('75', '0', '33', '34', '2', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '1000', '1536219231');
+INSERT INTO `syc_store_log` VALUES ('76', '0', '33', '34', '1', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '0', '1536219231');
+INSERT INTO `syc_store_log` VALUES ('77', '0', '34', '37', '2', '21', '长春干膜 FF-9040S 23.250“ *600FT *1卷', '10', '1537104795');
+INSERT INTO `syc_store_log` VALUES ('78', '0', '34', '37', '1', '21', '长春干膜 FF-9040S 23.250“ *600FT *1卷', '0', '1537104795');
+INSERT INTO `syc_store_log` VALUES ('79', '0', '34', '37', '2', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '10', '1537104795');
+INSERT INTO `syc_store_log` VALUES ('80', '0', '34', '37', '1', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '0', '1537104795');
+INSERT INTO `syc_store_log` VALUES ('81', '0', '34', '37', '2', '23', '长春干膜 FF-9040S 24.000 *600FT *1卷', '30', '1537104795');
+INSERT INTO `syc_store_log` VALUES ('82', '0', '34', '37', '1', '23', '长春干膜 FF-9040S 24.000 *600FT *1卷', '0', '1537104795');
+INSERT INTO `syc_store_log` VALUES ('83', '0', '34', '37', '2', '24', '长春干膜 FF-9040S 24.250“ *600FT *1卷', '20', '1537104795');
+INSERT INTO `syc_store_log` VALUES ('84', '0', '34', '37', '1', '24', '长春干膜 FF-9040S 24.250“ *600FT *1卷', '0', '1537104795');
+INSERT INTO `syc_store_log` VALUES ('85', '0', '35', '41', '2', '11', 'FF-9040S 20.250”*600FT*2卷', '10', '1538116716');
+INSERT INTO `syc_store_log` VALUES ('86', '0', '35', '41', '1', '11', 'FF-9040S 20.250”*600FT*2卷', '0', '1538116716');
+INSERT INTO `syc_store_log` VALUES ('87', '0', '35', '41', '2', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '10', '1538116716');
+INSERT INTO `syc_store_log` VALUES ('88', '0', '35', '41', '1', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '0', '1538116716');
+INSERT INTO `syc_store_log` VALUES ('89', '0', '35', '41', '2', '24', '长春干膜 FF-9040S 24.250“ *600FT *1卷', '10', '1538116716');
+INSERT INTO `syc_store_log` VALUES ('90', '0', '35', '41', '1', '24', '长春干膜 FF-9040S 24.250“ *600FT *1卷', '0', '1538116716');
+INSERT INTO `syc_store_log` VALUES ('91', '0', '36', '41', '2', '11', 'FF-9040S 20.250”*600FT*2卷', '10', '1538116911');
+INSERT INTO `syc_store_log` VALUES ('92', '0', '36', '41', '1', '11', 'FF-9040S 20.250”*600FT*2卷', '0', '1538116911');
+INSERT INTO `syc_store_log` VALUES ('93', '0', '36', '41', '2', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '10', '1538116911');
+INSERT INTO `syc_store_log` VALUES ('94', '0', '36', '41', '1', '22', '长春干膜 FF-9040S 23.500” *600FT *1卷', '0', '1538116911');
+INSERT INTO `syc_store_log` VALUES ('95', '0', '37', '44', '2', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '45', '1538386709');
+INSERT INTO `syc_store_log` VALUES ('96', '0', '37', '44', '1', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '0', '1538386709');
+INSERT INTO `syc_store_log` VALUES ('97', '0', '37', '44', '2', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '12', '1538386709');
+INSERT INTO `syc_store_log` VALUES ('98', '0', '37', '44', '1', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '0', '1538386709');
+INSERT INTO `syc_store_log` VALUES ('99', '0', '38', '45', '2', '14', 'FR-4 TG140 CTI≥600 1.00MM H/H 41”*49“ 含铜厚 黄料 无水印', '10', '1538387064');
+INSERT INTO `syc_store_log` VALUES ('100', '0', '38', '45', '1', '14', 'FR-4 TG140 CTI≥600 1.00MM H/H 41”*49“ 含铜厚 黄料 无水印', '0', '1538387064');
+INSERT INTO `syc_store_log` VALUES ('101', '0', '38', '45', '2', '15', 'FR-4 TG135 1.50MM 2/0 41”*49“ 含铜厚 黄料 无水印', '12', '1538387064');
+INSERT INTO `syc_store_log` VALUES ('102', '0', '38', '45', '1', '15', 'FR-4 TG135 1.50MM 2/0 41”*49“ 含铜厚 黄料 无水印', '0', '1538387064');
+INSERT INTO `syc_store_log` VALUES ('103', '0', '39', '47', '2', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '42', '1538390830');
+INSERT INTO `syc_store_log` VALUES ('104', '0', '39', '47', '1', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '0', '1538390830');
+INSERT INTO `syc_store_log` VALUES ('105', '0', '39', '47', '2', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '32', '1538390830');
+INSERT INTO `syc_store_log` VALUES ('106', '0', '39', '47', '1', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '0', '1538390830');
+INSERT INTO `syc_store_log` VALUES ('107', '0', '40', '48', '2', '31', '长春干膜 FF-9040S 15.500 *600FT *2卷', '1', '1538925414');
+INSERT INTO `syc_store_log` VALUES ('108', '0', '40', '48', '1', '31', '长春干膜 FF-9040S 15.500 *600FT *2卷', '0', '1538925414');
+INSERT INTO `syc_store_log` VALUES ('109', '0', '40', '48', '2', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '3', '1538925414');
+INSERT INTO `syc_store_log` VALUES ('110', '0', '40', '48', '1', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '0', '1538925414');
+INSERT INTO `syc_store_log` VALUES ('111', '0', '40', '48', '2', '41', '长春干膜 FF-9040S 20.500 *600FT *2卷', '3', '1538925414');
+INSERT INTO `syc_store_log` VALUES ('112', '0', '40', '48', '1', '41', '长春干膜 FF-9040S 20.500 *600FT *2卷', '0', '1538925414');
+INSERT INTO `syc_store_log` VALUES ('113', '0', '41', '49', '2', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '1', '1539011119');
+INSERT INTO `syc_store_log` VALUES ('114', '0', '41', '49', '1', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '0', '1539011119');
+INSERT INTO `syc_store_log` VALUES ('115', '0', '41', '49', '2', '53', '长春干膜 FF-9040S 14.000 *600FT *2卷', '1', '1539011119');
+INSERT INTO `syc_store_log` VALUES ('116', '0', '41', '49', '1', '53', '长春干膜 FF-9040S 14.000 *600FT *2卷', '0', '1539011119');
+INSERT INTO `syc_store_log` VALUES ('117', '0', '41', '49', '2', '54', '长春干膜 FF-9040S 18.500 *600FT *2卷', '1', '1539011119');
+INSERT INTO `syc_store_log` VALUES ('118', '0', '41', '49', '1', '54', '长春干膜 FF-9040S 18.500 *600FT *2卷', '0', '1539011119');
 
 -- ----------------------------
 -- Table structure for syc_supplier
@@ -2425,7 +2426,7 @@ CREATE TABLE `syc_users` (
 -- Records of syc_users
 -- ----------------------------
 INSERT INTO `syc_users` VALUES ('1', 'asdasd', 'sha256:1000:X2vbzkCcKSScvZZ5ZUDs7DvTmergIc5u:fQt8UQynrp5psap5MoOq4scNMLNhcjIl', '开发者', '1', '354575573@qq.com', '/uploads/avatar/582d3a26a3369.jpg', '2017-01-01', '180', '1451577600', '1538191190', '127.0.0.1', '127.0.0.1', '16', '1');
-INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '71', '1533480247', '1540972087', '192.168.1.225', '', '16', '1');
+INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '73', '1533480247', '1541226035', '192.168.1.225', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('3', 'nice172', 'sha256:1000:GM0kcPbE+QNRSpmsG58qckJUkekhvpwi:XwmDtVMPAfE8DDYUdVW5DF5AOLljRm8q', '测试号', '1', 'nice172@163.com', '', '2018-08-06', '9', '1533526543', '1536806739', '10.10.0.99', '', '14', '1');
 INSERT INTO `syc_users` VALUES ('4', 'tom', 'sha256:1000:VqFfxce0SSP92ZahxbPXg7BTznRFzDk9:o/oG8udat6G/OTMVUaxT+UXp+QaGoU1p', '彭立新', '1', 'tompeng@qq.com', '', '2015-09-01', '24', '1536054353', '1539048764', '183.4.133.164', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('5', 'wzc1997', 'sha256:1000:+78wHUCJ2i0Pqv/BtFpJNezAZSrysrl3:2M4x66/txhRftgPkD+Zzjvvux4k69OG4', '韦宗超', '1', '11418212@qq.com', '', '2018-09-01', '2', '1536058218', '1536216215', '183.4.133.164', '', '16', '1');
