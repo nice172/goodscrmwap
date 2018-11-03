@@ -37,8 +37,26 @@ body{
 </head>
 
 <body ontouchstart>
+  <div class="weui-navbar">
+    <a class="weui-navbar__item weui-bar__item--on" href="javascript:;">
+     基本信息
+    </a>
+    <a class="weui-navbar__item" href="javascript:;">
+      商品
+    </a>
+  </div>
 <div class="main">
-
+<!-- 容器 -->
+<div class="weui-tab">
+  <div class="weui-tab__bd">
+    <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+      <h1>页面一</h1>
+    </div>
+    <div id="tab2" class="weui-tab__bd-item">
+      <h1>页面二</h1>
+    </div>
+  </div>
+</div>
 </div>
 <div class="bottom">
 

@@ -28,9 +28,9 @@
         
       </div>
         <div class="button-block">
-        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary">查看</button>
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary">编辑</button>
-          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary">发送</button>
+        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['gid' => $v['id']])}'">查看</button>
+            <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['gid' => $v['id']])}'">编辑</button>
+          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('email',['gid' => $v['id']])}'">发送</button>
         </div>
 </div>
 {/foreach}

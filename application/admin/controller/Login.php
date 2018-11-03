@@ -12,7 +12,7 @@ use app\admin\model\Users As UserModel;
  use think\Url;
 
  class Login extends Controller{
-     
+ 	
      public function _initialize(){
          parent::_initialize();
      }
@@ -39,6 +39,12 @@ use app\admin\model\Users As UserModel;
              }
          }
          $this->assign('user',$user);
+         
+		 if ($this->request->isMobile()) {
+		 	$module = $this->request->module();
+		 	$this->view = $this->view->config('view_path', APP_PATH.$module.'/view/wap/');
+		 }
+         
          return $this->fetch();
      }
 

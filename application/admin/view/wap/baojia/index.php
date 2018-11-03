@@ -14,7 +14,7 @@ body{
 	background:#f6f6f6;
 }
 .main {
-	margin-top:100px;
+	margin-top:95px;
 	margin-bottom:60px;
 }
 .weui-form-preview:before{
@@ -24,7 +24,7 @@ body{
 	margin-bottom:10px;
 }
 .button-block{
-	border-top:1px solid #e5e5e5;
+	border-top:1px solid #f6f6f6;
 	text-align:right;
 	padding:7px 7px 7px 0;
 	margin:0;

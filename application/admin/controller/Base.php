@@ -12,6 +12,15 @@
      
      public function _initialize(){
          parent::_initialize();
+         $request = \think\Request::instance();
+         define('MODULE_NAME', $request->module());
+         define('CONTROLLER_NAME', $request->controller());
+         define('ACTION_NAME', $request->action());
+         define('REQUEST_URL', $request->url());
+         if ($request->isMobile()){
+         	$this->view = $this->view->config('view_path',APP_PATH.MODULE_NAME.'/view/wap/');
+         }
+         
          if (!Session::has("user_name") && !Session::has("user_id")) {
              $this->redirect("login/index");
          } 
@@ -20,11 +29,6 @@
          $this->userinfo = db('users')->where(['id' => $user_id])->find();
          $this->assign('userinfo',$this->userinfo);
          
-         $request = \think\Request::instance();
-         define('MODULE_NAME', $request->module());
-         define('CONTROLLER_NAME', $request->controller());
-         define('ACTION_NAME', $request->action());
-         define('REQUEST_URL', $request->url());
          if (!in_array($this->userinfo['id'], config('AUTH_CONFIG')['NO_AUTH_USER'])){
              $node = strtolower(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME);
              if (!in_array($node, config('AUTH_CONFIG')['NO_AUTH_URL'])){

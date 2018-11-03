@@ -30,8 +30,6 @@ class Baojia extends Base {
 	    $db = db('baojia');
 	    $where = ['status' => ['neq','-1']];
 	    if ($company_short != ''){
-	        //$where['company_short'] = ['like',"%{$company_short}%"];
-	        //$where['company_name'] = ['like',"%{$company_short}%"];
 	        $db->where('company_short|company_name','like',"%{$company_short}%");
 	    }
 	    $db->where($where);
@@ -44,11 +42,21 @@ class Baojia extends Base {
 	        }
 	    }
 	    $data = $db->order('create_time desc')->paginate(config('PAGE_SIZE'), false, ['query' => $this->request->param() ]);
-	    // 获取分页显示
+	    
+	    $this->assign('current_page', $data->getCurrentPage());
+	    $this->assign('total_page', $data->total());
+	    $this->assign('params', $this->request->query());
 	    $page = $data->render();
 	    $this->assign('page',$page);
 		$this->assign('list',$data);
-		$this->assign('title','报价列表');
+		if ($this->request->isMobile()) {
+			$this->assign('title','报价管理');
+			if ($this->request->isAjax()) {
+				return $this->fetch('load');
+			}
+		}else{
+			$this->assign('title','报价列表');
+		}
 		return $this->fetch();
 	}
 	
