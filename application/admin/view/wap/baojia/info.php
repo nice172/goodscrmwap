@@ -8,6 +8,7 @@
 <meta name="description" content="">
 <link rel="stylesheet" href="__UI__/lib/weui.min.css">
 <link rel="stylesheet" href="__UI__/css/jquery-weui.css">
+<link rel="stylesheet" href="/assets/plugins/layui/css/layui.css" />
 <link rel="stylesheet" href="__WAP__/css/demos.css">
 <style type="text/css">
 body{
@@ -155,23 +156,21 @@ body{
 <script src="__UI__/lib/fastclick.js"></script>
 <script src="__UI__/js/jquery-weui.js"></script>
 <script src="__WAP__/js/jquery.form.js"></script>
+<script src="/assets/plugins/layui/layui.all.js"></script>
+
 <script type="text/javascript">
 function send_email(type,e,email){
 	if(!type) type = '';
 	if(!e) e = '';
 	if(!email) email = '';
-    var title = '发送邮件';
-    bDialog.open({
-        title : title,
-        height: 560,
-        width:960,
-        url : "{:url('email')}?type="+type+"&id="+e+'&email='+email,
-        callback:function(data){
-            if(data && data.results && data.results.length > 0 ) {
-                window.location.reload();
-            }
-        }
-    });
+    layer.open({
+    	 type: 2,
+    	 title: false,
+    	 closeBtn: true,
+    	 shade: 0.3,
+    	 area: ['90%', '80%'],
+    	 content: "{:url('email')}?type="+type+"&id="+e+'&email='+email,
+   });
 }
 function send(_this,e) {
     if (!isNaN(e) && e !== null && e !== '') {

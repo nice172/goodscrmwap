@@ -196,10 +196,18 @@
              $subject = $this->request->param('subject');
              $files = $this->request->param('files');
              $content = $this->request->param('content');
-             $email = explode(';', trim($email,';'));
-             $copyto = explode(';', trim($copyto,';'));
              if (empty($email)) $this->error('邮箱不能为空');
              if (empty($subject)) $this->error('主题不能为空');
+             $email = explode(';', trim($email,';'));
+             if (!empty($copyto)){
+             	$copyto = explode(';', trim($copyto,';'));
+             }
+             foreach ($email as $val){
+             	if (!checkemail($val)) $this->error($val.'格式不正确');
+             }
+             foreach ($copyto as $val){
+             	if (!checkemail($val)) $this->error($val.'格式不正确');
+             }
              if(send_email($email,$subject,$files, $content, $copyto)){
                  switch ($type){
                  	case 'baojia':

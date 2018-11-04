@@ -171,9 +171,10 @@ body{
 	    $(document.body).infinite(0).on("infinite", function() {
 	      if(loading) return;
 	      loading = true;
+	      current_page++;
 	      $.ajax({
 				type: 'GET',
-				url: "{:url('index')}?page="+(current_page+1)+"&"+params,
+				url: "{:url('index')}?page="+current_page+"&"+params,
 				success: function(res){
 					loading = false;
 					if(typeof res == 'object' && res.code == 1){

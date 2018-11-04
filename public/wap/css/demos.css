@@ -39,7 +39,13 @@ footer {
   font-size: 14px;
   padding: 20px;
 }
-
+.bottom-block {
+	position:fixed;
+	bottom:0;
+	width:100%;
+	margin:0;
+	z-index:99999;
+}
 footer a {
   color: #999;
   text-decoration: none;
@@ -54,4 +60,9 @@ footer a {
 	.weui-form-preview__value input {
 		width:36% !important;
 	}
+}
+@media screen and (max-width: 1100px){
+	.layui-layer-iframe{
+		overflow-y:inherit !important;
+	}	
 }

@@ -30,6 +30,15 @@ function _formatMoney($MoenyCount){
 	return substr(sprintf("%.3f",$MoenyCount),0,-1);
 }
 
+//检测格式
+function checkemail($email){
+	$pattern="/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";
+	if(preg_match($pattern,$email)){
+		return true;
+	}
+	return false;
+}
+
 /**
  *数字金额转换成中文大写金额的函数
  *String Int $num 要转换的小写数字或小写字符串

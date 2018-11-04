@@ -124,9 +124,11 @@ class Baojia extends Base {
 		if (!empty($order_handle)){
 		    $order_handle = $order_handle['params_value'];
 		}
+		
 		$order_remark = getTextParams(13);
 		$this->assign('order_remark',$order_remark);
 		$this->assign('order_handle',$order_handle);
+		$this->assign('order_handle_json',json_encode($order_handle));
 		$this->assign('title','新增报价单');
 		return $this->fetch();
 	}
@@ -457,8 +459,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 		if ($cus_short != ''){
 			$where .= " and cus_short like '%{$cus_short}%'";
 		}
-		$data = $Customers->where($where)->paginate('', false, ['query' => $query ]);		
-		// 获取分页显示
+		$data = $Customers->where($where)->paginate(config('page_size'), false, ['query' => $query ]);
+		
 		$page = $data->render();
 		$this->assign('page',$page);
 		$this->assign('data', $data);
@@ -466,6 +468,19 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 		$this->assign('title', '客户信息');
 		
 		$this->assign('order_ren',$order_ren);
+		if ($this->request->isMobile()) {
+			if ($this->request->isAjax()) {
+				if(count($data) == 0){
+					$this->success('ok','',$data);
+				}
+				return $this->fetch('load_cus');
+			}
+			array_unshift($order_ren, '');
+		}
+		$this->assign('current_page', $data->getCurrentPage());
+		$this->assign('total_page', $data->lastPage());
+		$this->assign('query', $this->request->query());
+		$this->assign('order_ren_json',json_encode($order_ren));
 		return $this->fetch();
 	}
 	
@@ -484,7 +499,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 			$where['category_id'] = $category_id;
 		}
 		$result = db('goods')->where($where)->paginate(config('PAGE_SIZE'),false,['query' => $this->request->param()]);
-				
+
 		$lists = $result->all();
 		
 		foreach ($lists as $key => $value){
@@ -495,10 +510,15 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 			$brand = db('goods_brand')->where(['brand_id' => $value['brand_id']])->find();
 			$lists[$key]['brand_name'] = $brand['brand_name'];
 		}
-		
+		$this->assign('current_page', $result->getCurrentPage());
+		$this->assign('total_page', $result->lastPage());
+		$this->assign('query', $this->request->query());
 		$this->assign('data',$lists);
+		if ($this->request->isMobile() && $this->request->isAjax()){
+			$this->success('ok','',$lists);
+		}
 		$this->assign('page',$result->render());
-		
+		$this->assign('title', '选择商品');
 		return $this->fetch();
 	}
 	
