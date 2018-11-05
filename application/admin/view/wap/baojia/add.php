@@ -7,7 +7,8 @@
 .weui-cell{padding:10px;}
 .main{padding-top:25px;margin-bottom:60px;}
 .list .weui-form-preview__value{text-align:left;}
-.list .weui-form-preview__value input{border:1px solid #e5e5e5;width:80% !important;padding:5px;}
+.list .remark input{border:1px solid #e5e5e5;width:80% !important;padding:5px;}
+.list .price_input {border:1px solid #e5e5e5;width:80px !important;padding:5px;}
 .weui-form-preview:before{
 	border:none;
 }
@@ -167,17 +168,16 @@ function client_info(data){
 var goods_info = new Array();
 var status = 1;
 function put(data){
-	goods_info = data;
-// 	var flag = false;
-// 	for(var i in goods_info){
-// 		if(goods_info[i]['goods_id'] == data.goods_id){
-// 			flag = true;
-// 			break;
-// 		}
-// 	}
-// 	if(!flag){
-// 		goods_info.push(data);
-// 	}
+	var flag = false;
+	for(var i in goods_info){
+		if(goods_info[i]['goods_id'] == data.goods_id){
+			flag = true;
+			break;
+		}
+	}
+	if(!flag){
+		goods_info.push(data);
+	}
 	goodsList(goods_info);
 }
 
@@ -190,18 +190,18 @@ function goodsList(data){
 	html +='<label class="weui-form-preview__label">名称：</label>';
 	html +='<span class="weui-form-preview__value">'+data[i]['goods_name']+'</span>';
 	html +='</div>';
-	html +='<div class="weui-form-preview__item">';
+	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 	html +='<label class="weui-form-preview__label">单位：</label>';
-	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;">单价：'+data[i]['market_price']+'元</span></span>';
+	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;">单价：<input type="text" class="price_input" value="'+data[i]['market_price']+'" name="market_price['+data[i]['goods_id']+'][]"/>元</span></span>';
 	html +='</div>';
 	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">备注：</label>';
-	html +='<span class="weui-form-preview__value"><input type="text" value="" name="remark[]"/></span>';
+	html +='<span class="weui-form-preview__value remark"><input type="text" value="" name="remark['+data[i]['goods_id']+'][]"/></span>';
 	html +='</div>';
 	html +='</div>';
 	html +='<div class="button-block">';
-	html +='<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="">编辑</button>';
-	html +='<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="">发送</button>';
+	html +='<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="_edit('+data[i]['goods_id']+')">编辑</button>';
+	html +='<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="_delete('+data[i]['goods_id']+')">删除</button>';
 	html +='</div></div>';
 	}
 	$('.appendList').html(html);
@@ -209,6 +209,17 @@ function goodsList(data){
 
 function get_goods(){
 	return goods_info;
+}
+
+function _delete(goods_id){
+	var newArr = new Array();
+	for(var i in goods_info){
+		if(goods_id != parseInt(goods_info[i]['goods_id'])){
+			newArr.push(goods_info[i]);
+			}
+	}
+	goods_info = newArr;
+	goodsList(goods_info);
 }
 
 $(function() {

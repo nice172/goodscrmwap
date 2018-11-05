@@ -45,7 +45,7 @@
     <div class="weui-cells weui-cells_checkbox goods_list {if condition="$key==0"}top-list{/if}">
       <label class="weui-cell weui-check__label" for="s{$vo['goods_id']}">
         <div class="weui-cell__hd">
-          <input type="checkbox" class="weui-check" name="checkbox1" id="s{$vo['goods_id']}">
+          <input type="checkbox" class="weui-check" name="checkbox1" value="{$vo['goods_id']}" id="s{$vo['goods_id']}">
           <i class="weui-icon-checked"></i>
         </div>
         <div class="weui-cell__bd">
@@ -77,8 +77,8 @@ var goodslist = {:json_encode($data)};
 $(function() {
     FastClick.attach(document.body);
     var _parentList = parent.window.get_goods();
-    for(var i _parentList) {
-		
+    for(var i in _parentList) {
+        $('#s'+_parentList[i]['goods_id']).attr('checked','checked');
     }
     var loading = false;  //状态标记
     var params = '{$query}';
@@ -105,7 +105,7 @@ $(function() {
 					    html += '<div class="weui-cells weui-cells_checkbox goods_list">';
 				    	html += '<label class="weui-cell weui-check__label" for="s'+data[i]['goods_id']+'">';
 				    	html += '<div class="weui-cell__hd">';
-			    		html += '<input type="checkbox" class="weui-check" name="checkbox1" id="s'+data[i]['goods_id']+'">';
+			    		html += '<input type="checkbox" class="weui-check" name="checkbox1" value="'+data[i]['goods_id']+'" id="s'+data[i]['goods_id']+'">';
 			    		html += '<i class="weui-icon-checked"></i></div>';
 			    		html += '<div class="weui-cell__bd">';
 			    		html += '<p>名称：'+data[i]['goods_name']+'</p>';
@@ -118,14 +118,17 @@ $(function() {
 	      });
 	    });
     }
-	$('body').on('click','.goods_list',function(){
-		var select = new Array();
-		$('.goods_list input[type=checkbox]').each(function(index){
-			if($(this).is(':checked')) {
-				select.push(goodslist[index]);
+	$('body').on('click','.goods_list input[type=checkbox]',function(index){
+		if($(this).is(':checked')) {
+			for(var i in goodslist) {
+				if(parseInt($(this).val()) == parseInt(goodslist[i]['goods_id'])) {
+					parent.window.put(goodslist[i]);
+					break;
+				}
 			}
-		});
-		parent.window.put(select);
+		}else{
+			parent.window._delete(parseInt($(this).val()));
+		}
 	});
 
     $('#sendemail').submit(function(){
