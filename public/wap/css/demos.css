@@ -46,6 +46,9 @@ footer {
 	margin:0;
 	z-index:99999;
 }
+.weui-toptips{
+	z-index:9999999;
+}
 footer a {
   color: #999;
   text-decoration: none;

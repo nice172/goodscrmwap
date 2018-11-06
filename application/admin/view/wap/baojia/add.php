@@ -28,6 +28,18 @@
 	margin-top:0;
 	margin-left:10px;
 }
+.inputspan,.tab_hide{
+	display:none;
+}
+.inputspan-show{
+	display:inline;
+}
+.input-hide{
+	display:none;
+}
+.input-show {
+	display:inline;
+}
 </style>
 {/block}
 
@@ -40,7 +52,8 @@
       商品
     </a>
   </div>
-<form class="form-horizontal" id="sendemail" method="post">
+<form class="form-horizontal" id="saveOrder" method="post">
+<input type="hidden" name="cus_id" id="cus_id" />
 	<div style="margin-bottom: 60px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
     <div class="weui-cells weui-cells_form">
@@ -110,7 +123,7 @@
     </div>
 </div>
 
-<div id="tab2" class="weui-tab__bd-item">
+<div id="tab2" class="weui-tab__bd-item tab_hide">
 <p style="padding:30px 0 5px 10px;"><a href="javascript:;" class="get_goods">添加商品</a></p>
 <div class="appendList"></div>
 </div>
@@ -166,7 +179,6 @@ function client_info(data){
 }
 
 var goods_info = new Array();
-var status = 1;
 function put(data){
 	var flag = false;
 	for(var i in goods_info){
@@ -176,6 +188,7 @@ function put(data){
 		}
 	}
 	if(!flag){
+		data['is_show'] = true;
 		goods_info.push(data);
 	}
 	goodsList(goods_info);
@@ -184,7 +197,9 @@ function put(data){
 function goodsList(data){
 	var html = '';
 	for(var i in data){
-	html +='<div class="weui-form-preview list">';
+		var input_css = data[i]['is_show']==true ? 'input-show' : 'input-hide';
+		var span_css = data[i]['is_show']==true ? 'inputspan' : 'inputspan-block';
+	html +='<div class="weui-form-preview list goods_'+i+'" data-index="'+i+'" data-goods_id="'+data[i]['goods_id']+'">';
 	html +='<div class="weui-form-preview__bd">';
 	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">名称：</label>';
@@ -192,15 +207,19 @@ function goodsList(data){
 	html +='</div>';
 	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 	html +='<label class="weui-form-preview__label">单位：</label>';
-	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;">单价：<input type="text" class="price_input" value="'+data[i]['market_price']+'" name="market_price['+data[i]['goods_id']+'][]"/>元</span></span>';
+	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;" class="market_price">单价：<input type="text" class="price_input '+input_css+'" data-market_price="'+data[i]['market_price']+'" oninput="checkNum(this)" value="'+data[i]['market_price']+'" name="market_price"/><span class="'+span_css+'">'+data[i]['market_price']+'</span>元</span></span>';
 	html +='</div>';
 	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">备注：</label>';
-	html +='<span class="weui-form-preview__value remark"><input type="text" value="" name="remark['+data[i]['goods_id']+'][]"/></span>';
+	html +='<span class="weui-form-preview__value remark"><input type="text" class="'+input_css+'" value="'+data[i]['remark']+'" name="remark"/><span class="'+span_css+'">'+data[i]['remark']+'</span></span>';
 	html +='</div>';
 	html +='</div>';
 	html +='<div class="button-block">';
-	html +='<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="_edit('+data[i]['goods_id']+')">编辑</button>';
+	if(data[i]['is_show']){
+	html +='<button class="weui-btn weui-btn_mini weui-btn_plain-primary update" onclick="_update('+i+')">保存</button>';
+	}else{
+		html +='<button class="weui-btn weui-btn_mini weui-btn_plain-primary update" onclick="_update('+i+')">编辑</button>';
+		}
 	html +='<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="_delete('+data[i]['goods_id']+')">删除</button>';
 	html +='</div></div>';
 	}
@@ -209,6 +228,45 @@ function goodsList(data){
 
 function get_goods(){
 	return goods_info;
+}
+
+function _update(index){
+	if(goods_info[index]['is_show'] == true){
+		var market_price = $('.goods_'+index+' input[name=market_price]').val();
+		if(market_price == ''){
+			market_price = $('.goods_'+index+' input[name=market_price]').attr('data-market_price');
+		}
+		goods_info[index]['market_price'] = _formatMoney(parseFloat(market_price));
+		goods_info[index]['remark'] = $('.goods_'+index+' input[name=remark]').val();
+		goods_info[index]['is_show'] = false;
+		$('.list').each(function(idx){
+			var eIndex = $('.list').eq(idx).attr('data-index');
+			if(eIndex != index){
+				saveOther(eIndex,true);
+			}
+		});
+		goodsList(goods_info);
+		$('.goods_'+index+' .update').text('编辑');
+		return;
+	}
+	goods_info[index]['is_show'] = true;
+	$('.goods_'+index+' .update').text('保存');
+	$('.goods_'+index+' span.inputspan-block').removeClass('.inputspan-block').addClass('inputspan');
+	$('.goods_'+index+' input').show().css('display','inline');
+}
+
+function saveOther(eIndex,is_show){
+	var market_price = $('.goods_'+eIndex+' input[name=market_price]').val();
+	if(market_price == ''){
+		market_price = $('.goods_'+eIndex+' input[name=market_price]').attr('data-market_price');
+	}
+	goods_info[eIndex]['market_price'] = _formatMoney(parseFloat(market_price));
+	goods_info[eIndex]['remark'] = $('.goods_'+eIndex+' input[name=remark]').val();
+	if(!goods_info[eIndex]['is_show']){
+		goods_info[eIndex]['is_show'] = false;
+	}else{
+		goods_info[eIndex]['is_show'] = is_show;
+	}
 }
 
 function _delete(goods_id){
@@ -236,9 +294,10 @@ $(function() {
     	  ]
     	});
     
-    $('#sendemail').submit(function(){
-    	$('.clicksend').attr('disabled','disabled');
+    $('#saveOrder').submit(function(){
+    	$('button[type=submit]').attr('disabled','disabled').text('保存中...');
     	$(this).ajaxSubmit({
+    		data:{goods_info:goods_info,type:'save'},
     		success: function(res){
     			if(res.code == 0){
     				$.toptip(res.msg);
@@ -248,7 +307,7 @@ $(function() {
     		},
     	     complete: function(XMLHttpRequest, textStatus) { 
     				//toastr.success('ok');
-    				$('.clicksend').removeAttr('disabled');
+    				$('button[type=submit]').removeAttr('disabled').text('保 存');
     		     },
     	     error: function(){
     	    	 $.toptip('网络错误!');} 

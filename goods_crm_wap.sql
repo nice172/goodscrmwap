@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2018-11-03 17:53:31
+Date: 2018-11-06 23:20:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -281,12 +281,14 @@ CREATE TABLE `syc_baojia` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `order_sn` (`order_sn`,`company_name`,`company_short`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_baojia
 -- ----------------------------
 INSERT INTO `syc_baojia` VALUES ('13', '2', '1688', 'CS-Q-10/01182013131013', '彭立新', '惠州市利贞电子有限公司', '惠州利贞', '叶秋兰', '0752-6687598', '354575573@qq.com', '1、以上订单请开给：四川众山化有限公司\n联系人：华南办事处 范小姐13927377526\n电话傎真：0752-3775246  邮箱：SC_CSUN@163.COM\n2、以上报价含16%增值税\n3、付款条件月结60天，如2018年8月货款，请于2018年11月15日前电汇付款。若买方逾期付款，卖方有权要求买方：按逾期货款每天万分之五的比例支付拖欠买方货款赔偿。\n', '0', '0', '1538389239', '1540606136');
+INSERT INTO `syc_baojia` VALUES ('14', '2', '1689', 'CS-Q-11/03213902021102', '彭立新', '清远市富盈电子有限公司', '清远富盈', '张玉玲', '0763-3697998', '1040312149@QQ.COM', '1、以上订单请开给：四川众山化有限公司\n联系人：华南办事处 范小姐13927377526\n电话傎真：0752-3775246  邮箱：SC_CSUN@163.COM\n2、以上报价含16%增值税\n3、付款条件月结60天，如2018年8月货款，请于2018年11月15日前电汇付款。若买方逾期付款，卖方有权要求买方：按逾期货款每天万分之五的比例支付拖欠买方货款赔偿。\n', '0', '0', '1541252365', '1541252365');
+INSERT INTO `syc_baojia` VALUES ('15', '2', '1690', 'CS-Q-11/06230523231123', '范丽湘', '惠州市纬德电路有限公司', '惠州纬德', '张文圣', '0752-5710768', '1040312149@qq.com', null, '0', '0', '1541516774', '1541516774');
 
 -- ----------------------------
 -- Table structure for syc_baojia_goods
@@ -303,13 +305,15 @@ CREATE TABLE `syc_baojia_goods` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `baojia_id` (`baojia_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_baojia_goods
 -- ----------------------------
 INSERT INTO `syc_baojia_goods` VALUES ('30', '13', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '张', '103.00', '', '1538389239');
 INSERT INTO `syc_baojia_goods` VALUES ('31', '13', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '张', '113.00', '', '1538389239');
+INSERT INTO `syc_baojia_goods` VALUES ('32', '14', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '100.00', '', '1541252365');
+INSERT INTO `syc_baojia_goods` VALUES ('33', '15', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '箱', '98.88', '测试商品', '1541516774');
 
 -- ----------------------------
 -- Table structure for syc_config
@@ -2426,7 +2430,7 @@ CREATE TABLE `syc_users` (
 -- Records of syc_users
 -- ----------------------------
 INSERT INTO `syc_users` VALUES ('1', 'asdasd', 'sha256:1000:X2vbzkCcKSScvZZ5ZUDs7DvTmergIc5u:fQt8UQynrp5psap5MoOq4scNMLNhcjIl', '开发者', '1', '354575573@qq.com', '/uploads/avatar/582d3a26a3369.jpg', '2017-01-01', '180', '1451577600', '1538191190', '127.0.0.1', '127.0.0.1', '16', '1');
-INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '73', '1533480247', '1541226035', '192.168.1.225', '', '16', '1');
+INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '78', '1533480247', '1541508591', '192.168.1.225', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('3', 'nice172', 'sha256:1000:GM0kcPbE+QNRSpmsG58qckJUkekhvpwi:XwmDtVMPAfE8DDYUdVW5DF5AOLljRm8q', '测试号', '1', 'nice172@163.com', '', '2018-08-06', '9', '1533526543', '1536806739', '10.10.0.99', '', '14', '1');
 INSERT INTO `syc_users` VALUES ('4', 'tom', 'sha256:1000:VqFfxce0SSP92ZahxbPXg7BTznRFzDk9:o/oG8udat6G/OTMVUaxT+UXp+QaGoU1p', '彭立新', '1', 'tompeng@qq.com', '', '2015-09-01', '24', '1536054353', '1539048764', '183.4.133.164', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('5', 'wzc1997', 'sha256:1000:+78wHUCJ2i0Pqv/BtFpJNezAZSrysrl3:2M4x66/txhRftgPkD+Zzjvvux4k69OG4', '韦宗超', '1', '11418212@qq.com', '', '2018-09-01', '2', '1536058218', '1536216215', '183.4.133.164', '', '16', '1');

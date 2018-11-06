@@ -39,6 +39,7 @@ body{
 	position:fixed;
 	top:0;
 	width:100%;
+	z-index:99999;
 }
 .search .weui-btn{
 	line-height:2;
