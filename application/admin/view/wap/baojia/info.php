@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>{$title}</title>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<meta name="description" content="">
-<link rel="stylesheet" href="__UI__/lib/weui.min.css">
-<link rel="stylesheet" href="__UI__/css/jquery-weui.css">
-<link rel="stylesheet" href="/assets/plugins/layui/css/layui.css" />
-<link rel="stylesheet" href="__WAP__/css/demos.css">
+{extend name="public/common" /}
+{block name="header"}
 <style type="text/css">
-body{
-	background:#f6f6f6;
-}
 .main {
 	margin-top:40px;
 }
@@ -55,9 +42,9 @@ body{
 	padding-top:8px;
 }
 </style>
-</head>
+{/block}
 
-<body ontouchstart>
+{block name="main"}
   <div class="weui-navbar" style="position:fixed;top:0;">
     <a class="weui-navbar__item weui-bar__item--on" href="javascript:;">
      基本信息
@@ -152,26 +139,11 @@ body{
 	</div>
 </div>
 -->
-<script src="__UI__/lib/jquery-2.1.4.js"></script>
-<script src="__UI__/lib/fastclick.js"></script>
-<script src="__UI__/js/jquery-weui.js"></script>
-<script src="__WAP__/js/jquery.form.js"></script>
-<script src="/assets/plugins/layui/layui.all.js"></script>
+{/block}
+
+{block name="footer"}
 
 <script type="text/javascript">
-function send_email(type,e,email){
-	if(!type) type = '';
-	if(!e) e = '';
-	if(!email) email = '';
-    layer.open({
-    	 type: 2,
-    	 title: false,
-    	 closeBtn: true,
-    	 shade: 0.3,
-    	 area: ['90%', '80%'],
-    	 content: "{:url('email')}?type="+type+"&id="+e+'&email='+email,
-   });
-}
 function send(_this,e) {
     if (!isNaN(e) && e !== null && e !== '') {
         if (!isNaN(e) && e !== null && e !== '') {
@@ -190,5 +162,4 @@ $(function() {
     });
 });
 </script>
-</body>
-</html>
+{/block}

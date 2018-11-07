@@ -23,6 +23,19 @@
 <script src="/assets/plugins/layui/layui.all.js"></script>
 {block name="footer"}{/block}
 <script type="text/javascript">
+function send_email(type,e,email){
+	if(!type) type = '';
+	if(!e) e = '';
+	if(!email) email = '';
+    layer.open({
+    	 type: 2,
+    	 title: false,
+    	 closeBtn: true,
+    	 shade: 0.3,
+    	 area: ['90%', '80%'],
+    	 content: "{:url('email')}?type="+type+"&id="+e+'&email='+email,
+   });
+}
 function checkNum(obj){
 	obj.value = obj.value.replace(/[^\d.]/g,"");//清除"数字"和"."以外的字符
 	obj.value = obj.value.replace(/^\./g,"");//验证第一个字符是数字而不是

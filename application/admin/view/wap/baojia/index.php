@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>{$title}</title>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<meta name="description" content="">
-<link rel="stylesheet" href="__UI__/lib/weui.min.css">
-<link rel="stylesheet" href="__UI__/css/jquery-weui.css">
-<link rel="stylesheet" href="__WAP__/css/demos.css">
+{extend name="public/common" /}
+{block name="header"}
 <style type="text/css">
-body{
-	background:#f6f6f6;
-}
 .main {
-	margin-top:95px;
+	margin-top:90px;
 	margin-bottom:60px;
 }
 .weui-form-preview:before{
@@ -46,7 +34,7 @@ body{
 	border-color:#999;
 }
 .block10{
-	margin-top:10px;
+	margin-top:5px;
 }
 .clear{
 	clear:both;
@@ -68,13 +56,9 @@ body{
 	line-height:50px;
 }
 </style>
-</head>
+{/block}
 
-<body ontouchstart>
-<!--     <header class='demos-header'> -->
-<!--       <h1 class="demos-title">Grid</h1> -->
-<!--     </header> -->
-
+{block name="main"}
 <div class="search">
 	<form action="" class="query" method="get">
 	<div class="weui-form-preview">
@@ -98,7 +82,7 @@ body{
     </form>
 </div>
 
-<div class="block10"></div>
+<!-- <div class="block10"></div> -->
 <div class="main">
 {foreach name="list" item="v"}
 <div class="weui-form-preview list">
@@ -132,7 +116,7 @@ body{
         <div class="button-block">
         	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['gid' => $v['id']])}'">查看</button>
             <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['gid' => $v['id']])}'">编辑</button>
-          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('email',['gid' => $v['id']])}'">发送</button>
+          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="send(this,{$v.id})">发送</button>
         </div>
 </div>
 {/foreach}
@@ -150,17 +134,24 @@ body{
 
 </div>
 <div class="bottom" onclick="window.location.href='{:url('add')}'">新 建</div>
-<script src="__UI__/lib/jquery-2.1.4.js"></script>
-<script src="__UI__/lib/fastclick.js"></script>
+{/block}
+
+{block name="footer"}
 <script>
   $(function() {
     FastClick.attach(document.body);
   });
 </script>
-<script src="__UI__/js/jquery-weui.js"></script>
-<script src="__WAP__/js/jquery.form.js"></script>
 
     <script type="text/javascript">
+    function send(_this,e) {
+        if (!isNaN(e) && e !== null && e !== '') {
+            if (!isNaN(e) && e !== null && e !== '') {
+                send_email('baojia',e);
+            }
+            return false;
+        }
+    }
     $("#start_time,#end_time").calendar({
     	dateFormat: 'yyyy-mm-dd'
     });
@@ -189,5 +180,4 @@ body{
 	    });
     }
     </script>
-  </body>
-</html>
+{/block}
