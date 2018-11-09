@@ -236,6 +236,7 @@ class Baojia extends Base {
 	    }
 	    $this->assign('order',$order);
 	    $this->assign('order_handle',$order_handle);
+	    $this->assign('order_handle_json',json_encode($order_handle));
 	    $this->assign('title','修改报价单');
 	    return $this->fetch();
 	}

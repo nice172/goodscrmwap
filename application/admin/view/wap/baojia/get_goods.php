@@ -75,7 +75,7 @@
 <script type="text/javascript">
 var goodslist = {:json_encode($data)};
 $(function() {
-    FastClick.attach(document.body);
+
     var _parentList = parent.window.get_goods();
     for(var i in _parentList) {
         $('#s'+_parentList[i]['goods_id']).attr('checked','checked');

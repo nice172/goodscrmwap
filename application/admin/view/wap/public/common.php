@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="__WAP__/css/demos.css">
 {block name="header"}{/block}
 </head>
-<body>
+<body ontouchstart>
 <div class="main">
 {block name="main"}{/block}
 </div>
@@ -23,6 +23,9 @@
 <script src="/assets/plugins/layui/layui.all.js"></script>
 {block name="footer"}{/block}
 <script type="text/javascript">
+$(function() {
+    FastClick.attach(document.body);
+  });
 function send_email(type,e,email){
 	if(!type) type = '';
 	if(!e) e = '';

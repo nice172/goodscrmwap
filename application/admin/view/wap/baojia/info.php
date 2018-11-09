@@ -153,7 +153,6 @@ function send(_this,e) {
     }
 }
 $(function() {
-    FastClick.attach(document.body);
     $('.weui-navbar__item').click(function(){
     	$('.weui-navbar__item').removeClass('weui-bar__item--on');
     	$(this).addClass('weui-bar__item--on');

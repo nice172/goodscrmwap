@@ -56,7 +56,7 @@
 {block name="footer"}
 <script type="text/javascript">
 $(function() {
-    FastClick.attach(document.body);
+
     $('#sendemail').submit(function(){
     	$('.clicksend').attr('disabled','disabled');
     	$(this).ajaxSubmit({

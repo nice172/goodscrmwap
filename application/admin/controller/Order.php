@@ -117,16 +117,28 @@ class Order extends Base {
         $data = $db->paginate(config('PAGE_SIZE'), false, ['query' => $this->request->param() ]);
 //         echo $db->getLastSql();exit;
         //获取分页显示
+        $this->assign('current_page', $data->getCurrentPage());
+        $this->assign('total_page', $data->lastPage());
+        $this->assign('params', $this->request->query());
         $page = $data->render();
         $this->assign('page',$page);
         $this->assign('list',$data);
-        $this->assign('title','订单列表');
         
         $attr = getParams(19); //查询属性
         if (!empty($attr)){
             $attr = $attr['params_value'];
         }
         $this->assign('attr',$attr);
+        
+        if ($this->request->isMobile()) {
+            $this->assign('title','订单管理');
+            if ($this->request->isAjax()) {
+                if (empty($data)) $this->success('ok','');
+                return $this->fetch('load');
+            }
+        }else{
+            $this->assign('title','订单列表');
+        }
         
         $category = db('goods_category')->where(array('status' => 1))->select();
         $this->assign('category',$category);
@@ -758,11 +770,23 @@ class Order extends Base {
         $data = $Customers->where($where)->paginate(config('PAGE_SIZE'), false, ['query' => $query ]);
         // 获取分页显示
         $page = $data->render();
+        if ($this->request->isMobile()) {
+            if ($this->request->isAjax()) {
+                if(count($data) == 0){
+                    $this->success('ok','',$data);
+                }
+                return $this->fetch('load_cus');
+            }
+            array_unshift($order_ren, '');
+        }
         $this->assign('page',$page);
         $this->assign('data', $data);
         $this->assign('empty', '<tr><td colspan="19" align="center">当前条件没有查到数据</td></tr>');
         $this->assign('title', '客户信息');
-        
+        $this->assign('current_page', $data->getCurrentPage());
+        $this->assign('total_page', $data->lastPage());
+        $this->assign('query', $this->request->query());
+        $this->assign('order_ren_json',json_encode($order_ren));
         $this->assign('order_ren',$order_ren);
         return $this->fetch();
     }

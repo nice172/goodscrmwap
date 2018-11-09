@@ -88,7 +88,7 @@
 <div class="weui-form-preview list">
       <div class="weui-form-preview__bd">
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">报价单号：</label>
+          <label class="weui-form-preview__label">订单号码：</label>
           <span class="weui-form-preview__value">{$v.order_sn}</span>
         </div>
         
@@ -116,7 +116,7 @@
         <div class="button-block">
         	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['gid' => $v['id']])}'">查看</button>
             <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['gid' => $v['id']])}'">编辑</button>
-          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="send(this,{$v.id})">发送</button>
+          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="cancel(this,{$v.id})">取消订单</button>
         </div>
 </div>
 {/foreach}

@@ -52,27 +52,28 @@
       商品
     </a>
   </div>
-<form class="form-horizontal" id="saveOrder" method="post">
-<input type="hidden" name="cus_id" id="cus_id" />
+<form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('add');?>" id="saveOrder" method="post">
+	<input type="hidden" name="cus_id" id="cus_id" />
+	<input type="hidden" name="con_id" id="con_id" />
 	<div style="margin-bottom: 60px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
     <div class="weui-cells weui-cells_form">
       <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">报价单号：</label></div>
+        <div class="weui-cell__hd"><label class="weui-label">订单号码：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" readonly="readonly" value="CS-Q-<?php echo date('m/dHis').date('sms');?>" name="order_sn" id="order_sn"/>
+          <input class="weui-input" type="text" readonly="readonly" value="SO<?php echo date('Ymdis').date('sms');?>" name="order_sn" id="order_sn"/>
         </div>
       </div>
       
       <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">报价日期：</label></div>
+        <div class="weui-cell__hd"><label class="weui-label">下单日期：</label></div>
         <div class="weui-cell__bd">
           <input class="weui-input" type="text" readonly="readonly" value="<?php echo date('Y-m-d');?>" name="create_date" id="create_date"/>
         </div>
       </div>
       
       <div class="weui-cell" >
-        <div class="weui-cell__hd"><label class="weui-label">公司名称：</label></div>
+        <div class="weui-cell__hd"><label class="weui-label">客户名称：</label></div>
         <div class="weui-cell__bd" style="position:relative;">
           <input class="weui-input" type="text" readonly="readonly" name="company_name" id="company_name" />
           <button type="button" style="position: absolute;right:0;top:-2px;" class="weui-btn weui-btn_mini weui-btn_primary" id="search_company">查找</button>
@@ -80,9 +81,16 @@
       </div>
       
       <div class="weui-cell" >
-        <div class="weui-cell__hd"><label class="weui-label">简称：</label></div>
+        <div class="weui-cell__hd"><label class="weui-label">客户简称：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="company_short" placeholder="输入简称" id="company_short"/>
+          <input class="weui-input" type="text" name="company_short" placeholder="输入客户简称" id="company_short"/>
+        </div>
+      </div>
+      
+      <div class="weui-cell" >
+        <div class="weui-cell__hd"><label class="weui-label">客户单号：</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text" name="cus_order_sn" placeholder="输入客户订单号" id="cus_order_sn"/>
         </div>
       </div>
       
@@ -94,29 +102,37 @@
       </div>
       
             <div class="weui-cell" >
-        <div class="weui-cell__hd"><label class="weui-label">传真号码：</label></div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="fax" id="fax" placeholder="输入传真号码"/>
-        </div>
-      </div>
-            <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">E-MAIL：</label></div>
         <div class="weui-cell__bd">
           <input class="weui-input" type="text" name="email" id="email" placeholder="输入E-Mail"/>
         </div>
       </div>
-            <div class="weui-cell">
-        <div class="weui-cell__hd"><label class="weui-label">跟单员：</label></div>
+            <div class="weui-cell" >
+        <div class="weui-cell__hd"><label class="weui-label">传真号码：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="order_handle" placeholder="选择跟单员" id="order_handle" />
+          <input class="weui-input" type="text" name="fax" id="fax" placeholder="输入传真号码"/>
         </div>
       </div>
-      <div class="weui-cell" style="padding:2px 10px;"></div>
+      
+            <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">交货日期：</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text" name="require_time" placeholder="选择交货日期" id="require_time" />
+        </div>
+      </div>
+      
+      	<div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">上传附件：</label></div>
+        <div class="weui-cell__bd">
+          
+        </div>
+      </div>
+     <div class="weui-cell" style="padding:2px 10px;"></div>
     <div class="weui-cells__title">备注：</div>
     <div class="weui-cells">
       <div class="weui-cell">
         <div class="weui-cell__bd">
-          <textarea class="weui-textarea" name="content" style="height:150px;" placeholder="输入正文内容">{$order_remark}</textarea>
+          <textarea class="weui-textarea" name="content" style="height:150px;" placeholder="输入内容"></textarea>
         </div>
       </div>
     </div>
@@ -282,15 +298,9 @@ function _delete(goods_id){
 
 $(function() {
 	
-    $("#order_handle").picker({
-    	  title: "请选择跟单员",
-    	  cols: [
-    	    {
-    	      textAlign: 'center',
-    	      values: {$order_handle_json}
-    	    }
-    	  ]
-    	});
+    $("#require_time").calendar({
+    	dateFormat: 'yyyy-mm-dd'
+    });
     
     $('#saveOrder').submit(function(){
     	$('button[type=submit]').attr('disabled','disabled').text('保存中...');
