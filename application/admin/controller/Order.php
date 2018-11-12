@@ -842,12 +842,17 @@ class Order extends Base {
             ->where("o.status=2 OR o.status=3")->order('o.create_time desc')->field('og.order_id,og.goods_price,og.create_time')->find();
             $lists[$key]['order_id'] = $row['order_id']?:0;
             $lists[$key]['last_price'] = $row['goods_price'];
-            $lists[$key]['last_time'] = !empty($row['create_time']) ? date('Y-m-d H:i:s',$row['create_time']) : '';
+            $lists[$key]['last_time'] = !empty($row['create_time']) ? date('Y-m-d',$row['create_time']) : '';
         }
-        
+        if ($this->request->isMobile() && $this->request->isAjax()){
+        	$this->success('ok','',$lists);
+        }
+        $this->assign('current_page', $result->getCurrentPage());
+        $this->assign('total_page', $result->lastPage());
+        $this->assign('query', $this->request->query());
         $this->assign('data',$lists);
         $this->assign('page',$result->render());
-        
+        $this->assign('title', '选择商品');
         return $this->fetch();
     }
     

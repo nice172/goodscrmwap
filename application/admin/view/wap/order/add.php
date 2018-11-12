@@ -1,6 +1,7 @@
 {extend name="public/common" /}
 {block name="header"}
 <style>
+body{background:#fff;}
 .weui-label,input,textarea{font-size:13px !important;}
 .weui-label ,.weui-cells__title {width:70px !important;text-align:right;}
 .weui-cells__title {color:#000;padding-left:11px;}
@@ -39,6 +40,25 @@
 }
 .input-show {
 	display:inline;
+}
+.weui-cells:before{
+	border:none;
+}
+.weui-cells:after{
+	border:none;
+}
+.weui-uploader__input-box{
+	width:30px;
+	height:30px;
+}
+.weui-uploader__input-box:before{
+	height:30px;
+}
+.weui-uploader__input-box:after{
+	width:30px;
+}
+.delete-file{
+	color:#06f;
 }
 </style>
 {/block}
@@ -125,6 +145,24 @@
         <div class="weui-cell__hd"><label class="weui-label">上传附件：</label></div>
         <div class="weui-cell__bd">
           
+<div class="weui-cells weui-cells_form" style="margin-top:0px;">
+  <div class="weui-cell" style="padding-top: 0;">
+    <div class="weui-cell__bd">
+      <div class="weui-uploader">
+
+        <div class="weui-uploader__bd">
+          <ul class="weui-uploader__files" id="uploaderFiles" style="font-size: 13px;">
+            
+          </ul>
+          <div class="weui-uploader__input-box">
+            <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" name="Filedata[]" multiple="multiple">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
         </div>
       </div>
      <div class="weui-cell" style="padding:2px 10px;"></div>
@@ -174,6 +212,10 @@ $('#search_company').click(function(){
    });	
 });
 $('.get_goods').click(function(){
+    if($('#cus_id').val() == ''){
+		alert('请先选择客户');
+		return;
+    }
 	var title = '选择商品';
     index_layer = layer.open({
    	 type: 2,
@@ -181,7 +223,7 @@ $('.get_goods').click(function(){
    	 closeBtn: true,
    	 shade: 0.3,
    	 area: ['90%', '90%'],
-   	 content: '{:url(\'get_goods\')}',
+   	 content: '{:url(\'get_goods\')}?cus_id='+$('#cus_id').val(),
   });
 });
 function client_info(data){
@@ -191,6 +233,7 @@ function client_info(data){
 	$('#fax').val(data.fax);
 	$('#contacts').val(data.user);
 	$('#email').val(data.email);
+	$('#con_id').val(data.con_id);
 	layer.close(index_layer);
 }
 
@@ -224,6 +267,10 @@ function goodsList(data){
 	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 	html +='<label class="weui-form-preview__label">单位：</label>';
 	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;" class="market_price">单价：<input type="text" class="price_input '+input_css+'" data-market_price="'+data[i]['market_price']+'" oninput="checkNum(this)" value="'+data[i]['market_price']+'" name="market_price"/><span class="'+span_css+'">'+data[i]['market_price']+'</span>元</span></span>';
+	html +='</div>';
+	html +='<div class="weui-form-preview__item">';
+	html +='<label class="weui-form-preview__label">数量：</label>';
+	html +='<span class="weui-form-preview__value remark"><input type="text" class="'+input_css+'" value="'+data[i]['goods_number']+'" data-goods_number="'+goods_info[j]['goods_number']+'" name="goods_number"/><span class="'+span_css+'">'+data[i]['goods_number']+'</span></span>';
 	html +='</div>';
 	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">备注：</label>';
@@ -300,6 +347,34 @@ $(function() {
 	
     $("#require_time").calendar({
     	dateFormat: 'yyyy-mm-dd'
+    });
+
+	bindDelete();
+    
+    function bindDelete(){
+		$('body').on('click','.delete-file', function(){
+			$(this).parents('li').remove();
+		});
+    }
+    
+    $('#uploaderInput').change(function(){
+    	$('#saveOrder').ajaxSubmit({
+    		data:{type:'file'},
+    		success: function(res){
+    			if(res.code == 1){
+    				var html = '';
+        			for(var i in res.data){
+    				html += '<li><p>'+res.data[i].oldfilename+' <a href="javascript:;" class="delete-file">删除</a></p>';
+					html += '<input type="hidden" name="files[]" value="'+res.data[i].path+'"/>';
+    				html +='</li>';
+        			}
+    				$('#uploaderFiles').append(html);
+    				bindDelete();
+    			}else{
+    				$.toptip(res.msg);
+    			}
+    		}
+    	});
     });
     
     $('#saveOrder').submit(function(){

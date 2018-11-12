@@ -26,7 +26,7 @@
 </form>
 
 {foreach name="data" item="vo"}
-<div class="weui-form-preview list" data-fax="{$vo.cus_fax}" data-email="{$vo.cus_email}" data-user="{$vo.cus_duty}" data-short="{$vo.cus_short}" data-name="{$vo.cus_name}" data-id="{$vo['cus_id']}">
+<div class="weui-form-preview selected_contacts" data-fax="{$vo.cus_fax}" data-email="{$vo.cus_email}" data-user="{$vo.cus_duty}" data-short="{$vo.cus_short}" data-con_id="{$vo.cus_con_id}" data-name="{$vo.cus_name}" data-id="{$vo['cus_id']}">
       <div class="weui-form-preview__bd">
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">客户：</label>
@@ -81,15 +81,16 @@ $(function() {
 	      });
 	    });
     }
-	$('body').on('click','.list',function(){
+	$('body').on('click','.selected_contacts',function(){
 		var contacts = {
-			'company_name': $(this).attr('data-name'),
-			'company_short': $(this).attr('data-short'),
-			'fax': $(this).attr('data-fax'),
-			'email': $(this).attr('data-email'),
-			'user': $(this).attr('data-user'),
-			'id': $(this).attr('data-id')
-		};
+				'company_name': $(this).attr('data-name'),
+				'company_short': $(this).attr('data-short'),
+				'fax': $(this).attr('data-fax'),
+				'email': $(this).attr('data-email'),
+				'user': $(this).attr('data-user'),
+				'id': $(this).attr('data-id'),
+				'con_id': $(this).attr('data-con_id')
+			};
 		console.log(contacts);
 		parent.window.client_info(contacts);
 	});
