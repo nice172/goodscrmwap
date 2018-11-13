@@ -72,30 +72,31 @@ body{background:#fff;}
       商品
     </a>
   </div>
-<form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('add');?>" id="saveOrder" method="post">
-	<input type="hidden" name="cus_id" id="cus_id" />
-	<input type="hidden" name="con_id" id="con_id" />
+<form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('edit');?>" id="saveOrder" method="post">
+    <input type="hidden" name="id" value="{$data.id}"  id="id" />
+    <input type="hidden" name="cus_id" value="{$data.cus_id}"  id="cus_id" />
+	<input type="hidden" name="con_id" value="{$data.con_id}"  id="con_id"/>
 	<div style="margin-bottom: 60px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
     <div class="weui-cells weui-cells_form">
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">订单号码：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" readonly="readonly" value="SO<?php echo date('Ymdis').date('sms');?>" name="order_sn" id="order_sn"/>
+          <input class="weui-input" type="text" readonly="readonly" value="{$data.order_sn}" name="order_sn" id="order_sn"/>
         </div>
       </div>
       
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">下单日期：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" readonly="readonly" value="<?php echo date('Y-m-d');?>" name="create_date" id="create_date"/>
+          <input class="weui-input" type="text" readonly="readonly" value="{$data.create_time|date='Y-m-d',###}" name="create_date" id="create_date"/>
         </div>
       </div>
       
       <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">客户名称：</label></div>
         <div class="weui-cell__bd" style="position:relative;">
-          <input class="weui-input" type="text" readonly="readonly" name="company_name" id="company_name" />
+          <input class="weui-input" type="text" readonly="readonly" value="{$data.company_name}" name="company_name" id="company_name" />
           <button type="button" style="position: absolute;right:0;top:-2px;" class="weui-btn weui-btn_mini weui-btn_primary" id="search_company">查找</button>
         </div>
       </div>
@@ -103,41 +104,41 @@ body{background:#fff;}
       <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">客户简称：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="company_short" placeholder="输入客户简称" id="company_short"/>
+          <input class="weui-input" type="text" name="company_short" value="{$data.company_short}" placeholder="输入客户简称" id="company_short"/>
         </div>
       </div>
       
       <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">客户单号：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="cus_order_sn" placeholder="输入客户订单号" id="cus_order_sn"/>
+          <input class="weui-input" type="text" name="cus_order_sn" value="{$data.cus_order_sn}" placeholder="输入客户订单号" id="cus_order_sn"/>
         </div>
       </div>
       
             <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">联系人：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="contacts" id="contacts" placeholder="输入联系人"/>
+          <input class="weui-input" type="text" name="contacts" value="{$data.contacts}" id="contacts" placeholder="输入联系人"/>
         </div>
       </div>
       
             <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">E-MAIL：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="email" id="email" placeholder="输入E-Mail"/>
+          <input class="weui-input" type="text" name="email" value="{$data.email}" id="email" placeholder="输入E-Mail"/>
         </div>
       </div>
             <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">传真号码：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="fax" id="fax" placeholder="输入传真号码"/>
+          <input class="weui-input" type="text" name="fax" id="fax" value="{$data.fax}" placeholder="输入传真号码"/>
         </div>
       </div>
       
             <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">交货日期：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="require_time" placeholder="选择交货日期" id="require_time" />
+          <input class="weui-input" type="text" name="require_time" value="{$data.require_time|date='Y-m-d',###}" placeholder="选择交货日期" id="require_time" />
         </div>
       </div>
       
@@ -152,7 +153,23 @@ body{background:#fff;}
 
         <div class="weui-uploader__bd">
           <ul class="weui-uploader__files" id="uploaderFiles" style="font-size: 13px;">
-            
+          {foreach name="data['attachment']" item="v"}
+          {if condition="in_array($v['ext'],['jpg','jpeg','png','gif'])"}
+            <li>
+            <input type="hidden" name="old_ext[]" value="{$v['ext']}" />
+			<input type="hidden" name="old_filename[]" value="{$v['oldfilename']}" />
+            <p>{$v['oldfilename']} <a href="javascript:;" class="delete-file">删除</a></p>
+					<input type="hidden" name="oldfile[]" value="{$v['path']}"/>
+    		</li>
+    	{else}
+			<li>
+            <input type="hidden" name="old_ext[]" value="{$v['ext']}" />
+			<input type="hidden" name="old_filename[]" value="{$v['oldfilename']}" />
+			<p>{$v['oldfilename']} <a href="javascript:;" class="delete-file">删除</a></p>
+					<input type="hidden" name="oldfile[]" value="{$v['path']}"/>
+    		</li>
+    	{/if}
+    		{/foreach}
           </ul>
           <div class="weui-uploader__input-box">
             <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" name="Filedata[]" multiple="multiple">
@@ -238,6 +255,12 @@ function client_info(data){
 }
 
 var goods_info = new Array();
+<?php if(!empty($data['goodsInfo'])){ foreach ($data['goodsInfo'] as $goods){?>
+goods_info.push(<?php echo $goods;?>);
+<?php }}?>
+if(goods_info.length > 0){
+	goodsList(goods_info);
+}
 function put(data){
 	var flag = false;
 	for(var i in goods_info){

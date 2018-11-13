@@ -8,6 +8,12 @@
 .weui-form-preview:before{
 	border:none;
 }
+.weui-form-preview__hd{
+    padding:0px 10px;
+}
+.weui-form-preview__hd:after{
+    left:0;
+}
 .weui-form-preview{
 	margin-bottom:5px;
 }
@@ -27,7 +33,7 @@
 	position:fixed;
 	top:0;
 	width:100%;
-	z-index:99999;
+	z-index:1000;
 }
 .search .weui-btn{
 	line-height:2;
@@ -86,6 +92,32 @@
 <div class="main">
 {foreach name="list" item="v"}
 <div class="weui-form-preview list">
+  <div class="weui-form-preview__hd">
+    <label class="weui-form-preview__label">送货日期：{$v.require_time|date='Y-m-d',###}</label>
+    <em class="weui-form-preview__value" style="font-size: 13px;color:#999;">
+	{if condition="$v['status'] eq -1"}
+	已删除
+	{elseif condition="$v['status'] eq 0"}
+	未确认
+	{elseif condition="$v['status'] eq 1"}
+	已确认
+	{elseif condition="$v['status'] eq 2"}
+	已送货
+	{elseif condition="$v['status'] eq 3"}
+	已完成
+	{elseif condition="$v['status'] eq 4"}
+	已取消
+	{elseif condition="$v['status'] eq 5"}
+	已创建
+	{elseif condition="$v['status'] eq 6"}
+		{if condition="$v['send_num']"}
+		部分已送货
+		{else}
+		已确认
+		{/if}
+	{/if}
+    </em>
+  </div>
       <div class="weui-form-preview__bd">
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">订单号码：</label>
@@ -93,7 +125,7 @@
         </div>
         
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">报价日期：</label>
+          <label class="weui-form-preview__label">下单日期：</label>
           <span class="weui-form-preview__value">{$v.create_time|date="Y-m-d",###}</span>
         </div>
         
@@ -114,9 +146,20 @@
         
       </div>
         <div class="button-block">
-        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['gid' => $v['id']])}'">查看</button>
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['gid' => $v['id']])}'">编辑</button>
-          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="cancel(this,{$v.id})">取消订单</button>
+        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['id' => $v['oid']])}'">查看</button>
+        	{if condition="$v['status'] eq 0"}
+            <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['id' => $v['oid']])}'">编辑</button>
+          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary _confirm" order-id="{$v.oid}">确认</button>
+          	{/if}
+          	{if condition="$v['status'] eq 0 || $v['status'] eq 1 || $v['status'] eq 5"}
+          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary _cancel" order-id="{$v.oid}">取消</button>
+          	{/if}
+          	{if condition="$v['status'] eq 0 || $v['status'] eq 1 || $v['status'] eq 4"}
+          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary _delete" order-id="{$v.oid}">删除</button>
+          	{/if}
+          	{if condition="$v['status'] eq 2"}
+          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary setfinish" order-id="{$v.oid}">完成送货</button>
+          	{/if}
         </div>
 </div>
 {/foreach}
@@ -137,8 +180,90 @@
 {/block}
 
 {block name="footer"}
-
     <script type="text/javascript">
+
+	function _cancel(){
+	    $('body').on('click','._cancel',function(){
+	        var _this = $(this);
+			$.confirm('确认取消订单吗？',function(){
+					var orderid = $(_this).attr('order-id');
+					$.get("{:url('cancel')}",{id:orderid},function(res){
+						if(res.code){
+							$(_this).remove();
+							$.toptip(res.msg,'success');
+							setTimeout(function(){
+								window.location.reload();
+								},2000);
+						}else{
+							$.toptip(res.msg);
+						}
+					});
+				},function(){
+
+				});
+	    });
+	}
+	_cancel();
+
+	function _confirm(){
+	    $('body').on('click','._confirm',function(){
+	        var _this = $(this);
+	        var orderid = $(_this).attr('order-id');
+			$.get("{:url('confirm')}",{id:orderid},function(res){
+				if(res.code){
+					$(_this).remove();
+					$.toptip(res.msg,'success');
+					setTimeout(function(){
+						window.location.reload();
+						},2000);
+				}else{
+					$.toptip(res.msg);
+				}
+			});
+	    });
+	}
+	_confirm();
+
+	function _delete(){
+	    $('body').on('click','._delete',function(){
+	        var _this = $(this);
+	        var orderid = $(_this).attr('order-id');
+			$.get("{:url('delete')}",{id:orderid},function(res){
+				if(res.code){
+					$(_this).remove();
+					$.toptip(res.msg,'success');
+					//$(_this).parents('.list').remove();
+					setTimeout(function(){
+						window.location.reload();
+						},2000);
+				}else{
+					$.toptip(res.msg);
+				}
+			});
+	    });
+	}
+	_delete();
+
+	function setfinish(){
+	    $('body').on('click','.setfinish',function(){
+	        var _this = $(this);
+	        var orderid = $(_this).attr('order-id');
+			$.get("{:url('setfinish')}",{id:orderid},function(res){
+				if(res.code){
+					$(_this).remove();
+					$.toptip(res.msg,'success');
+					//$(_this).parents('.list').remove();
+					setTimeout(function(){
+						window.location.reload();
+						},2000);
+				}else{
+					$.toptip(res.msg);
+				}
+			});
+	    });
+	}
+	setfinish();
+    
     function send(_this,e) {
         if (!isNaN(e) && e !== null && e !== '') {
             if (!isNaN(e) && e !== null && e !== '') {
@@ -170,6 +295,7 @@
 						return;
 					}
 					$(".loadmore-loading").before(res);
+					_cancel();_confirm();_delete();setfinish();
 				}
 	      });
 	    });

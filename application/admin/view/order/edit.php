@@ -87,9 +87,15 @@
                                 	<td colspan="3">
                                 		{foreach name="data['attachment']" item="v"}
                                 			{if condition="in_array($v['ext'],['jpg','jpeg','png','gif'])"}
-                                				<div class="fileList"><input type="hidden" name="oldfile[]" value="{$v['path']}"/><a href="{$v['path']}" target="_blank"><img src="{$v['path']}" alt="" width="50" height="50" style="margin-bottom:5px;"/></a><a href="javascript:;" style="margin-left:15px;" class="deleteOldFile">删除</a></div>
+                                				<div class="fileList">
+                              <input type="hidden" name="old_ext[]" value="{$v['ext']}" />';
+			<input type="hidden" name="old_filename[]" value="{$v['oldfilename']}" />';
+                                				<input type="hidden" name="oldfile[]" value="{$v['path']}"/><a href="{$v['path']}" target="_blank"><img src="{$v['path']}" alt="" width="50" height="50" style="margin-bottom:5px;"/></a><a href="javascript:;" style="margin-left:15px;" class="deleteOldFile">删除</a></div>
                                 			{else}
-                                				<div class="fileList" style="margin-bottom:5px;"><input type="hidden" name="oldfile[]" value="{$v['path']}"/><a href="{$v['path']}" target="_blank">{$v.oldfilename}查看文件</a><a href="javascript:;" style="margin-left:15px;" class="deleteOldFile">删除</a></div>
+                                				<div class="fileList" style="margin-bottom:5px;">
+            <input type="hidden" name="old_ext[]" value="{$v['ext']}" />';
+			<input type="hidden" name="old_filename[]" value="{$v['oldfilename']}" />';
+                                				<input type="hidden" name="oldfile[]" value="{$v['path']}"/><a href="{$v['path']}" target="_blank">{$v.oldfilename}查看文件</a><a href="javascript:;" style="margin-left:15px;" class="deleteOldFile">删除</a></div>
                                 			{/if}
                                 		{/foreach}
                                 	</td>
@@ -406,6 +412,8 @@ $('.changefile').change(function(){
 				var html = '';
 				for(var i in res.data){
 					html += '<p style="padding-bottom: 10px;">';
+					html += '<input type="hidden" name="ext[]" value="'+res.data[i]['ext']+'" />';
+					html += '<input type="hidden" name="oldfilename[]" value="'+res.data[i]['oldfilename']+'" />';
 					html += '<input type="hidden" name="files[]" value="'+res.data[i]['path']+'" />';
 					html += '<a target="_blank" href="'+res.data[i]['path']+'">'+res.data[i]['oldfilename']+'</a><span style="padding-left:5px;cursor:pointer;">删除</span></p>';
 				}

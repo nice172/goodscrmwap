@@ -125,7 +125,10 @@ $(function() {
 		if($(this).is(':checked')) {
 			for(var i in goodslist) {
 				if(parseInt($(this).val()) == parseInt(goodslist[i]['goods_id'])) {
-					parent.window.put(goodslist[i]);
+					var goods = goodslist[i];
+					goods['goods_number'] = 0;
+					goods['send_num'] = 0;
+					parent.window.put(goods);
 					break;
 				}
 			}

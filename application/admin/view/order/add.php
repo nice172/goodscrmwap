@@ -421,6 +421,8 @@ $('.changefile').change(function(){
 				var html = '';
 				for(var i in res.data){
 					html += '<p style="padding-bottom: 10px;">';
+					html += '<input type="hidden" name="ext[]" value="'+res.data[i]['ext']+'" />';
+					html += '<input type="hidden" name="oldfilename[]" value="'+res.data[i]['oldfilename']+'" />';
 					html += '<input type="hidden" name="files[]" value="'+res.data[i]['path']+'" />';
 					html += '<a target="_blank" href="'+res.data[i]['path']+'">'+res.data[i]['oldfilename']+'</a><span style="padding-left:5px;cursor:pointer;">删除</span></p>';
 				}

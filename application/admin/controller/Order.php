@@ -12,6 +12,7 @@ class Order extends Base {
         'company_short' => 'require',
         'contacts' => 'require',
         'email' => 'require|email',
+        'cus_order_sn' => 'require',
         'require_time' => 'require'
     ];
     protected $message = [
@@ -20,6 +21,7 @@ class Order extends Base {
         'contacts.require' => '联系人不能为空',
         'email.require' => 'E-Mail不是能为空',
         'email.email' => 'E-Mail格式不正确',
+        'cus_order_sn.require' => '客户订单号不能为空',
         'require_time.require' => '交货日期不能为空'
     ];
     
@@ -317,7 +319,7 @@ class Order extends Base {
                 'email' => $this->request->post('email'),
                 'contacts' => $this->request->post('contacts'),
                 'order_remark' => $this->request->post('order_remark'),
-                'require_time' => strtotime($this->request->post('require_time')),
+                'require_time' => $this->request->post('require_time'),
                 'status' => $type == 'confirm' ? 1 : 0,
                 'create_time' => time(),
                 'update_time' => time()
@@ -326,11 +328,11 @@ class Order extends Base {
             if (!$validate->check($data)){
                 $this->error($validate->getError());
             }
+            $data['require_time'] = strtotime($data['require_time']);
             $goodsInfo = $this->request->param('goods_info/a');
             if (empty($goodsInfo)){
                 $this->error('请选择商品');
             }
-            
             foreach ($goodsInfo as $val){
                 if ($val['goods_number'] <= 0){
                     $this->error('下单数量不能小于1');
@@ -344,8 +346,18 @@ class Order extends Base {
                 //}
             }
             
+            $ext = $this->request->param('ext/a');
+            $oldfilename = $this->request->param('oldfilename/a');
+            
             //$attachment = $this->upload_file();
             $attachment = isset($_POST['files']) ? $_POST['files'] : [];
+            foreach ($attachment as $key => $name){
+                $attachment[$key] = [
+                    'ext' => $ext[$key],
+                    'oldfilename' => $oldfilename[$key],
+                    'path' => $name
+                ];
+            }
             $data['attachment'] = json_encode($attachment);
             
             $order_id = db('order')->insertGetId($data);
@@ -400,6 +412,9 @@ class Order extends Base {
     	if (empty($order)) $this->error('订单不存在');
     	if (!db('order')->where(['id' => $id])->setField('status',1)){
     		$this->error('确认失败');
+    	}
+    	if ($this->request->isAjax() && $this->request->isMobile()){
+    	    $this->success('确认成功');
     	}
     	if($route == 'i'){
     	    if (!empty($_SERVER['HTTP_REFERER'])){
@@ -618,6 +633,7 @@ class Order extends Base {
             	'con_id' => $this->request->post('con_id'),
                 'cus_id' => $this->request->post('cus_id'),
                 //'order_sn' => $this->request->post('order_sn'),
+                'cus_order_sn' => $this->request->post('cus_order_sn'),
                 'company_name' => $this->request->post('company_name'),
                 'company_short' => $this->request->post('company_short'),
                 'fax' => $this->request->post('fax'),
@@ -662,15 +678,25 @@ class Order extends Base {
                 }
             }
             
-            $oldfile = $this->request->param('oldfile/a');
+            //新文件
+            $ext = $this->request->param('ext/a');
+            $oldfilename = $this->request->param('oldfilename/a');
+       
             //$attachment = $this->upload_file();
             $attachment = isset($_POST['files']) ? $_POST['files'] : [];
+            foreach ($attachment as $key => $name){
+                $attachment[$key] = [
+                    'ext' => $ext[$key],
+                    'oldfilename' => $oldfilename[$key],
+                    'path' => $name
+                ];
+            }
             $fileArr = [];
             if (!empty($oldfile)){
                 $order_attachment = db('order')->where(['id' => $data['id'],'status' => ['neq','-1']])->value('attachment');
                 $order_attachment = json_decode($order_attachment,true);
                 foreach ($order_attachment as $v){
-                    foreach ($oldfile as $f){
+                    foreach ($oldfile as $k => $f){
                         if ($v['path'] == $f){
                             $fileArr[] = $v;
                         }
@@ -678,7 +704,6 @@ class Order extends Base {
                 }
             }
             $data['attachment'] = json_encode(array_merge($fileArr,$attachment));
-            
             $affected = db('order')->update($data);
             if ($affected){
                 $tempArr = array_count_values(array_merge($ids,$postIds));
@@ -842,6 +867,9 @@ class Order extends Base {
             ->where("o.status=2 OR o.status=3")->order('o.create_time desc')->field('og.order_id,og.goods_price,og.create_time')->find();
             $lists[$key]['order_id'] = $row['order_id']?:0;
             $lists[$key]['last_price'] = $row['goods_price'];
+            if ($row['goods_price']){
+                $lists[$key]['shop_price'] = $row['goods_price'];
+            }
             $lists[$key]['last_time'] = !empty($row['create_time']) ? date('Y-m-d',$row['create_time']) : '';
         }
         if ($this->request->isMobile() && $this->request->isAjax()){
