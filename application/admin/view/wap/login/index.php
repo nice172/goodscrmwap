@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="__UI__/css/jquery-weui.css">
 <link rel="stylesheet" href="__WAP__/css/demos.css">
 <style>
+body{background:#fff;}
 .input_pwd {margin-top:0;}
 .input_pwd:before{border-top:none;}
 .btn-box{padding:0 10px;}

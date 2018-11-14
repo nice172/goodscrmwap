@@ -174,6 +174,8 @@
   </div>
 </div>
 </div>
+
+{if condition="$data['status'] < 2"}
 <div class="bottom">
 {if condition="$data['status'] eq 0"}
 	<div class="item-full">
@@ -186,6 +188,8 @@
 	</div>
 	{/if}
 </div>
+{/if}
+
 {/block}
 
 {block name="footer"}

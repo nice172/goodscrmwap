@@ -499,6 +499,8 @@ class Order extends Base {
     				'fax' => $this->request->post('fax'),
     				'email' => $this->request->post('email'),
     				'contacts' => $this->request->post('contacts'),
+    		        'receiver' => $this->request->post('receiver'),
+    		        'receivernum' => $this->request->post('receivernum'),
     				'status' => $type == 'confirm' ? 1 : 0,
     				'remark' => $this->request->post('remark'),
     				'create_time' => time(),
@@ -585,7 +587,6 @@ class Order extends Base {
     	$this->assign('contacts',$contacts);
     	$supplier = db('supplier')->where(['supplier_status' => ['neq','-1']])->select();
     	$this->assign('supplier',$supplier);
-    	
     	$trans_type = getParams(5);
     	if (!empty($trans_type)){
     		$trans_type = $trans_type['params_value'];
