@@ -45,10 +45,21 @@ class Purchase extends Base {
 		        $data[$key]['order_sn'] = '--';
 		    }
 		}
+		$this->assign('current_page', $result->getCurrentPage());
+		$this->assign('total_page', $result->lastPage());
+		$this->assign('params', $this->request->query());
 		$page = $result->render();
 		$this->assign('page',$page);
 		$this->assign('list',$data);
-		$this->assign('title','采购单');
+		if ($this->request->isMobile()) {
+		    $this->assign('title','订单管理');
+		    if ($this->request->isAjax()) {
+		        if (empty($data)) $this->success('ok','');
+		        return $this->fetch('load');
+		    }
+		}else{
+		    $this->assign('title','采购单');
+		}
 		$category = db('goods_category')->where(array('status' => 1))->select();
 		$this->assign('category',$category);
 		return $this->fetch();

@@ -141,7 +141,7 @@ class Order extends Base {
         }else{
             $this->assign('title','订单列表');
         }
-        
+
         $category = db('goods_category')->where(array('status' => 1))->select();
         $this->assign('category',$category);
         return $this->fetch();
