@@ -143,7 +143,7 @@
         	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['id' => $v['id']])}'">查看</button>
         	{if condition="$v['status']==0"}
         		{if condition="$v['create_type']==0"}
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['id' => $v['id']])}'">编辑</button>
+            	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['id' => $v['id']])}'">编辑</button>
           		{else}
           		<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('newedit',['id' => $v['id']])}'">编辑</button>
           		{/if}

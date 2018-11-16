@@ -803,7 +803,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 	    
 	    $this->assign('data',$lists);
 	    $this->assign('page',$result->render());
-	    
+	    $this->assign('title','选择商品');
 	    return $this->fetch();
 	}
 	
