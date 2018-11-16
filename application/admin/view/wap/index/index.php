@@ -23,7 +23,7 @@
         </div>
         <p class="weui-grid__label">采购管理</p>
       </a>
-      <a href="{:url('store/index')}" class="weui-grid js_grid">
+      <a href="{:url('store/relation')}" class="weui-grid js_grid">
         <div class="weui-grid__icon">
           <img src="__WAP__/img/icon4.png" alt="">
         </div>

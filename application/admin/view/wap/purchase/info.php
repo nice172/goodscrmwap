@@ -194,7 +194,7 @@
 {/if}
 	{if condition="$data['status'] eq 1"}
 	<div class="item-full">
-		<a href="<?php echo url('create',['id' => $data['id']]);?>" class="create">发送PDF</a>
+		<a href="javascript:;" class="send_pdf">发送PDF</a>
 	</div>
 	{/if}
 </div>
@@ -243,6 +243,12 @@ $(function() {
 				$.toptip(res.msg);
 			}
 		});
+    });
+
+    $('.send_pdf').click(function(){
+    	 var orderid = {$data['id']};
+    	 var email = '{$data['email']}';
+    	 send_email('purchase',orderid,email);
     });
 	
     $('.weui-navbar__item').click(function(){

@@ -800,7 +800,12 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 	        $lists[$key]['purchase_number'] = 0;
 	        $lists[$key]['show_input'] = true;
 	    }
-	    
+	    $this->assign('total_page',$result->lastPage());
+	    $this->assign('query', $this->request->query());
+	    $this->assign('current_page',$result->getCurrentPage());
+	    if ($this->request->isMobile() && $this->request->isAjax()){
+	    	$this->success('ok','',$lists);
+	    }
 	    $this->assign('data',$lists);
 	    $this->assign('page',$result->render());
 	    $this->assign('title','选择商品');

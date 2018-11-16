@@ -1,9 +1,11 @@
 {extend name="public/common" /}
 {block name="header"}
 <style>
+body{background:#fff !important;}
 .weui-label,input,textarea{font-size:13px !important;}
 .weui-label {width:60px !important;text-align:right;}
 .weui-cells__title {color:#000;}
+.cell-top:before{border:none;}
 </style>
 {/block}
 {block name="main"}
@@ -11,7 +13,7 @@
 	<div style="margin-bottom: 60px;">
 	          <input type="hidden" name="type" value="<?php echo $data['type'];?>" />
         <input type="hidden" name="id" value="<?php echo $data['id'];?>" />
-    <div class="weui-cells weui-cells_form">
+    <div class="weui-cells weui-cells_form cell-top" style="margin-top: 10px;">
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">收件人：</label></div>
         <div class="weui-cell__bd">
@@ -24,14 +26,17 @@
           <input class="weui-input" type="text" name="copyto" placeholder="输入抄送人"/>
         </div>
       </div>
-      <div class="weui-cell" style="border-bottom: 1px solid #e5e5e5;">
+      <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">主题：</label></div>
         <div class="weui-cell__bd">
           <input class="weui-input" type="text" name="subject" placeholder="输入主题"/>
         </div>
       </div>
-    <div class="weui-cells__title">正文：</div>
-    <div class="weui-cells">
+      <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">正文：</label></div>
+        <div class="weui-cell__bd"></div>
+      </div>
+    <div class="weui-cells" style="margin-top:0;">
       <div class="weui-cell">
         <div class="weui-cell__bd">
           <textarea class="weui-textarea" name="content" style="height:150px;" placeholder="输入正文内容"></textarea>

@@ -89,9 +89,20 @@ class Store extends Base {
         		$list[$key]['order_id'] = db('delivery_order')->where(['purchase_id' => $value['id']])->value('order_id');
         	}
         }
+        $this->assign('current_page', $result->getCurrentPage());
+        $this->assign('total_page', $result->lastPage());
+        $this->assign('params', $this->request->query());
         $this->assign('page',$result->render());
         $this->assign('list',$list);
-        $this->assign('title','关联库存');
+        if ($this->request->isMobile()){
+        	$this->assign('title','订单管理');
+        	if ($this->request->isAjax()) {
+        		if (empty($list)) $this->success('ok','');
+        		return $this->fetch('load');
+        	}
+        }else{
+        	$this->assign('title','关联库存');
+        }
         return $this->fetch();
     }
     

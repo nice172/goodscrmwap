@@ -75,7 +75,7 @@ body{background:#fff;}
       商品
     </a>
   </div>
-<form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('create_do');?>" id="saveOrder" method="post">
+<form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('add');?>" id="saveOrder" method="post">
 
 	<div style="margin-bottom: 60px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
@@ -105,7 +105,7 @@ body{background:#fff;}
       <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">客户单号：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" readonly="readonly" type="text" value="" name="cus_order_sn" id="cus_order_sn"/>
+          <input class="weui-input" type="text" value="" name="cus_order_sn" id="cus_order_sn"/>
         </div>
       </div>
       
@@ -206,7 +206,7 @@ body{background:#fff;}
 
 <div id="tab2" class="weui-tab__bd-item tab_hide">
 <p style="padding:30px 0 5px 10px;"><a href="javascript:;" class="get_goods">添加商品</a></p>
-<div class="appendList" style="padding-top:25px;"></div>
+<div class="appendList"></div>
 </div>
 </div>
 <div class="weui-btn-area bottom-block">
@@ -250,7 +250,8 @@ $('.get_goods').click(function(){
    	 closeBtn: true,
    	 shade: 0.3,
    	 area: ['90%', '90%'],
-   	 content: '{:url(\'get_goods\')}?cus_id='+$('#cus_id').val(),
+   	 //content: '{:url(\'get_goods\')}?cus_id='+$('#cus_id').val(),
+   	content: '{:url(\'get_goods\')}',
   });
 });
 function client_info(data){

@@ -113,7 +113,8 @@ $(function() {
 			    		html += '<div class="weui-cell__bd">';
 			    		html += '<p>名称：'+data[i]['goods_name']+'</p>';
 			    		html += '<p>单位：'+data[i]['unit']+'&nbsp;&nbsp;&nbsp;&nbsp;单价：'+data[i]['market_price']+'元</p>';
-				        html += '</div></label></div>';
+			    		html += '<p>最近成交价：'+data[i]['last_price']+'&nbsp;&nbsp;&nbsp;&nbsp;最近时间：'+data[i]['last_time']+'</p>';
+				        html += '<p><a href="javascript:alert(\'先不做\');"></a></p></div></label></div>';
 				        goodslist.push(data[i]);
 					}
 					$(".clear").before(html);

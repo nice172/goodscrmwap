@@ -51,9 +51,7 @@
         </div>
         <div class="weui-cell__bd">
           <p>名称：{$vo['goods_name']}</p>
-          <p>单位：{$vo['unit']}&nbsp;&nbsp;&nbsp;&nbsp;单价：{$vo['market_price']}元</p>
-          <p>最近成交价：{$vo['last_price']}&nbsp;&nbsp;&nbsp;&nbsp;最近时间：{$vo['last_time']}</p>
-          <p><a href="javascript:alert('先不做');"></a></p>
+          <p>单位：{$vo['unit']}&nbsp;&nbsp;标准单价：{$vo['market_price']}</p>
         </div>
       </label>
     </div>
@@ -112,7 +110,7 @@ $(function() {
 			    		html += '<i class="weui-icon-checked"></i></div>';
 			    		html += '<div class="weui-cell__bd">';
 			    		html += '<p>名称：'+data[i]['goods_name']+'</p>';
-			    		html += '<p>单位：'+data[i]['unit']+'&nbsp;&nbsp;&nbsp;&nbsp;单价：'+data[i]['market_price']+'元</p>';
+			    		html += '<p>单位：'+data[i]['unit']+'&nbsp;&nbsp;&nbsp;&nbsp;标准单价：'+data[i]['market_price']+'元</p>';
 				        html += '</div></label></div>';
 				        goodslist.push(data[i]);
 					}

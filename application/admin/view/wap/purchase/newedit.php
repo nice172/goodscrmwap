@@ -75,9 +75,10 @@ body{background:#fff;}
       商品
     </a>
   </div>
-<form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('edit_do');?>" id="saveOrder" method="post">
+<form class="form-horizontal" enctype="multipart/form-data" id="saveOrder" method="post">
     <input type="hidden" name="id" value="{$data.id}"  id="id" />
-    <input type="hidden" name="cus_id" value="{$data.cus_id}"  id="cus_id" />
+    <input type="hidden" name="order_id" value=""  id="id" />
+    <input type="hidden" name="cus_id" value=""  id="cus_id" />
 	<div style="margin-bottom: 60px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
     <div class="weui-cells weui-cells_form">
@@ -86,11 +87,12 @@ body{background:#fff;}
         <div class="weui-cell__bd">
           <input type="text" class="weui-input" readonly="readonly" value="{$data.po_sn}" name="po_sn" id="po_sn">
         </div>
-      </div>      
+      </div>
+      
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">订购日期：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" readonly="readonly" value="{$data.create_time|date='Y-m-d',###}" name="create_date" id="create_date"/>
+          <input class="weui-input" type="text" readonly="readonly" value="<?php echo date('Y-m-d',$data['create_time']);?>" name="create_date" id="create_date"/>
         </div>
       </div>
       
@@ -109,7 +111,7 @@ body{background:#fff;}
       <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">客户单号：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" readonly="readonly" type="text" value="{$data.cus_order_sn}" name="cus_order_sn" id="cus_order_sn"/>
+          <input class="weui-input" type="text" value="{$data.cus_order_sn}" name="cus_order_sn" id="cus_order_sn"/>
         </div>
       </div>
       
@@ -123,7 +125,7 @@ body{background:#fff;}
             <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">电话号码：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="cus_phome" value="{$client.cus_phome}" id="cus_phome" />
+          <input class="weui-input" type="text" name="cus_phome" value="{$data.cus_phome}" id="cus_phome" />
         </div>
       </div>
       
@@ -142,7 +144,7 @@ body{background:#fff;}
             <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">送货公司：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" value="{$client.cus_name}" name="delivery_company" id="delivery_company" />
+          <input class="weui-input" type="text" value="{$data.delivery_company}" name="delivery_company" id="delivery_company" />
         </div>
       </div>
       
@@ -150,7 +152,7 @@ body{background:#fff;}
         <div class="weui-cell__hd"><label class="weui-label">送货地址：</label></div>
         <div class="weui-cell__bd" style="position:relative;">
           <input type="hidden" name="conid" id="conid" />
-          <input class="weui-input" type="text" readonly="readonly" value="{$data['delivery_address']}" placeholder="请选择送货地址" name="delivery_address" id="delivery_address" />
+          <input class="weui-input" type="text" value="{$data['delivery_address']}" placeholder="请选择送货地址" name="delivery_address" id="delivery_address" />
         </div>
       </div>
       
@@ -468,35 +470,6 @@ $(function() {
 			}
         	 }
     	});
-	
-    $("#delivery_address").select({
-  	  title: "请选择送货地址",
-  	  items: [
-  		  {foreach name="$contacts" key="key" item="v"}
-  	    {
-  	      title: "{$v.con_address}",
-  	      value: "{$v.con_id}",
-  	    }{if condition="$key<count($contacts)-1"},{/if}
-  	    {/foreach}
-  	  ],
-  	  onChange: function(e){
-			$('#conid').val(e.values);
-			var con_id = e.values;
-				if(con_id){
-				
-				$.get('{:url(\'purchase/getaddress\')}?conid='+con_id,{},function(data){
-					if(data.code == 1){
-						var data = data.data;
-						$('#receiver').val(data.receiver);
-						$('#receivernum').val(data.receivernum);
-					}
-				});
-			}else{
-				$('#receiver,#receivernum').val('');
-			}
-      	 }
-  	});
-	
     
 	bindDelete();
     
