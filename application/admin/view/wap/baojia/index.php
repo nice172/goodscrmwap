@@ -84,7 +84,7 @@
 
 <!-- <div class="block10"></div> -->
 <div class="main">
-{foreach name="list" item="v"}
+{foreach name="list" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
       <div class="weui-form-preview__bd">
         <div class="weui-form-preview__item">

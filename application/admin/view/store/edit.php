@@ -45,27 +45,27 @@
 								<tr>
                                 <td width="15%" class="right-color"><span class="text-danger">*</span><span>采购单号:</span></td>
                                 <td width="35%">
-                                	<input type="text" class="form-control w300" style="display:inline-block;" name="po_sn" id="po_sn">
+                                	<input type="text" class="form-control w300" style="display:inline-block;" value="{$data.po_sn}" name="po_sn" id="po_sn">
                                 	<button type="button" class="btn btn-primary search_company" style="margin-top:-4px;">查找</button>
                                 </td>
                                 <td width="15%" class="right-color"><span class="text-danger">*</span><span>供应商:</span></td>
                                 <td width="35%">
-                                        <input type="text" class="form-control w300"  name="supplier_name" id="supplier_name">
+                                        <input type="text" class="form-control w300" value="{$data.supplier_name}" name="supplier_name" id="supplier_name">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>采购日期:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="purchase_date" value="" id="purchase_date"></td>
+                                    <td width="35%"><input type="text" class="form-control w300" name="purchase_date" value="{$data.purchase_date}" id="purchase_date"></td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>送货公司:</span></td>
                                     <td width="35%">
-                                        <input type="text" class="form-control w300" name="cus_name" value="" id="cus_name">
+                                        <input type="text" class="form-control w300" name="cus_name" value="{$data.cus_name}" id="cus_name">
                                     </td>
                                 </tr>
                                 
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger"></span><span>备注:</span></td>
                                     <td colspan="3">
-                                        <input type="text" class="form-control" name="store_remark" value="" id="store_remark" />
+                                        <input type="text" class="form-control" name="store_remark" value="{$data.store_remark}" id="store_remark" />
                                     </td>
                                 </tr> 
 								
@@ -246,9 +246,9 @@ function client_info(data){
 }
 
 var goods_info = new Array();
-<?php if(!empty($data['goodsInfo'])){ foreach ($data['goodsInfo'] as $goods){?>
-goods_info.push(<?php echo $goods;?>);
-<?php }}?>
+<?php if(!empty($goodslist)){ ?>
+goods_info = {$goodslist};
+<?php }?>
 if(goods_info.length > 0){
 	goodsList(goods_info);
 }

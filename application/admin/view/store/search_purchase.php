@@ -26,7 +26,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label" for="store_sn">商品名称 :</label>
-                                <input name="store_sn" id="store_sn" class="ipt form-control" value="<?php if(isset($_GET['goods_name'])){echo $_GET['goods_name'];}?>"/>
+                                <input name="goods_name" id="goods_name" class="ipt form-control" value="<?php if(isset($_GET['goods_name'])){echo $_GET['goods_name'];}?>"/>
                             </div>                    
                             <div class="form-group">
                                 <label class="control-label" for="delivery_company">送货公司 :</label>

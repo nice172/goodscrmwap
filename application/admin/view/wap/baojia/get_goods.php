@@ -41,7 +41,7 @@
 </form>
 
 <div style="margin-top: 90px;">
-{foreach name="data" item="vo"}
+{foreach name="data" item="vo" empty="$empty2"}
     <div class="weui-cells weui-cells_checkbox goods_list {if condition="$key==0"}top-list{/if}">
       <label class="weui-cell weui-check__label" for="s{$vo['goods_id']}">
         <div class="weui-cell__hd">

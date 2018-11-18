@@ -153,7 +153,7 @@
 </div>
     </div>
     <div id="tab2" class="weui-tab__bd-item">
-    {volist name="data['goodsInfo']" id="vo" key="key"  empty="$empty"}
+    {volist name="data['goodsInfo']" id="vo" key="key" empty="$empty2"}
     {php}$vo = json_decode($vo,true);{/php}
 <div class="weui-form-preview" style="margin-bottom: 5px;">
       <div class="weui-form-preview__bd goods_list">

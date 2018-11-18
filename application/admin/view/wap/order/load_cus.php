@@ -1,4 +1,4 @@
-{foreach name="data" item="vo"}
+{foreach name="data" item="vo" empty="$empty2"}
 <div class="weui-form-preview list" data-fax="{$vo.cus_fax}" data-email="{$vo.cus_email}" data-user="{$vo.cus_duty}" data-short="{$vo.cus_short}" data-name="{$vo.cus_name}" data-id="{$vo['cus_id']}">
       <div class="weui-form-preview__bd">
         <div class="weui-form-preview__item">

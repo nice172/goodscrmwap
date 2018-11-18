@@ -105,7 +105,7 @@
 </div>
     </div>
     <div id="tab2" class="weui-tab__bd-item">
-    {volist name="goodsList" id="vo" key="key"  empty="$empty"}
+    {volist name="goodsList" id="vo" key="key" empty="$empty2"}
 <div class="weui-form-preview" style="margin-bottom: 5px;">
       <div class="weui-form-preview__bd goods_list">
         <div class="weui-form-preview__item">

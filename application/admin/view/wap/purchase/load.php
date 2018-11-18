@@ -1,4 +1,4 @@
-{foreach name="list" item="v"}
+{foreach name="list" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
   <div class="weui-form-preview__hd">
     <label class="weui-form-preview__label">订购日期：{$v.create_time|date='Y-m-d',###}</label>

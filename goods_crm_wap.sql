@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : localhost3306
 Source Server Version : 50714
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : goods_crm_wap
 
 Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2018-11-16 18:11:30
+Date: 2018-11-18 22:53:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,7 +77,7 @@ CREATE TABLE `syc_auth_rule` (
   `ismenu` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '是否显示左侧菜单',
   `condition` char(100) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=305 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=306 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_auth_rule
@@ -207,6 +207,7 @@ INSERT INTO `syc_auth_rule` VALUES ('301', '226', 'admin/purchase/query', '查�
 INSERT INTO `syc_auth_rule` VALUES ('302', '232', 'admin/store/purchase', '采购入库', '2', '1', '1', 'icon-ecs', '50', '1', null);
 INSERT INTO `syc_auth_rule` VALUES ('303', '302', 'admin/store/add', '新增入库', '3', '1', '1', 'icon-ecs', '50', '1', null);
 INSERT INTO `syc_auth_rule` VALUES ('304', '236', 'admin/account/ticketrecrod', '发票记录', '3', '1', '1', 'icon-ecs', '50', '1', null);
+INSERT INTO `syc_auth_rule` VALUES ('305', '302', 'admin/store/edit', '编辑入库单', '3', '1', '1', 'icon-ecs', '50', '1', null);
 
 -- ----------------------------
 -- Table structure for syc_bancai
@@ -1465,11 +1466,13 @@ CREATE TABLE `syc_input_goods` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `input_id` (`input_id`,`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='入库商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='入库商品表';
 
 -- ----------------------------
 -- Records of syc_input_goods
 -- ----------------------------
+INSERT INTO `syc_input_goods` VALUES ('1', '1', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '张', '104.00', '10', '', '1542519498');
+INSERT INTO `syc_input_goods` VALUES ('2', '1', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '张', '114.00', '2', '', '1542519498');
 
 -- ----------------------------
 -- Table structure for syc_input_store
@@ -1490,11 +1493,12 @@ CREATE TABLE `syc_input_store` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `store_sn` (`store_sn`,`po_sn`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='入库表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='入库表';
 
 -- ----------------------------
 -- Records of syc_input_store
 -- ----------------------------
+INSERT INTO `syc_input_store` VALUES ('1', '2', 'ST201810166037716', '39', 'PO201810014139391039', '清远市富盈电子有限公司', '2', 'fasaffasfsdfasfsdfsas', '2018-10-01', '0', '1542519498', '1542519498');
 
 -- ----------------------------
 -- Table structure for syc_logistics
@@ -1904,7 +1908,7 @@ CREATE TABLE `syc_purchase` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`,`order_sn`,`po_sn`,`supplier_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_purchase
@@ -1916,6 +1920,7 @@ INSERT INTO `syc_purchase` VALUES ('42', '2', '50', 'SO201810094608081008', 'FY2
 INSERT INTO `syc_purchase` VALUES ('43', '4', '51', 'SO201810090809091009', 'POFY1809000206', '1689', 'PO201810092927271027', '3', '0769-8339544', '内销', '月结60天', '货运', '清远市富盈电子有限公司', '16%', '广东省清远市清城区嘉福工业园C区仓库', '0769-83395442', '1040312149@qq.com', '戴剑梅', '', '', '135475.00', '1', '0', '0', '1、交货方式：冷藏货运，\n2、品质：A 供货方随货提供品质检验报告，到货七日内检出品质异常或数量短少，供货方应负责更换或退货或补货，退换补货费用由供货方承担。B 货物于使用过程中出现品质异常，不超过到货3个月期限的，由此异常造成之一切损失，由供货方承担。C 如需技术支持，由供货方提供。\n3、A 请依本采购单所列数量交货，若超交以馈赠论。B 针对市场变化，可协商本采购单之交期。C 客户签收之送货单据原件，需返回我方，作为供销双方对账的依据。', '0', '1539055810', '1539055810');
 INSERT INTO `syc_purchase` VALUES ('44', '2', '0', '', 'weitest20181009', '0', 'PO201810171628281028', '2', '13642982303', '内销', '月结60天', '货运', '', '16%', '', '0752-3532028', 'sc_csun@163.com', '赖小行', '', '', '3378.00', '0', '0', '0', '1、交货方式：冷藏货运，\n2、品质：A 供货方随货提供品质检验报告，到货七日内检出品质异常或数量短少，供货方应负责更换或退货或补货，退换补货费用由供货方承担。B 货物于使用过程中出现品质异常，不超过到货3个月期限的，由此异常造成之一切损失，由供货方承担。C 如需技术支持，由供货方提供。\n3、A 请依本采购单所列数量交货，若超交以馈赠论。B 针对市场变化，可协商本采购单之交期。C 客户签收之送货单据原件，需返回我方，作为供销双方对账的依据。', '1', '1539757073', '1539757073');
 INSERT INTO `syc_purchase` VALUES ('45', '2', '57', 'SO201811133959591159', 'gdsafsafsa', '1689', 'PO201811140645451145', '2', '0763-3697026', '内销', '现金交易', '货运', '清远市富盈电子有限公司', '16%', '广东省清远市清城区嘉福工业园C区写字楼', '0752-3532028', 'sc_csun@163.com', '赖小行', '张玉玲', '15816247536', '12.00', '0', '0', '0', 'test', '0', '1542181431', '1542361675');
+INSERT INTO `syc_purchase` VALUES ('46', '2', '0', '', 'test20189293993', '0', 'PO201811160331311131', '2', '13642982303', '内销', '现金交易', '货运', 'test', '16%', 'test2', '0752-3532028', 'sc_csun@163.com', '赖小行', 'test3', '12212121', '35.30', '0', '0', '0', '1、交货方式：冷藏货运，\r\n2、品质：A 供货方随货提供品质检验报告，到货七日内检出品质异常或数量短少，供货方应负责更换或退货或补货，退换补货费用由供货方承担。B 货物于使用过程中出现品质异常，不超过到货3个月期限的，由此异常造成之一切损失，由供货方承担。C 如需技术支持，由供货方提供。\r\n3、A 请依本采购单所列数量交货，若超交以馈赠论。B 针对市场变化，可协商本采购单之交期。C 客户签收之送货单据原件，需返回我方，作为供销双方对账的依据。', '1', '1542377089', '1542381563');
 
 -- ----------------------------
 -- Table structure for syc_purchase_affirm
@@ -1986,13 +1991,13 @@ CREATE TABLE `syc_purchase_goods` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `purchase_id` (`purchase_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_purchase_goods
 -- ----------------------------
-INSERT INTO `syc_purchase_goods` VALUES ('82', '39', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '张', '42', '0', '42', '104.00', '4368.00', '[{\"goods_attr_id\":12,\"attr_name\":\"\\u7c7b\\u578b\",\"attr_value\":\"FR-4\"},{\"goods_attr_id\":22,\"attr_name\":\"\\u80f6\\u7cfb\",\"attr_value\":\"CTI\\u2265600\"},{\"goods_attr_id\":14,\"attr_name\":\"\\u677f\\u539a\",\"attr_value\":\"1.10MM\"},{\"goods_attr_id\":16,\"attr_name\":\"\\u94dc\\u539a\",\"attr_value\":\"H\\/H\"},{\"goods_attr_id\":19,\"attr_name\":\"\\u5c3a\\u5bf8\",\"attr_value\":\"41\\u201d*49\\u201c\"},{\"goods_attr_id\":21,\"attr_name\":\"\\u662f\\u5426\\u542b\\u94dc\",\"attr_value\":\"\\u542b\\u94dc\\u539a\"},{\"goods_attr_id\":20,\"attr_name\":\"\\u8272\\u7cfb\",\"attr_value\":\"\\u9ec4\\u6599\"},{\"goods_attr_id\":23,\"attr_name\":\"\\u6709\\u65e0\\u6c34\\u5370\",\"attr_value\":\"\\u65e0\\u6c34\\u5370\"},{\"goods_attr_id\":13,\"attr_name\":\"\\u54c1\\u724c\",\"attr_value\":\"\\u5fb7\\u51ef\"}]', '1538390523');
-INSERT INTO `syc_purchase_goods` VALUES ('83', '39', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '张', '32', '0', '32', '114.00', '3648.00', '[{\"goods_attr_id\":12,\"attr_name\":\"\\u7c7b\\u578b\",\"attr_value\":\"FR-4\"},{\"goods_attr_id\":22,\"attr_name\":\"\\u80f6\\u7cfb\",\"attr_value\":\"TG135\"},{\"goods_attr_id\":14,\"attr_name\":\"\\u677f\\u539a\",\"attr_value\":\"1.00MM\"},{\"goods_attr_id\":16,\"attr_name\":\"\\u94dc\\u539a\",\"attr_value\":\"H\\/H\"},{\"goods_attr_id\":19,\"attr_name\":\"\\u5c3a\\u5bf8\",\"attr_value\":\"37\\u201c*49\\u201d\"},{\"goods_attr_id\":21,\"attr_name\":\"\\u662f\\u5426\\u542b\\u94dc\",\"attr_value\":\"\\u542b\\u94dc\\u539a\"},{\"goods_attr_id\":20,\"attr_name\":\"\\u8272\\u7cfb\",\"attr_value\":\"\\u9ec4\\u6599\"},{\"goods_attr_id\":23,\"attr_name\":\"\\u6709\\u65e0\\u6c34\\u5370\",\"attr_value\":\"\\u65e0\\u6c34\\u5370\"},{\"goods_attr_id\":13,\"attr_name\":\"\\u54c1\\u724c\",\"attr_value\":\"\\u5fb7\\u51ef\"}]', '1538390523');
+INSERT INTO `syc_purchase_goods` VALUES ('82', '39', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '张', '42', '10', '42', '104.00', '4368.00', '[{\"goods_attr_id\":12,\"attr_name\":\"\\u7c7b\\u578b\",\"attr_value\":\"FR-4\"},{\"goods_attr_id\":22,\"attr_name\":\"\\u80f6\\u7cfb\",\"attr_value\":\"CTI\\u2265600\"},{\"goods_attr_id\":14,\"attr_name\":\"\\u677f\\u539a\",\"attr_value\":\"1.10MM\"},{\"goods_attr_id\":16,\"attr_name\":\"\\u94dc\\u539a\",\"attr_value\":\"H\\/H\"},{\"goods_attr_id\":19,\"attr_name\":\"\\u5c3a\\u5bf8\",\"attr_value\":\"41\\u201d*49\\u201c\"},{\"goods_attr_id\":21,\"attr_name\":\"\\u662f\\u5426\\u542b\\u94dc\",\"attr_value\":\"\\u542b\\u94dc\\u539a\"},{\"goods_attr_id\":20,\"attr_name\":\"\\u8272\\u7cfb\",\"attr_value\":\"\\u9ec4\\u6599\"},{\"goods_attr_id\":23,\"attr_name\":\"\\u6709\\u65e0\\u6c34\\u5370\",\"attr_value\":\"\\u65e0\\u6c34\\u5370\"},{\"goods_attr_id\":13,\"attr_name\":\"\\u54c1\\u724c\",\"attr_value\":\"\\u5fb7\\u51ef\"}]', '1538390523');
+INSERT INTO `syc_purchase_goods` VALUES ('83', '39', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '张', '32', '2', '32', '114.00', '3648.00', '[{\"goods_attr_id\":12,\"attr_name\":\"\\u7c7b\\u578b\",\"attr_value\":\"FR-4\"},{\"goods_attr_id\":22,\"attr_name\":\"\\u80f6\\u7cfb\",\"attr_value\":\"TG135\"},{\"goods_attr_id\":14,\"attr_name\":\"\\u677f\\u539a\",\"attr_value\":\"1.00MM\"},{\"goods_attr_id\":16,\"attr_name\":\"\\u94dc\\u539a\",\"attr_value\":\"H\\/H\"},{\"goods_attr_id\":19,\"attr_name\":\"\\u5c3a\\u5bf8\",\"attr_value\":\"37\\u201c*49\\u201d\"},{\"goods_attr_id\":21,\"attr_name\":\"\\u662f\\u5426\\u542b\\u94dc\",\"attr_value\":\"\\u542b\\u94dc\\u539a\"},{\"goods_attr_id\":20,\"attr_name\":\"\\u8272\\u7cfb\",\"attr_value\":\"\\u9ec4\\u6599\"},{\"goods_attr_id\":23,\"attr_name\":\"\\u6709\\u65e0\\u6c34\\u5370\",\"attr_value\":\"\\u65e0\\u6c34\\u5370\"},{\"goods_attr_id\":13,\"attr_name\":\"\\u54c1\\u724c\",\"attr_value\":\"\\u5fb7\\u51ef\"}]', '1538390523');
 INSERT INTO `syc_purchase_goods` VALUES ('84', '40', '31', '长春干膜 FF-9040S 15.500 *600FT *2卷', '箱', '1', '0', '1', '722.30', '722.30', '[]', '1538924687');
 INSERT INTO `syc_purchase_goods` VALUES ('85', '40', '39', '长春干膜 FF-9040S 20.000 *600FT *2卷', '箱', '3', '0', '3', '932.00', '2796.00', '[]', '1538924687');
 INSERT INTO `syc_purchase_goods` VALUES ('86', '40', '41', '长春干膜 FF-9040S 20.500 *600FT *2卷', '箱', '3', '0', '3', '955.30', '2865.90', '[]', '1538924687');
@@ -2022,6 +2027,8 @@ INSERT INTO `syc_purchase_goods` VALUES ('109', '44', '44', 'FR-4 TG140 CTI≥60
 INSERT INTO `syc_purchase_goods` VALUES ('110', '44', '47', 'FR-4 TG140 1.40MM H/H 37“*49” 含铜厚 黄料 无水印', '张', '9', '0', '0', '134.00', '1206.00', '[{\"goods_attr_id\":12,\"attr_name\":\"\\u7c7b\\u578b\",\"attr_value\":\"FR-4\"},{\"goods_attr_id\":22,\"attr_name\":\"\\u80f6\\u7cfb\",\"attr_value\":\"TG140\"},{\"goods_attr_id\":14,\"attr_name\":\"\\u677f\\u539a\",\"attr_value\":\"1.40MM\"},{\"goods_attr_id\":16,\"attr_name\":\"\\u94dc\\u539a\",\"attr_value\":\"H\\/H\"},{\"goods_attr_id\":19,\"attr_name\":\"\\u5c3a\\u5bf8\",\"attr_value\":\"37\\u201c*49\\u201d\"},{\"goods_attr_id\":21,\"attr_name\":\"\\u662f\\u5426\\u542b\\u94dc\",\"attr_value\":\"\\u542b\\u94dc\\u539a\"},{\"goods_attr_id\":20,\"attr_name\":\"\\u8272\\u7cfb\",\"attr_value\":\"\\u9ec4\\u6599\"},{\"goods_attr_id\":23,\"attr_name\":\"\\u6709\\u65e0\\u6c34\\u5370\",\"attr_value\":\"\\u65e0\\u6c34\\u5370\"}]', '1539757073');
 INSERT INTO `syc_purchase_goods` VALUES ('111', '44', '49', 'FR-4 TG140 1.50MM 1/0 41”*49“ 含铜厚 黄料 无水印', '张', '6', '0', '0', '142.00', '852.00', '[{\"goods_attr_id\":12,\"attr_name\":\"\\u7c7b\\u578b\",\"attr_value\":\"FR-4\"},{\"goods_attr_id\":22,\"attr_name\":\"\\u80f6\\u7cfb\",\"attr_value\":\"TG140\"},{\"goods_attr_id\":14,\"attr_name\":\"\\u677f\\u539a\",\"attr_value\":\"1.50MM\"},{\"goods_attr_id\":16,\"attr_name\":\"\\u94dc\\u539a\",\"attr_value\":\"1\\/0\"},{\"goods_attr_id\":19,\"attr_name\":\"\\u5c3a\\u5bf8\",\"attr_value\":\"41\\u201d*49\\u201c\"},{\"goods_attr_id\":21,\"attr_name\":\"\\u662f\\u5426\\u542b\\u94dc\",\"attr_value\":\"\\u542b\\u94dc\\u539a\"},{\"goods_attr_id\":20,\"attr_name\":\"\\u8272\\u7cfb\",\"attr_value\":\"\\u9ec4\\u6599\"},{\"goods_attr_id\":23,\"attr_name\":\"\\u6709\\u65e0\\u6c34\\u5370\",\"attr_value\":\"\\u65e0\\u6c34\\u5370\"}]', '1539757073');
 INSERT INTO `syc_purchase_goods` VALUES ('112', '45', '27', '长春干膜 FF-9040S 12.500 *600FT *2卷', '箱', '1', '0', '0', '12.00', '12.00', '[]', '1542181431');
+INSERT INTO `syc_purchase_goods` VALUES ('113', '46', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '箱', '10', '0', '0', '1.02', '10.20', '[{\"goods_attr_id\":24,\"attr_name\":\"\\u54c1\\u724c\",\"attr_value\":\"\\u957f\\u6625\\u5e72\\u819c\"},{\"goods_attr_id\":25,\"attr_name\":\"\\u578b\\u53f7\",\"attr_value\":\"FF-9040S\"},{\"goods_attr_id\":26,\"attr_name\":\"\\u5e45\\u5bbd\",\"attr_value\":\"11.000\"},{\"goods_attr_id\":27,\"attr_name\":\"\\u5377\\u957f\",\"attr_value\":\"*600FT\"},{\"goods_attr_id\":28,\"attr_name\":\"\\u5377\\/\\u7bb1\",\"attr_value\":\"*2\\u5377\"}]', '1542377089');
+INSERT INTO `syc_purchase_goods` VALUES ('114', '46', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '5', '0', '0', '5.02', '25.10', '[{\"goods_attr_id\":24,\"attr_name\":\"\\u54c1\\u724c\",\"attr_value\":\"\\u957f\\u6625\\u5e72\\u819c\"},{\"goods_attr_id\":25,\"attr_name\":\"\\u578b\\u53f7\",\"attr_value\":\"FF-9040S\"},{\"goods_attr_id\":26,\"attr_name\":\"\\u5e45\\u5bbd\",\"attr_value\":\"12.000\"},{\"goods_attr_id\":27,\"attr_name\":\"\\u5377\\u957f\",\"attr_value\":\"*600FT\"},{\"goods_attr_id\":28,\"attr_name\":\"\\u5377\\/\\u7bb1\",\"attr_value\":\"*2\\u5377\"}]', '1542377089');
 
 -- ----------------------------
 -- Table structure for syc_purchase_orders
@@ -2279,7 +2286,7 @@ CREATE TABLE `syc_store_log` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `delivery_id` (`delivery_id`,`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_store_log
@@ -2348,6 +2355,8 @@ INSERT INTO `syc_store_log` VALUES ('115', '0', '41', '49', '2', '53', '长春�
 INSERT INTO `syc_store_log` VALUES ('116', '0', '41', '49', '1', '53', '长春干膜 FF-9040S 14.000 *600FT *2卷', '0', '1539011119');
 INSERT INTO `syc_store_log` VALUES ('117', '0', '41', '49', '2', '54', '长春干膜 FF-9040S 18.500 *600FT *2卷', '1', '1539011119');
 INSERT INTO `syc_store_log` VALUES ('118', '0', '41', '49', '1', '54', '长春干膜 FF-9040S 18.500 *600FT *2卷', '0', '1539011119');
+INSERT INTO `syc_store_log` VALUES ('119', '1', '0', '0', '5', '8', 'FR-4 CTI≥600 1.1MM H/H 41\"*49\" 含铜 黄料 无水印', '10', '1542519498');
+INSERT INTO `syc_store_log` VALUES ('120', '1', '0', '0', '5', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '2', '1542519498');
 
 -- ----------------------------
 -- Table structure for syc_supplier
@@ -2443,7 +2452,7 @@ CREATE TABLE `syc_users` (
 -- Records of syc_users
 -- ----------------------------
 INSERT INTO `syc_users` VALUES ('1', 'asdasd', 'sha256:1000:X2vbzkCcKSScvZZ5ZUDs7DvTmergIc5u:fQt8UQynrp5psap5MoOq4scNMLNhcjIl', '开发者', '1', '354575573@qq.com', '/uploads/avatar/582d3a26a3369.jpg', '2017-01-01', '180', '1451577600', '1538191190', '127.0.0.1', '127.0.0.1', '16', '1');
-INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '84', '1533480247', '1542359090', '192.168.1.225', '', '16', '1');
+INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '86', '1533480247', '1542537443', '192.168.1.225', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('3', 'nice172', 'sha256:1000:GM0kcPbE+QNRSpmsG58qckJUkekhvpwi:XwmDtVMPAfE8DDYUdVW5DF5AOLljRm8q', '测试号', '1', 'nice172@163.com', '', '2018-08-06', '9', '1533526543', '1536806739', '10.10.0.99', '', '14', '1');
 INSERT INTO `syc_users` VALUES ('4', 'tom', 'sha256:1000:VqFfxce0SSP92ZahxbPXg7BTznRFzDk9:o/oG8udat6G/OTMVUaxT+UXp+QaGoU1p', '彭立新', '1', 'tompeng@qq.com', '', '2015-09-01', '24', '1536054353', '1539048764', '183.4.133.164', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('5', 'wzc1997', 'sha256:1000:+78wHUCJ2i0Pqv/BtFpJNezAZSrysrl3:2M4x66/txhRftgPkD+Zzjvvux4k69OG4', '韦宗超', '1', '11418212@qq.com', '', '2018-09-01', '2', '1536058218', '1536216215', '183.4.133.164', '', '16', '1');

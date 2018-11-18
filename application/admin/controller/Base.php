@@ -44,6 +44,10 @@
          }
          $this->menu();
          $this->assign('empty',$this->empty);
+         $this->assign('empty2','<div class="weui-loadmore weui-loadmore_line">
+  <span class="weui-loadmore__tips">暂无数据</span>
+</div>');
+         
      }
 
      private function menu(){

@@ -47,9 +47,19 @@ class Store extends Base {
         $result = db('store_log l')->where("(l.order_id={$order_id} OR type=3 OR type=4 OR type=5) and l.goods_id=".$goods_id)
         ->join('__GOODS__ g','l.goods_id=g.goods_id')
         ->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
-        ->field('l.*,gc.category_name')->order('l.create_time desc')->paginate(config('page_size'), false, ['query' => $this->request->param()]);
+        ->field('l.*,gc.category_name,g.unit')->order('l.create_time desc')->paginate(config('page_size'), false, ['query' => $this->request->param()]);
+        $data = $result->all();
         $this->assign('page',$result->render());
-        $this->assign('data',$result->all());
+        $this->assign('title','库存变动记录');
+        $this->assign('data',$data);
+        $this->assign('current_page', $result->getCurrentPage());
+        $this->assign('total_page', $result->lastPage());
+        $this->assign('params', $this->request->query());
+        if ($this->request->isMobile() && $this->request->isAjax()) {
+        	if (empty($data)) $this->success('ok','');
+        	
+        	return $this->fetch('load');
+        }
         return $this->fetch();
     }
     
@@ -181,10 +191,22 @@ class Store extends Base {
         $result = $db->join('__INPUT_GOODS__ g','i.id=g.input_id')
         ->join('__SUPPLIER__ s','s.id=i.supplier_id')->field('i.*,s.supplier_name,g.goods_id,g.goods_name,g.unit,g.goods_price,g.goods_number,g.remark as goods_remark')
         ->paginate(config('page_size'),false,['query' => $this->request->param()]);
-        
+        $list = $result->all();
+        foreach ($list as $key => $value){
+        	$list[$key]['category_name'] = db('goods g')->join('__GOODS_CATEGORY__ c','g.category_id=c.category_id')->value('c.category_name');
+        }
         $this->assign('title','采购入库');
-        $this->assign('list',$result->all());
+        $this->assign('list',$list);
         $this->assign('page',$result->render());
+        $this->assign('current_page', $result->getCurrentPage());
+        $this->assign('total_page', $result->lastPage());
+        $this->assign('params', $this->request->query());
+        if ($this->request->isMobile()) {
+        	if ($this->request->isAjax()) {
+        		if (empty($list)) $this->success('ok','');
+        		return $this->fetch('load_purchase');
+        	}
+        }
         return $this->fetch();
     }
     
@@ -369,16 +391,105 @@ class Store extends Base {
         $this->assign('pjson',json_encode($list));
         $this->assign('list',$list);
         $this->assign('page',$page);
-        
+        $this->assign('current_page', $result->getCurrentPage());
+        $this->assign('total_page', $result->lastPage());
+        $this->assign('query', $this->request->query());
+        if ($this->request->isMobile() && $this->request->isAjax()){
+        	$this->success('ok','',$list);
+        }
         $this->assign('title','查询采购单');
         return $this->fetch();
     }
     
     public function edit(){
+    	if ($this->request->isAjax()){
+    		$data = [
+    				'admin_uid' => $this->userinfo['id'],
+    				'po_id' => $this->request->post('po_id'),
+    				'store_sn' => $this->request->post('store_sn'),
+    				'po_sn' => $this->request->post('po_sn'),
+    				'cus_name' => $this->request->post('cus_name'),
+    				'supplier_id' => $this->request->post('supplier_id'),
+    				'remark' => $this->request->post('store_remark'),
+    				'purchase_date' => $this->request->post('purchase_date'),
+    				'update_time' => time(),
+    				'create_time' => time()
+    		];
+    		if (empty($data['store_sn'])) $this->error('入库单号不能为空');
+    		if (empty($data['po_sn'])) $this->error('采购单号不能为空');
+    		if (empty($data['cus_name'])) $this->error('送货公司不能为空');
+    		$goods = $this->_get_goods($data['po_id']);
+    		$input_store = $this->request->post('input_store/a');
+    		$remark = $this->request->post('remark/a');
+    		foreach ($goods as $key => $value){
+    			if (isset($input_store[$value['goods_id']])){
+    				$x = $input_store[$value['goods_id']][0];
+    				if ($x > $value['goods_number'] && $value['input_store']!=0) {
+    					$this->error('“'.$value['goods_name'].'”入库数量不能大于采购数量');
+    				}
+    				if ($value['goods_number'] < $x+$value['input_store']) {
+    					$this->error('“'.$value['goods_name'].'”本次入库数量+已入库数量不能大于采购数量');
+    				}
+    			}else{
+    				$this->error('“'.$value['goods_name'].'”不存在');
+    			}
+    		}
+    		
+    		db()->startTrans();
+    		$input_id = db('input_store')->insertGetId($data);
+    		if ($input_id && !empty($goods)){
+    			$temp = [];
+    			foreach ($goods as $key => $value){
+    				$m = [
+    						'input_id' => $input_id,
+    						'goods_id' => $value['goods_id'],
+    						'goods_name' => $value['goods_name'],
+    						'unit' => $value['unit'],
+    						'goods_price' => $value['goods_price'],
+    						'create_time' => time()
+    				];
+    				
+    				if (isset($input_store[$value['goods_id']])){
+    					$v = $input_store[$value['goods_id']][0];
+    					if ($value['goods_number'] - $value['input_store'] < $v) {
+    						$v = $value['goods_number'] - $value['input_store'];
+    					}
+    					$m['goods_number'] = $v;
+    					db('purchase_goods')->where(['purchase_id' => $data['po_id'],'goods_id' => $value['goods_id']])->setInc('input_store',$v);
+    					db('store_log')->insert([
+    							'input_id' => $input_id,
+    							'goods_id' => $value['goods_id'],
+    							'goods_name' => $value['goods_name'],
+    							'type' => 5, //采购入库
+    							'number' => $v,
+    							'create_time' => time()
+    					]);
+    				}
+    				if (isset($remark[$value['goods_id']])){
+    					$m['remark'] = $remark[$value['goods_id']];
+    				}
+    				
+    				$temp[] = $m;
+    			}
+    			$res = db('input_goods')->insertAll($temp);
+    			if ($res){
+    				db()->commit();
+    				$this->success('新增成功');
+    			}
+    			db()->rollback();
+    		}else{
+    			$this->error('新增失败');
+    		}
+    		return;
+    	}
         $id = $this->request->param('id',0,'intval');
         $data = db('input_store')->where(['id' => $id])->find();
         if (empty($data)) $this->error('采购入库单信息不存在');
-        $goodslist = db('input_goods')->where(['input_id' => $id])->select();
+        $goodslist = db('input_goods i')->join('__PURCHASE_GOODS__ p','i.goods_id=p.goods_id')
+        ->field('p.goods_number,i.goods_id,i.goods_name,i.unit,i.goods_price,i.goods_number as input_store,i.remark,i.create_time')
+        ->where(['i.input_id' => $id,'p.purchase_id' => $data['po_id']])->select();
+        $data['supplier_name'] = db('supplier')->where(['id' => $data['supplier_id']])->value('supplier_name');
+        $data['store_remark'] = $data['remark'];
         $this->assign('data',$data);
         $this->assign('goodslist',json_encode($goodslist));
         $this->assign('title','编辑采购入库');

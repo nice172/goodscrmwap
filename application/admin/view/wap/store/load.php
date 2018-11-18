@@ -1,4 +1,4 @@
-{foreach name="list" item="v"}
+{foreach name="list" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
       <div class="weui-form-preview__bd">                
         <div class="weui-form-preview__item">
@@ -29,7 +29,7 @@
         </div>
       </div>
         <div class="button-block">
-        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['id' => $v['id']])}'">变动记录</button>
+        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('log',['goods_id' => $v['goods_id'],'order_id' => $v['order_id']])}'">变动记录</button>
         	
         </div>
 </div>

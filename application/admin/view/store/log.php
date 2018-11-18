@@ -39,6 +39,8 @@
                                     	报溢
                                     {elseif condition="$vo['type']==4"}
                                     	报损
+                                    {elseif condition="$vo['type']==5"}
+                                    	采购入库
                                     {/if}
                                     </td>
                                     <td>{$vo.category_name}</td>

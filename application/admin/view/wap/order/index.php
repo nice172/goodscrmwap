@@ -90,7 +90,7 @@
 
 <!-- <div class="block10"></div> -->
 <div class="main">
-{foreach name="list" item="v"}
+{foreach name="list" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
   <div class="weui-form-preview__hd">
     <label class="weui-form-preview__label">送货日期：{$v.require_time|date='Y-m-d',###}</label>

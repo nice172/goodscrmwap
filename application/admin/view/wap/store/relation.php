@@ -8,6 +8,17 @@
 .weui-form-preview:before{
 	border:none;
 }
+.bottom .item {
+	width:50%;
+	float:left;
+}
+.bottom .item a{
+	display:block;
+	color:#fff;
+}
+.bottom .left-box a{
+	border-right:1px solid #fff;
+}
 .weui-form-preview__hd{
     padding:0px 10px;
 }
@@ -88,7 +99,7 @@
     	</div>
       <div class="weui-form-preview__bd" style="padding-top:0;">
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">供应商：</label>
+          <label class="weui-form-preview__label"> &nbsp;&nbsp; 供应商：</label>
           <span class="weui-form-preview__value" style="text-align: left;">
           <input type="text" name="supplier_name" />
           </span>
@@ -96,7 +107,7 @@
     	</div>
       <div class="weui-form-preview__bd" style="padding-top:0;">
               <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">创建时间：</label>
+          <label class="weui-form-preview__label">商品分类：</label>
           <span class="weui-form-preview__value" style="text-align: left;">
 			<select name="category_id" class="form-control" id="category_id">
                                      <option value="">--请选择分类--</option>
@@ -120,7 +131,7 @@
 
 <!-- <div class="block10"></div> -->
 <div class="main">
-{foreach name="list" item="v"}
+{foreach name="list" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
       <div class="weui-form-preview__bd">                
         <div class="weui-form-preview__item">
@@ -137,7 +148,7 @@
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">单位：</label>
-          <span class="weui-form-preview__value">{$v.unit}
+          <span class="weui-form-preview__value" style="text-align: left;">{$v.unit}
           	<span style="float: right;">单价：{$v.store_number}元</span>
           </span>
         </div>
@@ -151,7 +162,7 @@
         </div>
       </div>
         <div class="button-block">
-        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['id' => $v['id']])}'">变动记录</button>
+        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('log',['goods_id' => $v['goods_id'],'order_id' => $v['order_id']])}'">变动记录</button>
         </div>
 </div>
 {/foreach}
@@ -168,7 +179,7 @@
 </div>
 
 </div>
-<div class="bottom" onclick="window.location.href='{:url('add')}'">新 建</div>
+<div class="bottom" onclick="window.location.href='{:url('purchase')}'">查看采购入库单</div>
 {/block}
 
 {block name="footer"}
@@ -278,7 +289,7 @@
 	      current_page++;
 	      $.ajax({
 				type: 'GET',
-				url: "{:url('index')}?page="+current_page+"&"+params,
+				url: "{:url('')}?page="+current_page+"&"+params,
 				success: function(res){
 					loading = false;
 					if(typeof res == 'object' && res.code == 1){
