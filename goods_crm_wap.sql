@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2018-11-18 22:53:58
+Date: 2018-11-19 23:29:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -563,6 +563,7 @@ CREATE TABLE `syc_delivery_order` (
   `delivery_way` varchar(100) NOT NULL DEFAULT '',
   `delivery_driver` varchar(50) NOT NULL DEFAULT '',
   `driver_tel` varchar(50) NOT NULL DEFAULT '',
+  `remark` text,
   `relation_type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0采购单关联订单，1随意送货订单',
   `status` tinyint(2) NOT NULL DEFAULT '0',
   `is_confirm` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '1确认',
@@ -578,9 +579,9 @@ CREATE TABLE `syc_delivery_order` (
 -- ----------------------------
 -- Records of syc_delivery_order
 -- ----------------------------
-INSERT INTO `syc_delivery_order` VALUES ('39', '2', '39', 'DN201810014614141014', 'PO201810014139391039', '2018-10-03', '2018-10-01', '8016.00', '47', 'SO201810014048481048', '清远市富盈电子有限公司', '1689', '王平', '13729678720', '广东省清远市清城区嘉福工业园C区仓库', '302240204000112', '货拉拉', '张司机', '13640734742', '1', '0', '1', '1', '1', '0', '1538390819', '1538390819');
-INSERT INTO `syc_delivery_order` VALUES ('40', '4', '40', 'DN201810071258581058', 'PO201810070208081008', '2018-10-10', '2018-10-07', '6384.20', '48', 'SO201810075835351035', '惠州市利贞电子有限公司', '1688', '梁小姐', '13544889992', '广东省惠州市博罗县龙溪镇埔上村建时工业园内', '45678999999', '货运', '周', '15948867000', '1', '0', '1', '1', '1', '0', '1538925366', '1538925366');
-INSERT INTO `syc_delivery_order` VALUES ('41', '4', '41', 'DN201810080153531053', 'PO201810083404041004', '2018-10-10', '2018-10-08', '2446.50', '49', 'SO201810083141411041', '惠州市利贞电子有限公司', '1688', '叶秋兰', '1234566778', '广东省惠州市博罗县龙溪镇埔上村建时工业园内', '123455666', '货运', '周1254666', '134886446633', '1', '0', '1', '1', '1', '0', '1539011056', '1539011056');
+INSERT INTO `syc_delivery_order` VALUES ('39', '2', '39', 'DN201810014614141014', 'PO201810014139391039', '2018-10-03', '2018-10-01', '8016.00', '47', 'SO201810014048481048', '清远市富盈电子有限公司', '1689', '王平', '13729678720', '广东省清远市清城区嘉福工业园C区仓库', '302240204000112', '货拉拉', '张司机', '13640734742', null, '1', '0', '1', '1', '1', '0', '1538390819', '1538390819');
+INSERT INTO `syc_delivery_order` VALUES ('40', '4', '40', 'DN201810071258581058', 'PO201810070208081008', '2018-10-10', '2018-10-07', '6384.20', '48', 'SO201810075835351035', '惠州市利贞电子有限公司', '1688', '梁小姐', '13544889992', '广东省惠州市博罗县龙溪镇埔上村建时工业园内', '45678999999', '货运', '周', '15948867000', null, '1', '0', '1', '1', '1', '0', '1538925366', '1538925366');
+INSERT INTO `syc_delivery_order` VALUES ('41', '4', '41', 'DN201810080153531053', 'PO201810083404041004', '2018-10-10', '2018-10-08', '2446.50', '49', 'SO201810083141411041', '惠州市利贞电子有限公司', '1688', '叶秋兰', '1234566778', '广东省惠州市博罗县龙溪镇埔上村建时工业园内', '123455666', '货运', '周1254666', '134886446633', null, '1', '0', '0', '0', '1', '0', '1539011056', '1539011056');
 
 -- ----------------------------
 -- Table structure for syc_finance
@@ -2452,7 +2453,7 @@ CREATE TABLE `syc_users` (
 -- Records of syc_users
 -- ----------------------------
 INSERT INTO `syc_users` VALUES ('1', 'asdasd', 'sha256:1000:X2vbzkCcKSScvZZ5ZUDs7DvTmergIc5u:fQt8UQynrp5psap5MoOq4scNMLNhcjIl', '开发者', '1', '354575573@qq.com', '/uploads/avatar/582d3a26a3369.jpg', '2017-01-01', '180', '1451577600', '1538191190', '127.0.0.1', '127.0.0.1', '16', '1');
-INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '86', '1533480247', '1542537443', '192.168.1.225', '', '16', '1');
+INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '87', '1533480247', '1542636004', '192.168.1.225', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('3', 'nice172', 'sha256:1000:GM0kcPbE+QNRSpmsG58qckJUkekhvpwi:XwmDtVMPAfE8DDYUdVW5DF5AOLljRm8q', '测试号', '1', 'nice172@163.com', '', '2018-08-06', '9', '1533526543', '1536806739', '10.10.0.99', '', '14', '1');
 INSERT INTO `syc_users` VALUES ('4', 'tom', 'sha256:1000:VqFfxce0SSP92ZahxbPXg7BTznRFzDk9:o/oG8udat6G/OTMVUaxT+UXp+QaGoU1p', '彭立新', '1', 'tompeng@qq.com', '', '2015-09-01', '24', '1536054353', '1539048764', '183.4.133.164', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('5', 'wzc1997', 'sha256:1000:+78wHUCJ2i0Pqv/BtFpJNezAZSrysrl3:2M4x66/txhRftgPkD+Zzjvvux4k69OG4', '韦宗超', '1', '11418212@qq.com', '', '2018-09-01', '2', '1536058218', '1536216215', '183.4.133.164', '', '16', '1');

@@ -69,7 +69,14 @@ class Delivery extends Base {
         
         $this->assign('page',$result->render());
         $this->assign('list',$result);
-        $this->assign('title','送货单');
+        $this->assign('current_page', $result->getCurrentPage());
+        $this->assign('total_page', $result->lastPage());
+        $this->assign('params', $this->request->query());
+        if ($this->request->isMobile()){
+        	$this->assign('title','送货单管理');
+        }else{
+        	$this->assign('title','送货单');
+        }
         return $this->fetch();
     }
     
@@ -115,12 +122,10 @@ class Delivery extends Base {
             }
             $totalMoney += $value['goods_number']*$value['goods_price'];
         }
-        
         $this->assign('goodslist',json_encode($templist));
+        $this->assign('goodslistArr',$templist);
         $this->assign('delivery',$delivery_order);
-		//增加客户订单号变量
 		$this->assign('cus_order_sn',$cus_order_sn);
-		
         $this->assign('title','送货单详情');
         return $this->fetch();
     }
@@ -352,7 +357,6 @@ class Delivery extends Base {
                 db('delivery_order')->where(['id' => $id])->setField('is_print',1);
             }
             $order = db('order')->where(['id' => $delivery['order_id']])->find();
-            
             $mpdf = new mPDF('zh-CN/utf-8','A4', 0, '宋体', 0, 0);
             $mpdf->SetWatermarkText(getTextParams(14),0.1);
             $logo = getFileParams(12);

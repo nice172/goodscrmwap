@@ -52,6 +52,38 @@ footer {
 .weui-toptips{
 	z-index:9999999;
 }
+.block10{
+	margin-top:10px;
+}
+.clear{
+	clear:both;
+}
+.bottom a{
+	display:block;
+	color:#fff;
+}
+.bottom {
+	position:fixed;
+	bottom:0px;
+	width:100%;
+	height:50px;
+	background:#1aad19;
+	color:#fff;
+	text-align:center;
+	line-height:50px;
+}
+.bottom .item {
+	width:50%;
+	float:left;
+}
+.bottom .item a{
+	display:block;
+	color:#fff;
+}
+.bottom .left-box a{
+	border-right:1px solid #fff;
+}
+
 footer a {
   color: #999;
   text-decoration: none;

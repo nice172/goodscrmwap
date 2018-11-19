@@ -36,11 +36,24 @@
 .block10{
 	margin-top:5px;
 }
+.clear{
+	clear:both;
+}
 .weui-form-preview__value input {
 	border:1px solid #e5e5e5;
 	padding:5px;
 	width:39%;
 	outline: none;
+}
+.bottom {
+	position:fixed;
+	bottom:0px;
+	width:100%;
+	height:50px;
+	background:#1aad19;
+	color:#fff;
+	text-align:center;
+	line-height:50px;
 }
 </style>
 {/block}
@@ -61,7 +74,7 @@
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">客户名称：</label>
           <span class="weui-form-preview__value" style="text-align: left;">
-          <input type="text" name="company_short" />&nbsp;<button type="submit" class="weui-btn weui-btn_mini weui-btn_plain-default">查询</button>
+          <input type="text" name="cus_name" />&nbsp;<button type="submit" class="weui-btn weui-btn_mini weui-btn_plain-default">查询</button>
           </span>
         </div>
     	</div>
@@ -75,23 +88,23 @@
 <div class="weui-form-preview list">
       <div class="weui-form-preview__bd">
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">报价单号：</label>
-          <span class="weui-form-preview__value">{$v.order_sn}</span>
+          <label class="weui-form-preview__label">送货单号：</label>
+          <span class="weui-form-preview__value">{$v.order_dn}</span>
         </div>
         
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">报价日期：</label>
-          <span class="weui-form-preview__value">{$v.create_time|date="Y-m-d",###}</span>
+          <label class="weui-form-preview__label">送货日期：</label>
+          <span class="weui-form-preview__value">{$v.delivery_date}</span>
         </div>
         
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">客户名称：</label>
-          <span class="weui-form-preview__value">{$v.company_name}</span>
+          <span class="weui-form-preview__value">{$v.cus_name}</span>
         </div>
         
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">联系人：</label>
-          <span class="weui-form-preview__value">{$v.contacts}</span>
+          <label class="weui-form-preview__label">关联订单：</label>
+          <span class="weui-form-preview__value">{$v.order_sn}</span>
         </div>
         
         <div class="weui-form-preview__item">
@@ -101,9 +114,9 @@
         
       </div>
         <div class="button-block">
-        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['gid' => $v['id']])}'">查看</button>
-            <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['gid' => $v['id']])}'">编辑</button>
-          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="send(this,{$v.id})">发送</button>
+        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['id' => $v['id']])}'">查看</button>
+            <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['id' => $v['id']])}'">编辑</button>
+          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="cancel(this,{$v.id})">取消</button>
         </div>
 </div>
 {/foreach}

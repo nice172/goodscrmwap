@@ -42,25 +42,14 @@
 .block10{
 	margin-top:5px;
 }
-.clear{
-	clear:both;
-}
+
 .weui-form-preview__value input {
 	border:1px solid #e5e5e5;
 	padding:5px;
 	width:39%;
 	outline: none;
 }
-.bottom {
-	position:fixed;
-	bottom:0px;
-	width:100%;
-	height:50px;
-	background:#1aad19;
-	color:#fff;
-	text-align:center;
-	line-height:50px;
-}
+
 </style>
 {/block}
 

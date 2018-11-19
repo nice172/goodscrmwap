@@ -1,37 +1,12 @@
 {extend name="public/common" /}
 {block name="header"}
 <style type="text/css">
+body{
+	background:#fff;
+}
 .main {
 	margin-top:40px;
 }
-.block10{
-	margin-top:10px;
-}
-.clear{
-	clear:both;
-}
-.bottom {
-	position:fixed;
-	bottom:0px;
-	width:100%;
-	height:50px;
-	background:#1aad19;
-	color:#fff;
-	text-align:center;
-	line-height:50px;
-}
-.bottom .item {
-	width:50%;
-	float:left;
-}
-.bottom .item a{
-	display:block;
-	color:#fff;
-}
-.bottom .left-box a{
-	border-right:1px solid #fff;
-}
-
 .goods_list .weui-form-preview__value{
 	text-align:left;
 	line-height:1.2;
