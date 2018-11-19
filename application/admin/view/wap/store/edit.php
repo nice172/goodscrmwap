@@ -75,9 +75,10 @@ body{background:#fff;}
       商品
     </a>
   </div>
-<form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('add');?>" id="saveOrder" method="post">
-    <input type="hidden" name="po_id" id="po_id" />
-    <input type="hidden" name="supplier_id" id="supplier_id" />
+<form class="form-horizontal" enctype="multipart/form-data" id="saveOrder" method="post">
+    <input type="hidden" name="id" id="id" value="{$data.id}"/>
+    <input type="hidden" name="po_id" id="po_id" value="{$data.po_id}"/>
+    <input type="hidden" name="supplier_id" value="{$data.supplier_id}" id="supplier_id" />
 	<div style="margin-bottom: 60px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
     <div class="weui-cells weui-cells_form">
@@ -98,7 +99,7 @@ body{background:#fff;}
       <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">采购单号：</label></div>
         <div class="weui-cell__bd" style="position:relative;">
-          <input class="weui-input" type="text" value="" name="po_sn" id="po_sn"/>
+          <input class="weui-input" type="text" value="{$data.po_sn}" name="po_sn" id="po_sn"/>
 		  <button type="button" style="position: absolute;right:0;top:-2px;" class="weui-btn weui-btn_mini weui-btn_primary" id="search_company">查找</button>
         </div>
       </div>
@@ -106,21 +107,21 @@ body{background:#fff;}
             <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">供应商：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="supplier_name" id="supplier_name" />
+          <input class="weui-input" type="text" value="{$data.supplier_name}" name="supplier_name" id="supplier_name" />
         </div>
       </div>
       
             <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">采购日期：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="purchase_date" value="" id="purchase_date" />
+          <input class="weui-input" type="text" name="purchase_date" value="{$data.purchase_date}" id="purchase_date" />
         </div>
       </div>
       
             <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">送货公司：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="cus_name" value="" id="cus_name"/>
+          <input class="weui-input" type="text" name="cus_name" value="{$data.cus_name}" id="cus_name"/>
         </div>
       </div>
       
@@ -129,7 +130,7 @@ body{background:#fff;}
     <div class="weui-cells">
       <div class="weui-cell">
         <div class="weui-cell__bd">
-          <textarea class="weui-textarea" name="store_remark" style="height:150px;" placeholder="输入内容"></textarea>
+          <textarea class="weui-textarea" name="store_remark" style="height:150px;" placeholder="输入内容">{$data.store_remark}</textarea>
         </div>
       </div>
     </div>
@@ -182,9 +183,9 @@ function client_info(data){
 }
 
 var goods_info = new Array();
-<?php if(!empty($data['goodsInfo'])){ foreach ($data['goodsInfo'] as $goods){?>
-goods_info.push(<?php echo $goods;?>);
-<?php }}?>
+<?php if(!empty($goodslist)){ ?>
+goods_info = {$goodslist};
+<?php }?>
 if(goods_info.length > 0){
 	goodsList(goods_info);
 }
@@ -210,7 +211,7 @@ function goodsList(data){
 		html +='<div class="weui-form-preview__bd">';
 		html +='<div class="weui-form-preview__item">';
 		html +='<label class="weui-form-preview__label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;称：</label>';
-		html +='<span class="weui-form-preview__value">'+data[i]['goods_name']+'</span>';
+		html +='<span class="weui-form-preview__value" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">'+data[i]['goods_name']+'</span>';
 		html +='</div>';
 		html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 		html +='<label class="weui-form-preview__label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单&nbsp;位：</label>';
@@ -222,7 +223,7 @@ function goodsList(data){
 		html +='</div>';
 		html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 		html +='<label class="weui-form-preview__label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;备&nbsp;注：</label>';
-		html +='<span class="weui-form-preview__value remark"><input type="text" class="'+input_css+'" name="remark['+data[i]['goods_id']+'][]"/></span>';
+		html +='<span class="weui-form-preview__value remark"><input type="text" class="'+input_css+'" name="remark['+data[i]['goods_id']+']"/></span>';
 		html +='</div>';
 		html +='</div></div>';
 	}

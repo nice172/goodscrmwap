@@ -404,81 +404,90 @@ class Store extends Base {
     public function edit(){
     	if ($this->request->isAjax()){
     		$data = [
-    				'admin_uid' => $this->userinfo['id'],
-    				'po_id' => $this->request->post('po_id'),
-    				'store_sn' => $this->request->post('store_sn'),
-    				'po_sn' => $this->request->post('po_sn'),
-    				'cus_name' => $this->request->post('cus_name'),
-    				'supplier_id' => $this->request->post('supplier_id'),
-    				'remark' => $this->request->post('store_remark'),
-    				'purchase_date' => $this->request->post('purchase_date'),
-    				'update_time' => time(),
-    				'create_time' => time()
+				'admin_uid' => $this->userinfo['id'],
+				'po_id' => $this->request->post('po_id'),
+				'store_sn' => $this->request->post('store_sn'),
+				'po_sn' => $this->request->post('po_sn'),
+				'cus_name' => $this->request->post('cus_name'),
+				'supplier_id' => $this->request->post('supplier_id'),
+				'remark' => $this->request->post('store_remark'),
+				'purchase_date' => $this->request->post('purchase_date'),
+				'update_time' => time(),
     		];
     		if (empty($data['store_sn'])) $this->error('入库单号不能为空');
     		if (empty($data['po_sn'])) $this->error('采购单号不能为空');
     		if (empty($data['cus_name'])) $this->error('送货公司不能为空');
-    		$goods = $this->_get_goods($data['po_id']);
-    		$input_store = $this->request->post('input_store/a');
-    		$remark = $this->request->post('remark/a');
-    		foreach ($goods as $key => $value){
-    			if (isset($input_store[$value['goods_id']])){
-    				$x = $input_store[$value['goods_id']][0];
-    				if ($x > $value['goods_number'] && $value['input_store']!=0) {
-    					$this->error('“'.$value['goods_name'].'”入库数量不能大于采购数量');
-    				}
-    				if ($value['goods_number'] < $x+$value['input_store']) {
-    					$this->error('“'.$value['goods_name'].'”本次入库数量+已入库数量不能大于采购数量');
-    				}
-    			}else{
-    				$this->error('“'.$value['goods_name'].'”不存在');
-    			}
-    		}
-    		
-    		db()->startTrans();
-    		$input_id = db('input_store')->insertGetId($data);
-    		if ($input_id && !empty($goods)){
-    			$temp = [];
-    			foreach ($goods as $key => $value){
-    				$m = [
-    						'input_id' => $input_id,
-    						'goods_id' => $value['goods_id'],
-    						'goods_name' => $value['goods_name'],
-    						'unit' => $value['unit'],
-    						'goods_price' => $value['goods_price'],
-    						'create_time' => time()
-    				];
-    				
-    				if (isset($input_store[$value['goods_id']])){
-    					$v = $input_store[$value['goods_id']][0];
-    					if ($value['goods_number'] - $value['input_store'] < $v) {
-    						$v = $value['goods_number'] - $value['input_store'];
-    					}
-    					$m['goods_number'] = $v;
-    					db('purchase_goods')->where(['purchase_id' => $data['po_id'],'goods_id' => $value['goods_id']])->setInc('input_store',$v);
-    					db('store_log')->insert([
-    							'input_id' => $input_id,
-    							'goods_id' => $value['goods_id'],
-    							'goods_name' => $value['goods_name'],
-    							'type' => 5, //采购入库
-    							'number' => $v,
-    							'create_time' => time()
-    					]);
-    				}
-    				if (isset($remark[$value['goods_id']])){
-    					$m['remark'] = $remark[$value['goods_id']];
-    				}
-    				
-    				$temp[] = $m;
-    			}
-    			$res = db('input_goods')->insertAll($temp);
-    			if ($res){
-    				db()->commit();
-    				$this->success('新增成功');
-    			}
-    			db()->rollback();
-    		}else{
-    			$this->error('新增失败');
+    		$input_id = intval($this->request->post('id'));
+    		if ($input_id) {
+    		    $goods = $this->_get_goods($data['po_id']);
+    		    $input_store = $this->request->post('input_store/a');
+    		    $remark = $this->request->post('remark/a');
+    		    foreach ($goods as $key => $value){
+    		        if (isset($input_store[$value['goods_id']])){
+    		            $x = $input_store[$value['goods_id']][0];
+    		            if ($x > $value['goods_number'] && $value['input_store']!=0) {
+    		                $this->error('“'.$value['goods_name'].'”入库数量不能大于采购数量');
+    		            }
+    		            if ($value['goods_number'] < $x+$value['input_store']) {
+    		                $this->error('“'.$value['goods_name'].'”本次入库数量+已入库数量不能大于采购数量');
+    		            }
+    		        }else{
+    		            $this->error('“'.$value['goods_name'].'”不存在');
+    		        }
+    		    }
+    		    $oldData = db('input_store')->where(['id' => $input_id])->find();
+    		    db()->startTrans();
+    		    $storeList = db('input_goods')->where(['input_id' => $oldData['id']])->select();
+    		    db('input_goods')->where(['input_id' => $oldData['id']])->delete();
+    		    db('store_log')->where(['input_id' => $oldData['id']])->delete();
+    		    foreach ($storeList as $key => $value){
+    		        db('purchase_goods')->where(['purchase_id' => $oldData['po_id'],'goods_id' => $value['goods_id']])->setDec('input_store',$value['goods_number']);
+    		    }
+    		    db('input_store')->where(['id' => $oldData['id']])->update($data);
+    		    $input_id = $oldData['id'];
+    		    if ($input_id && !empty($goods)){
+    		        $temp = [];
+    		        foreach ($goods as $key => $value){
+    		            $m = [
+    		                'input_id' => $input_id,
+    		                'goods_id' => $value['goods_id'],
+    		                'goods_name' => $value['goods_name'],
+    		                'unit' => $value['unit'],
+    		                'goods_price' => $value['goods_price'],
+    		                'create_time' => time()
+    		            ];
+    		            
+    		            if (isset($input_store[$value['goods_id']])){
+    		                $v = $input_store[$value['goods_id']][0];
+    		                if ($value['goods_number'] - $value['input_store'] < $v) {
+    		                    $v = $value['goods_number'] - $value['input_store'];
+    		                }
+    		                $m['goods_number'] = $v;
+    		                db('purchase_goods')->where(['purchase_id' => $data['po_id'],'goods_id' => $value['goods_id']])->setInc('input_store',$v);
+    		                db('store_log')->insert([
+    		                    'input_id' => $input_id,
+    		                    'goods_id' => $value['goods_id'],
+    		                    'goods_name' => $value['goods_name'],
+    		                    'type' => 5, //采购入库
+    		                    'number' => $v,
+    		                    'create_time' => time()
+    		                ]);
+    		            }
+    		            if (isset($remark[$value['goods_id']])){
+    		                $m['remark'] = $remark[$value['goods_id']];
+    		            }
+    		            
+    		            $temp[] = $m;
+    		        }
+    		        $res = db('input_goods')->insertAll($temp);
+    		        if ($res){
+    		            db()->commit();
+    		            $this->success('编辑成功');
+    		        }
+    		        db()->rollback();
+    		    }else{
+    		        $this->error('编辑失败');
+    		    }
     		}
     		return;
     	}
