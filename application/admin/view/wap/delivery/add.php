@@ -138,16 +138,44 @@ body{background:#fff;}
             <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">关联入库：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="relation_order" id="relation_order" />
+          <input class="weui-input" type="text" name="relation_order" placeholder="关联入库单" id="relation_order" />
         </div>
       </div>
-            <div class="weui-cell">
+       
+       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">关联采购：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="relation_po" id="relation_po" />
+          <input class="weui-input" type="text" name="relation_po" placeholder="关联采购单" id="relation_po" />
         </div>
       </div>
       
+       <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">物流单号：</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text" name="delivery_sn" placeholder="请输入物流单号" id="delivery_sn" />
+        </div>
+      </div>
+      
+       <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">交货方式：</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text" name="delivery_way" placeholder="请输入交货方式" id="delivery_way" />
+        </div>
+      </div>
+      
+       <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">送货司机：</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text" name="delivery_driver" placeholder="请输入送货司机" id="delivery_driver" />
+        </div>
+      </div>
+      
+       <div class="weui-cell">
+        <div class="weui-cell__hd"><label class="weui-label">司机电话：</label></div>
+        <div class="weui-cell__bd">
+          <input class="weui-input" type="text" name="driver_tel" placeholder="请输入司机电话" id="driver_tel" />
+        </div>
+      </div>
       
      <div class="weui-cell" style="padding:2px 10px;"></div>
     <div class="weui-cells__title">备注：</div>
@@ -162,7 +190,6 @@ body{background:#fff;}
 </div>
 
 <div id="tab2" class="weui-tab__bd-item tab_hide">
-<p style="padding:30px 0 5px 10px;"><a href="javascript:;" class="get_goods">添加商品</a></p>
 <div class="appendList"></div>
 </div>
 </div>
