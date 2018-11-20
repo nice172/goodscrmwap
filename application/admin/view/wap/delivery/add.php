@@ -237,6 +237,17 @@ $('.get_goods').click(function(){
    	 content: '{:url(\'get_goods\')}?cus_id='+$('#cus_id').val(),
   });
 });
+$("#search_order").click(function () {
+    var title = '查找订单';
+    index_layer = layer.open({
+      	 type: 2,
+      	 title: false,
+      	 closeBtn: true,
+      	 shade: 0.3,
+      	 area: ['90%', '90%'],
+      	 content: '{:url(\'relation_order\')}?purchase_id=0',
+     });
+});
 function client_info(data){
 	$('#cus_id').val(data.id);
 	$('#company_name').val(data.company_name);

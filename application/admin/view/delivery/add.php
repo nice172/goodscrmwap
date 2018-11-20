@@ -40,10 +40,10 @@
                                 </tr>
 								
                                 <tr>
-									<td width="15%" class="right-color"><span class="text-danger">*</span><span>采购单:</span></td>
+									<td width="15%" class="right-color"><span class="text-danger">*</span><span>订单号码:</span></td>
 									<td width="35%">
-										<input type="text" class="form-control w300" readonly="readonly" style="display:inline-block;" name="po_sn" id="po_sn">
-										<button type="button" class="btn btn-primary search_purchase" style="margin-top:-4px;">查找</button>
+										<input type="text" class="form-control w300" readonly="readonly" style="display:inline-block;" name="order_sn" id="order_sn">
+										<button type="button" class="btn btn-primary relation_order" style="margin-top:-4px;">查找</button>
 									</td>
 									
 									<td width="15%" class="right-color"><span class="text-danger">*</span><span>客户订单号:</span></td>
@@ -52,7 +52,7 @@
 									</td>
 	
                                 </tr>
-                                <tr>
+                                <tr style="display: none;">
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>采购日期:</span></td>
                                     <td width="35%">
                                         <input type="text" class="form-control w300" name="purchase_date" id="purchase_date">
@@ -87,11 +87,13 @@
                                 </tr>
 								
 								<tr>
-									<td width="15%" class="right-color"><span class="text-danger">*</span><span>关联订单:</span></td>
-									<td width="35%" colspan="3">
-										<input type="text" class="form-control w300" readonly="readonly" style="display:inline-block;" name="order_sn" id="order_sn">
-										<button type="button" style="display: none;" class="btn btn-primary relation_order" style="margin-top:-4px;">查找</button>
+									<td width="15%" class="right-color"><span class="text-danger">*</span><span>关联入库单:</span></td>
+									<td width="35%">
+										<input type="text" class="form-control w300" readonly="readonly" style="display:inline-block;" name="input_sn" id="input_sn">
+										<button type="button" style="display: inline-block;" class="btn btn-primary input_order" style="margin-top:-4px;">查找</button>
 									</td>
+                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>关联采购单:</span></td>
+                                    <td width="35%"><input type="text" class="form-control w300" name="po_sn" id="po_sn"></td>
                                 </tr>
 
                                 <tr>
