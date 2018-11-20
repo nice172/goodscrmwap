@@ -90,7 +90,7 @@ class Purchase extends Base {
 		    //->join('__DELIVERY_ORDER__ d','p.id=d.purchase_id')
     		->join('__SUPPLIER__ s','p.supplier_id=s.id')
     		->field('p.create_time,p.po_sn,s.supplier_name,p.delivery_company as cus_name,g.goods_name,g.unit,g.goods_price,g.goods_number')
-		    ->paginate(config('page_size'),false,['query' => $this->request->param()]);
+		    ->order('p.create_time desc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
     		$this->assign('list',$result->all());
     		$this->assign('page',$result->render());
 		}else{
