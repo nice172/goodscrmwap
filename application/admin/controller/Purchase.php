@@ -74,21 +74,22 @@ class Purchase extends Base {
 		if ($supplier_name != '' || ($start_time!='' && $end_time!='') || $delivery_company != '' || $goods_name != ''){
 		    $db = db('purchase p');
 		    if ($supplier_name != '') {
-		        $db->where("(s.supplier_name like '%{$supplier_name}%' OR s.supplier_short like '%{$supplier_name}%')");
+		        $db->where('s.supplier_short|s.supplier_name','like',"%{$supplier_name}%");
 		    }
 		    if (strtotime($start_time) && strtotime($end_time)){
 		        $db->where(['p.create_time' => ['egt',strtotime($start_time)]]);
 		        $db->where(['p.create_time' => ['elt',strtotime($end_time.' 23:59:59')]]);
 		    }
 		    if ($delivery_company != ''){
-		        $db->where(['d.cus_name' => ['like',"%{$delivery_company}%"]]);
+		        $db->where(['p.delivery_company' => ['like',"%{$delivery_company}%"]]);
 		    }
 		    if ($goods_name != ''){
 		        $db->where(['g.goods_name' => ['like',"%{$goods_name}%"]]);
 		    }
-		    $result = $db->join('__DELIVERY_ORDER__ d','p.id=d.purchase_id')
-    		->join('__SUPPLIER__ s','p.supplier_id=s.id')->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
-    		->field('p.create_time,p.po_sn,s.supplier_name,d.cus_name,g.goods_name,g.unit,g.goods_price,g.goods_number')
+		    $result = $db->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
+		    //->join('__DELIVERY_ORDER__ d','p.id=d.purchase_id')
+    		->join('__SUPPLIER__ s','p.supplier_id=s.id')
+    		->field('p.create_time,p.po_sn,s.supplier_name,p.delivery_company as cus_name,g.goods_name,g.unit,g.goods_price,g.goods_number')
 		    ->paginate(config('page_size'),false,['query' => $this->request->param()]);
     		$this->assign('list',$result->all());
     		$this->assign('page',$result->render());
