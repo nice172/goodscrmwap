@@ -33,7 +33,7 @@
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>送货单号:</span></td>
                                     <td width="35%">
-                                        <input type="text" class="form-control w300" readonly="readonly" value="DN<?php echo date('Ymdis').date('sms');?>" name="order_dn" id="order_dn">
+                                        <input type="text" class="form-control w300" readonly="readonly" value="DN{:StrOrderOne()}" name="order_dn" id="order_dn">
                                     </td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>送货日期:</span></td>
                                     <td width="35%"><input type="text" class="form-control w300" name="delivery_date" id="delivery_date"></td>
