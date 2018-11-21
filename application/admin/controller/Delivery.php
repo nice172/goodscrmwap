@@ -130,6 +130,12 @@ class Delivery extends Base {
         return $this->fetch();
     }
     
+    public function input_order(){
+    	$order_id = $this->request->param('order_id',0,'intval');
+    	if ($order_id <= 0) $this->error('参数错误');
+    	
+    }
+    
     public function delete(){
         if ($this->request->isAjax()){
             $id = $this->request->param('id',0,'intval');

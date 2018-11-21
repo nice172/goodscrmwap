@@ -265,6 +265,26 @@
             });
         });
 
+        $('.input_order').click(function(){
+            var order_id = $('#order_id').val();
+            if(!order_id){
+				toastr.error('请先选择订单');
+				return;
+            }
+        	var title = '选择入库单';
+            bDialog.open({
+                title : title,
+                height: 560,
+                width:960,
+                url : '{:url(\'input_order\')}?order_id='+order_id,
+                callback:function(data){
+                    if(data && data.results && data.results.length > 0 ) {
+                        window.location.reload();
+                    }
+                }
+            });
+        });
+
     });
 
 var goods_info = new Array();
@@ -352,8 +372,8 @@ function relation_order(data){
 	    	$('#contacts').val(res.data.contacts);
 	    	$('#contacts_tel').val(res.data.cus_phome);
 	    	$('#purchase_money').val(res.data.total_money);
-			goods_info = res.data.goodslist;
-			goodsList(goods_info);
+			//goods_info = res.data.goodslist;
+			//goodsList(goods_info);
 		}else{
 			$('#cus_name').val('');
 			$('#order_id').val('');
@@ -362,7 +382,7 @@ function relation_order(data){
 	    	$('#contacts').val('');
 	    	$('#contacts_tel').val('');
 	    	$('#cus_id').val('');
-	    	goodsList(goods_info);
+	    	//goodsList(goods_info);
 			toastr.error(res.msg);
 		}
 	});
