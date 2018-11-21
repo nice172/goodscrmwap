@@ -218,11 +218,11 @@ function goodsList(data){
 		html +='</div>';
 		html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 		html +='<label class="weui-form-preview__label">入库数量：</label>';
-		html +='<span class="weui-form-preview__value input_store"><input type="text" class="price_input '+input_css+'" data-input_store="'+data[i]['input_store']+'" oninput="checkNum2(this)" value="'+data[i]['input_store']+'" name="input_store['+data[i]['goods_id']+'][]"/></span></span>';
+		html +='<span class="weui-form-preview__value input_store"><input type="text" class="price_input '+input_css+'" data-input_store="'+data[i]['input_store']+'" oninput="checkNum2(this)" value="'+data[i]['input_store']+'" name="input_store['+data[i]['goods_id']+']"/></span></span>';
 		html +='</div>';
 		html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 		html +='<label class="weui-form-preview__label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;备&nbsp;注：</label>';
-		html +='<span class="weui-form-preview__value remark"><input type="text" class="'+input_css+'" name="remark['+data[i]['goods_id']+'][]"/></span>';
+		html +='<span class="weui-form-preview__value remark"><input type="text" class="'+input_css+'" name="remark['+data[i]['goods_id']+']"/></span>';
 		html +='</div>';
 		html +='</div></div>';
 	}

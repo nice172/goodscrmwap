@@ -62,8 +62,8 @@
                                 <th>单位</th>
                                 <th>单价</th>
                                 <th>采购数量</th>
-                            <!--<th>备注</th>-->
                                 <th>已入库数</th>
+                                <th>备注</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -78,6 +78,7 @@
                                 <td>{$vo.goods_price}</td>
                                 <td>{$vo.goods_number}</td>
                                 <td>{$vo.input_store}</td>
+                                <td>{$vo.goods_remark}</td>
                                 </tr>
                             {/volist}
                             </tbody>

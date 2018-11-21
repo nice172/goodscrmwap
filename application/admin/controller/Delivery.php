@@ -613,13 +613,14 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         $end_time = $this->request->param('end_date');
         $db = db('order o');
         $db->field('o.*,o.id as orderid,og.*');
-        $where = ['o.is_create' => 0,'o.status' => ['>=',1]];
+        $where = ['o.is_create' => 1,'o.status' => ['>=',1]];
         if ($supplier_name != ''){
             $db->where('o.company_short|s.compnay_name','like',"%{$supplier_name}%");
         }
-        if ($purchase['is_cancel']){
-        	$db->where(['o.id' => ['neq',$purchase['order_id']]]);
-        }
+        //判断采购单是否取消关联订单
+        //if ($purchase['is_cancel']){
+        //	$db->where(['o.id' => ['neq',$purchase['order_id']]]);
+        //}
         $db->where($where);
         if ($start_time != '' && $end_time != ''){
             $start_time = strtotime($start_time);
@@ -650,8 +651,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
     public function rel_order(){
         if ($this->request->isAjax()){
         	$purchase_id = $this->request->param('purchase_id',0,'intval');
-        	$purchase = db('purchase')->where(['id' => $purchase_id])->find();
-        	if (empty($purchase)) $this->error('参数错误');
+        	//$purchase = db('purchase')->where(['id' => $purchase_id])->find();
+        	//if (empty($purchase)) $this->error('参数错误');
             $order_id = $this->request->param('order_id',0,'intval');
             $order = db('order')->where(['id' => $order_id])->find();
             if (empty($order)) $this->error('订单不存在');
@@ -661,9 +662,9 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             $db->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id');
             $goodslist = $db->field('og.*,g.store_number,gc.category_name')->select();
             
-            $purchase_goods = db('purchase_goods')->where(['purchase_id' => $purchase_id])->select();
-            
             $totalMoney = 0;
+            /*
+            $purchase_goods = db('purchase_goods')->where(['purchase_id' => $purchase_id])->select();
             if ($purchase['create_type'] == 1){
             	$templist = [];
             	foreach ($goodslist as $key => $value){
@@ -712,6 +713,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             		$goodslist = $templist;
             	}
             }
+            */
+            
             $data['total_money'] = _formatMoney($totalMoney);
             
             $cus = db('customers')->where(['cus_id' => $order['cus_id']])->find();
