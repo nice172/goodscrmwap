@@ -14,6 +14,19 @@
         
 							<div class="sub-button-line form-inline">
                             <form class="pull-left" method="get" action="?">
+                            	<input type="hidden" name="order_id" value="<?php echo $_GET['order_id'];?>" />
+                                <div class="form-group">
+                                    <label class="control-label" for="cus_short">客户订单号 :</label>
+                                    <input name="cus_order_sn" id="cus_order_sn" class="ipt form-control" <?php if (isset($_GET['cus_order_sn'])):?>value="<?php echo $_GET['cus_order_sn'];?>"<?php endif;?> />
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="cus_short">供应商 :</label>
+                                    <input name="supplier_name" id="supplier_name" class="ipt form-control" <?php if (isset($_GET['supplier_name'])):?>value="<?php echo $_GET['supplier_name'];?>"<?php endif;?> />
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="cus_short">商品名称 :</label>
+                                    <input name="goods_name" id="goods_name" class="ipt form-control" <?php if (isset($_GET['goods_name'])):?>value="<?php echo htmlspecialchars($_GET['goods_name']);?>"<?php endif;?> />
+                                </div>
                                    <div class="form-group">
                                     <label class="control-label" for="">商品分类 :</label>
                                     <select name="category_id" class="form-control" id="category_id">
@@ -28,14 +41,8 @@
 			              	<?php } ?>
                                     </select>
                                 </div>
-                                
                                 <div class="form-group">
-                                    <label class="control-label" for="cus_short">商品名称 :</label>
-                                    <input name="goods_name" id="goods_name" class="ipt form-control" <?php if (isset($_GET['goods_name'])):?>value="<?php echo htmlspecialchars($_GET['goods_name']);?>"<?php endif;?> />
-                                    </div>
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" id="searchprojectName">查找</button>
+                                    <button type="submit" class="btn btn-primary">查找</button>
                                 </div>
                             </form>
                         </div>
@@ -48,23 +55,33 @@
                             <thead>
                                 <tr>
                                     
-                                    <th>商品分类</th>
+                                    <th>采购号码</th>
+                                    <th>入库单号</th>
+                                    <th>客户订单号</th>
                                     <th>供应商</th>
+                                    <th>商品分类</th>
                                     <th>商品名称</th>
-                                    <!-- <th>品牌</th> -->
                                     <th>单位</th>
-                                    <th>标准单价</th>
+                                    <th>采购数量</th>
+                                    <th>入库数量</th>
+                                    <th>状态</th>
+                                    <th>入库时间</th>
                                 </tr>
                             </thead>
                             <tbody>
                             {volist name="data" id="vo" empty="$empty"}
-                                <tr style="cursor: pointer;" data-index="{$key}" class="selected_goods" data-store_number="{$vo['store_number']}" data-shop_price="{$vo['shop_price']}" data-market_price="{$vo['market_price']}" data-unit="{$vo['unit']}" data-remark="<?php echo htmlspecialchars($vo['remark']);?>" data-goods_name="<?php echo htmlspecialchars($vo['goods_name']);?>" data-goods_id="{$vo['goods_id']}">
-                                    <td>{$vo.category_name}</td>
+                                <tr style="cursor: pointer;" index="{$key}" class="selected_po">
+                                    <td>{$vo.po_sn}</td>
+                                    <td>{$vo.store_sn}</td>
+                                    <td>{$vo.cus_order_sn}</td>
                                     <td>{$vo.supplier_name}</td>
+                                    <td>{$vo.category_name}</td>
                                     <td>{$vo.goods_name}</td>
-                                    <!-- <td>{$vo.brand_name}</td> -->
                                     <td>{$vo.unit}</td>
-                                    <td>{$vo.market_price}</td>
+                                    <td>{$vo.purchase_number}</td>
+                                    <td>{$vo.goods_number}</td>
+                                    <td>正常</td>
+                                    <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
                                 </tr>
                             {/volist}
                             </tbody>
@@ -89,38 +106,25 @@
                         
 
         </div>
-        <div class="modal-footer">
-			<button class="btn btn-default windowClose">关闭</button>
-        </div>
 
         </div>
     </div>
 </div>
 <script>
 $(document).ready(function () {
-	var goods_list = <?php echo json_encode($data);?>;
-	$('.selected_goods').click(function(){
-		var index = $(this).attr('data-index');
-		/*
-		var goods = {
-			'goods_name': $(this).attr('data-goods_name'),
-			'shop_price': $(this).attr('data-shop_price'),
-			'market_price': $(this).attr('data-market_price'),
-			'unit': $(this).attr('data-unit'),
-			'remark': $(this).attr('data-remark'),
-			'goods_id': $(this).attr('data-goods_id'),
-			'store_number': $(this).attr('data-store_number'),
-			'goods_number':0,
-			'send_num':0,
-			'purchase_number':0,
-		};
-		*/
-		if(index != ''){
-			parent.window.goods(goods_list[index]);
-		}
-	});
-	$('.windowClose').click(function(){
-		bDialog.close();
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+		  	laydate.render({
+		    elem: '#start_date'
+		  });
+		  	laydate.render({
+		    elem: '#end_date'
+		  });
+    });
+    var polist = <?php echo $pojson;?>;
+	$('.selected_po').click(function(){
+		parent.window.goods_merge(polist[$(this).attr('index')]);
+		bDialog.close('');
 	});
 });
 </script>

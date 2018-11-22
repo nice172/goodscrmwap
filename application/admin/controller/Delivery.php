@@ -133,7 +133,46 @@ class Delivery extends Base {
     public function input_order(){
     	$order_id = $this->request->param('order_id',0,'intval');
     	if ($order_id <= 0) $this->error('参数错误');
-    	
+    	$cus_order_sn = $this->request->param('cus_order_sn');
+    	$supplier_name = $this->request->param('supplier_name');
+    	$goods_name = $this->request->param('goods_name');
+    	$category_id = $this->request->param('category_id',0,'intval');
+    	$db = db('input_store i');
+    	$db->join('__INPUT_GOODS__ ig','i.id=ig.input_id');
+    	$db->join('__SUPPLIER__ s','i.supplier_id=s.id');
+    	$db->join('__GOODS__ g','ig.goods_id=g.goods_id');
+    	$db->join('__PURCHASE__ p','i.po_id=p.id');
+    	if ($cus_order_sn != '') {
+    	    $db->where(['p.cus_order_sn' => $cus_order_sn]);
+    	}
+    	if ($supplier_name != '') {
+    	    $db->where('s.supplier_name|s.supplier_short','like',"%{$supplier_name}%");
+    	}
+    	if ($goods_name != '') {
+    	    $db->where('ig.goods_name','like',"%{$goods_name}%");
+    	}
+    	if ($category_id > 0) {
+    	    $db->where(['g.category_id' => $category_id]);
+    	}
+    	$db->field('i.*,p.order_id,p.delivery_type,p.cus_order_sn,g.category_id,ig.goods_id,ig.goods_name,ig.goods_price,ig.unit,ig.goods_number,ig.remark,s.supplier_name');
+    	$result = $db->paginate(config('page_size'),false,['query' => $this->request->param()]);
+    	$data = $result->all();
+    	$categoryModel = db('goods_category');
+    	$purchaseGoods = db('purchase_goods');
+    	foreach ($data as $key => $value) {
+    	    $data[$key]['category_name'] = $categoryModel->where(['category_id' => $value['category_id']])->value('category_name');
+    	    $data[$key]['purchase_number'] = $purchaseGoods->where(['purchase_id' => $value['po_id'],'goods_id' => $value['goods_id']])->value('goods_number');
+    	}
+    	$cate_lists = db('goods_category')->select();
+    	$this->assign('lists',$cate_lists);
+    	$this->assign('page',$result->render());
+    	$this->assign('data',$data);
+    	$this->assign('pojson',json_encode($data));
+    	$this->assign('current_page', $result->getCurrentPage());
+    	$this->assign('total_page', $result->lastPage());
+    	$this->assign('params', $this->request->query());
+    	$this->assign('title','查找入库单');
+    	return $this->fetch();
     }
     
     public function delete(){
@@ -654,6 +693,10 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         return $this->fetch();
     }
     
+    public function goods_merge(){
+        p($_GET);
+    }
+    
     public function rel_order(){
         if ($this->request->isAjax()){
         	$purchase_id = $this->request->param('purchase_id',0,'intval');
@@ -733,6 +776,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             $data['goodslist'] = $goodslist;
             $data['cus_name'] = $order['company_name'];
             $data['cus_id'] = $order['cus_id'];
+            $data['cus_order_sn'] = $order['cus_order_sn'];
             
             $this->success('','',$data);
         }

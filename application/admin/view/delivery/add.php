@@ -89,6 +89,7 @@
 								<tr>
 									<td width="15%" class="right-color"><span class="text-danger">*</span><span>关联入库单:</span></td>
 									<td width="35%">
+										<input type="hidden" name="input_id" id="input_id" />
 										<input type="text" class="form-control w300" readonly="readonly" style="display:inline-block;" name="input_sn" id="input_sn">
 										<button type="button" style="display: inline-block;" class="btn btn-primary input_order" style="margin-top:-4px;">查找</button>
 									</td>
@@ -102,7 +103,7 @@
                                         <input type="text" class="form-control w300" name="delivery_sn" id="delivery_sn">
                                     </td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>交货方式:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="delivery_way" id="delivery_way"></td>
+                                    <td width="35%"><input type="text" class="form-control w300" name="delivery_type" id="delivery_type"></td>
                                 </tr>
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>司机:</span></td>
@@ -255,7 +256,7 @@
             bDialog.open({
                 title : title,
                 height: 560,
-                width:960,
+                width:"90%",
                 url : '{:url(\'get_goods\')}',
                 callback:function(data){
                     if(data && data.results && data.results.length > 0 ) {
@@ -275,7 +276,7 @@
             bDialog.open({
                 title : title,
                 height: 560,
-                width:960,
+                width:"90%",
                 url : '{:url(\'input_order\')}?order_id='+order_id,
                 callback:function(data){
                     if(data && data.results && data.results.length > 0 ) {
@@ -368,6 +369,7 @@ function relation_order(data){
 			$('#cus_name').val(res.data.cus_name);
 			$('#cus_id').val(res.data.cus_id);
 	    	$('#order_sn').val(res.data.order_sn);
+	    	$('#cus_order_sn').val(res.data.cus_order_sn);
 	    	$('#delivery_address').val(res.data.delivery_address);
 	    	$('#contacts').val(res.data.contacts);
 	    	$('#contacts_tel').val(res.data.cus_phome);
@@ -375,13 +377,7 @@ function relation_order(data){
 			//goods_info = res.data.goodslist;
 			//goodsList(goods_info);
 		}else{
-			$('#cus_name').val('');
-			$('#order_id').val('');
-	    	$('#order_sn').val('');
-	    	$('#delivery_address').val('');
-	    	$('#contacts').val('');
-	    	$('#contacts_tel').val('');
-	    	$('#cus_id').val('');
+			$('#cus_name,#cus_id,#order_id,#order_sn,#cus_order_sn,#delivery_address,#contacts,#contacts_tel').val('');
 	    	//goodsList(goods_info);
 			toastr.error(res.msg);
 		}
@@ -401,6 +397,18 @@ function goods(data){
 	}
 	status = 1;
 	goodsList(goods_info);
+}
+
+function goods_merge(data){
+	var po_sn = $('#po_sn').val();
+	var purchase_id = $('#purchase_id').val();
+	$('#po_sn').val(data.po_sn);
+	$('#input_sn').val(data.store_sn);
+	$('#delivery_type').val(data.delivery_type);
+	$('#purchase_id').val(data.po_id);
+	$.get('<?php echo url('goods_merge');?>',{order_id:data.order_id,po_id:data.po_id},function(res){
+		
+	});
 }
 
 function goodsList(goods_info){

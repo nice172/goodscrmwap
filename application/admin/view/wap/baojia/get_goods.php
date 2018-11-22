@@ -33,7 +33,7 @@
       <div class="weui-cell" style="border-bottom: 1px solid #e5e5e5;">
         <div class="weui-cell__hd"><label class="weui-label">名称：</label></div>
         <div class="weui-cell__bd" style="position:relative;">
-          <input class="weui-input" type="text" name="goods_name" <?php if (isset($_GET['goods_name'])):?>value="<?php echo $_GET['goods_name'];?>"<?php endif;?> placeholder="输入商品名称"/>
+          <input class="weui-input" type="text" name="goods_name" <?php if (isset($_GET['goods_name'])):?>value="<?php echo htmlspecialchars($_GET['goods_name']);?>"<?php endif;?> placeholder="输入商品名称"/>
         <button type="submit" style="position: absolute;right:0;top:-2px;" class="weui-btn weui-btn_mini weui-btn_primary" id="search_company">查找</button>
         </div>
       </div>
