@@ -694,7 +694,23 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
     }
     
     public function goods_merge(){
-        p($_GET);
+        $order_id = $this->request->param('order_id');
+        $input_id = $this->request->param('input_id');
+        $po_id = $this->request->param('po_id');
+        $order_goods = db('order_goods')->where(['order_id' => $order_id])->select();
+        $input_goods = db('input_goods')->where(['input_id' => ['in',$input_id]])->select();
+        $goodslist = [];
+        foreach ($input_goods as $key => $value) {
+        	foreach ($order_goods as $k => $val) {
+        		if($value['goods_id'] == $val['goods_id']) {
+        			$order_goods[$k]['input_id'][] = $value['id'].',';
+        			if(!isset($order_goods[$k]['out_number'])) $order_goods[$k]['out_number'] = 0;
+        			$order_goods[$k]['out_number'] += $value['goods_number'];
+        		}
+        		$order_goods[$k]['diff_number'] = $val['goods_number'] - $val['send_num'];
+        	}
+        }
+        p($order_goods);
     }
     
     public function rel_order(){

@@ -320,8 +320,11 @@ $('button[type=submit]').click(function(){
 			if(res.code == 1){
 				toastr.success(res.msg);
 				if(res.url != '' && typeof res.url != 'undefined'){
-					//setTimeout(function(){window.location.href = res.url;},2000);
+					if(send == 'save'){
+					setTimeout(function(){window.location.href = res.url;},2000);
+					}else{
 					send_email('baojia',res.data.id);
+					}
 					}else{
 						setTimeout(function(){window.location.reload();},2000);
 						}

@@ -206,11 +206,15 @@
              if (!empty($copyto)){
              	$copyto = explode(';', trim($copyto,';'));
              }
-             foreach ($email as $val){
-             	if (!checkemail($val)) $this->error($val.'格式不正确');
+             if (is_array($email) && !empty($email)){
+	             foreach ($email as $val){
+	             	if (!checkemail($val)) $this->error($val.'格式不正确');
+	             }
              }
-             foreach ($copyto as $val){
-             	if (!checkemail($val)) $this->error($val.'格式不正确');
+             if (is_array($copyto) && !empty($copyto)){
+	             foreach ($copyto as $val){
+	             	if (!checkemail($val)) $this->error($val.'格式不正确');
+	             }
              }
              if(send_email($email,$subject,$files, $content, $copyto)){
                  switch ($type){

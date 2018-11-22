@@ -84,6 +84,7 @@ $('#sendemail').submit(function(){
 				toastr.error(res.msg);
 				}else{
 				toastr.success(res.msg);
+				setTimeout(function(){bDialog.close();},2000);
 				}
 		},
 	     complete: function(XMLHttpRequest, textStatus) { 

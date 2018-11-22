@@ -94,7 +94,7 @@
 										<button type="button" style="display: inline-block;" class="btn btn-primary input_order" style="margin-top:-4px;">查找</button>
 									</td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>关联采购单:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="po_sn" id="po_sn"></td>
+                                    <td width="35%"><input type="text" readonly="readonly" class="form-control w300" name="po_sn" id="po_sn"></td>
                                 </tr>
 
                                 <tr>
@@ -103,7 +103,7 @@
                                         <input type="text" class="form-control w300" name="delivery_sn" id="delivery_sn">
                                     </td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>交货方式:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="delivery_type" id="delivery_type"></td>
+                                    <td width="35%"><input type="text" class="form-control w300" name="delivery_way" id="delivery_way"></td>
                                 </tr>
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>司机:</span></td>
@@ -304,8 +304,7 @@ function client_info(data){
     	$('#order_sn').val(data.order_sn);
     	$('#order_id').val(data.order_id);
 		$('#cus_order_sn').val(data.cus_order_sn);
-		
-		
+
 		//added by wei on 2018-9-30 begin
 			$('#cus_name').val(data.cus_name);
 			$('#delivery_address').val(data.delivery_address);
@@ -313,8 +312,6 @@ function client_info(data){
 			$('#contacts_tel').val(data.contacts_tel);
 		//end
 		
-	
-
    //   $('#contacts').val(data.contacts);
    // 	$('#contacts_tel').val(data.contacts_tel); 
    
@@ -323,7 +320,6 @@ function client_info(data){
 		$('#order_id').val('');
 		//$('#purchase_id').val('');
     	$('#order_sn').val('');
-		
 		$('#cus_order_sn').val('');
     	$('#delivery_address').val('');
     	$('#contacts').val('');
@@ -377,7 +373,7 @@ function relation_order(data){
 			//goods_info = res.data.goodslist;
 			//goodsList(goods_info);
 		}else{
-			$('#cus_name,#cus_id,#order_id,#order_sn,#cus_order_sn,#delivery_address,#contacts,#contacts_tel').val('');
+			$('#cus_name,#purchase_id,#po_sn,#delivery_way,#cus_id,#order_id,#order_sn,#cus_order_sn,#delivery_address,#contacts,#contacts_tel').val('');
 	    	//goodsList(goods_info);
 			toastr.error(res.msg);
 		}
@@ -400,15 +396,37 @@ function goods(data){
 }
 
 function goods_merge(data){
+	console.log(data);
 	var po_sn = $('#po_sn').val();
 	var purchase_id = $('#purchase_id').val();
-	$('#po_sn').val(data.po_sn);
-	$('#input_sn').val(data.store_sn);
-	$('#delivery_type').val(data.delivery_type);
-	$('#purchase_id').val(data.po_id);
-	$.get('<?php echo url('goods_merge');?>',{order_id:data.order_id,po_id:data.po_id},function(res){
+	if((purchase_id != '' && purchase_id != data.po_id) || purchase_id == ''){
+		$('#po_sn').val(data.po_sn);
+		$('#input_sn').val(data.store_sn);
+		$('#delivery_way').val(data.delivery_type);
+		$('#purchase_id').val(data.po_id);
+		$('#input_id').val(data.id);
+		$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:data.order_id,po_id:data.po_id},function(res){
+			
+		});
+	}
+	if(purchase_id == data.po_id) {
+		var inputsn_arr = $('#input_sn').val().split(',');
+		var flag = true;
+		for(var i in inputsn_arr) {
+			if(data.store_sn == inputsn_arr[i]){
+				flag = false;
+				break;
+			}
+		}
+		if(!flag) return;
 		
-	});
+		$('#input_id').val($('#input_id').val()+','+data.id);
+		$('#input_sn').val($('#input_sn').val()+','+data.store_sn);
+		var input_id = $('#input_id').val();
+		$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:data.order_id,po_id:data.po_id},function(res){
+			
+		});
+	}
 }
 
 function goodsList(goods_info){
