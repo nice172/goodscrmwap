@@ -135,9 +135,9 @@
                                     <th width="20%">商品名称</th>
                                     <th width="5%">单位</th>
                                     <th width="5%">未交数量</th>
-                                    <th width="5%">库存数量</th>
+                                    <!-- <th width="5%">库存数量</th> -->
                                     <th width="10%">本次送货数量</th>
-                                    <th width="5%">入库数量</th>
+                                    <th width="5%">出库数量</th>
                                     <th width="25%">备注</th>
                                     <th width="10%">操作</th>
                                 </tr>
@@ -396,7 +396,6 @@ function goods(data){
 }
 
 function goods_merge(data){
-	console.log(data);
 	var po_sn = $('#po_sn').val();
 	var purchase_id = $('#purchase_id').val();
 	if((purchase_id != '' && purchase_id != data.po_id) || purchase_id == ''){
@@ -405,9 +404,7 @@ function goods_merge(data){
 		$('#delivery_way').val(data.delivery_type);
 		$('#purchase_id').val(data.po_id);
 		$('#input_id').val(data.id);
-		$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:data.order_id,po_id:data.po_id},function(res){
-			
-		});
+		var input_id = $('#input_id').val();
 	}
 	if(purchase_id == data.po_id) {
 		var inputsn_arr = $('#input_sn').val().split(',');
@@ -423,10 +420,11 @@ function goods_merge(data){
 		$('#input_id').val($('#input_id').val()+','+data.id);
 		$('#input_sn').val($('#input_sn').val()+','+data.store_sn);
 		var input_id = $('#input_id').val();
-		$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:data.order_id,po_id:data.po_id},function(res){
-			
-		});
 	}
+	$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:data.order_id,po_id:data.po_id},function(res){
+		goods_info = res;
+		goodsList(res);
+	});
 }
 
 function goodsList(goods_info){
@@ -442,9 +440,9 @@ function goodsList(goods_info){
 		html += '<td>'+goods_info[j]['goods_name']+'</td>';
 		html += '<td>'+goods_info[j]['unit']+'</td>';
 		html += '<td>'+goods_info[j]['diff_number']+'</td>';
-		html += '<td class="store_number"><span class="">'+goods_info[j]['store_number']+'</span></td>';
+		//html += '<td class="store_number"><span class="">'+goods_info[j]['store_number']+'</span></td>';
 		html += '<td class="current_send_number"><input type="text" data-current_send_number="'+goods_info[j]['current_send_number']+'" oninput="checkNum2(this)" name="current_send_number" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['current_send_number']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['current_send_number']+'</span></td>';
-		html += '<td class="add_number"><input type="text" data-add_number="'+goods_info[j]['add_number']+'" oninput="checkNum2(this)" name="add_number" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['add_number']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['add_number']+'</span></td>';
+		html += '<td class="out_number">'+goods_info[j]['out_number']+'</td>';
 		html += '<td class="remark"><input type="text" name="remark" style="width:90%;display:'+show_input+';" value="'+goods_info[j]['remark']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['remark']+'</span></td>';
 		html += '<td><a href="javascript:;" onclick="update('+j+')" class="update">'+text_update+'</a><span class="text-explode">|</span><a href="javascript:;" onclick="_delete('+j+')" class="delete">删除</a></td>';
 		html += '</tr>';
@@ -464,19 +462,19 @@ function update(index){
 		if(current_send_number == ''){
 			current_send_number = $('.goods_'+index+' input[name=current_send_number]').attr('data-current_send_number');
 		}
-		var add_number = $('.goods_'+index+' input[name=add_number]').val();
-		if(add_number == ''){
-			add_number = $('.goods_'+index+' input[name=add_number]').attr('data-add_number');
-		}
+		//var out_number = $('.goods_'+index+' input[name=out_number]').val();
+		//if(out_number == ''){
+		//	out_number = $('.goods_'+index+' input[name=out_number]').attr('data-out_number');
+		//}
+		//out_number = parseInt(out_number);
 		current_send_number = parseInt(current_send_number);
-		add_number = parseInt(add_number);
-		if(current_send_number+add_number > goods_info[index]['purchase_number']){
-			alert('“'+goods_info[index]['goods_name']+'”本次送货数量+入库数量不能大于采购单的未交数量');
+		if(current_send_number != goods_info[index]['out_number']){
+			alert('“'+goods_info[index]['goods_name']+'”出库数量和本次出货数量必须等于！');
 			return;
 		}
-		
+
+		//goods_info[index]['out_number'] = out_number;
 		goods_info[index]['current_send_number'] = current_send_number;
-		goods_info[index]['add_number'] = add_number;
 		goods_info[index]['remark'] = $('.goods_'+index+' input[name=remark]').val();
 		goods_info[index]['show_input'] = false;
 		$('tbody.goodsList tr').each(function(idx){
@@ -486,12 +484,12 @@ function update(index){
 				if(_current_send_number == ''){
 					_current_send_number = $('.goods_'+eIndex+' input[name=current_send_number]').attr('data-current_send_number');
 				}
-				var _add_number = $('.goods_'+eIndex+' input[name=add_number]').val();
-				if(_add_number == ''){
-					_add_number = $('.goods_'+eIndex+' input[name=add_number]').attr('data-add_number');
-				}
+				//var _out_number = $('.goods_'+eIndex+' input[name=out_number]').val();
+				//if(_out_number == ''){
+				//	_out_number = $('.goods_'+eIndex+' input[name=out_number]').attr('data-out_number');
+				//}
+				//goods_info[eIndex]['out_number'] = parseInt(_out_number);
 				goods_info[eIndex]['current_send_number'] = parseInt(_current_send_number);
-				goods_info[eIndex]['add_number'] = parseInt(_add_number);
 				goods_info[eIndex]['remark'] = $('.goods_'+eIndex+' input[name=remark]').val();
 			}
 		});

@@ -39,7 +39,7 @@ class Store extends Base {
     }
     
     public function log(){
-        //1入库，2出库，3报溢，4报损
+        //1入库，2出库，3报溢，4报损，5采购入库
         $goods_id = $this->request->param('goods_id',0,'intval');
         $order_id = $this->request->param('order_id',0,'intval');
         $delivery_order = db('delivery_order')->where(['order_id' => $order_id])->find();
@@ -140,7 +140,7 @@ class Store extends Base {
             	$this->success('更新成功');
             }
             if (db('goods')->where(['goods_id' => $goods_id])->update(['store_number' => $store_number,'update_time' => time()])){
-                //1入库，2出库，3报溢，4报损
+                //1入库，2出库，3报溢，4报损，5入库采购
                 $type = 0;
                 if ($goods['store_number'] > $store_number){
                     $diff_number = $goods['store_number'] - $store_number;

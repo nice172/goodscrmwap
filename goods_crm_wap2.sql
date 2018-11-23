@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost3306
+Source Server         : localhost
 Source Server Version : 50714
-Source Host           : localhost:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : goods_crm_wap
 
 Target Server Type    : MYSQL
 Target Server Version : 50714
 File Encoding         : 65001
 
-Date: 2018-11-22 23:05:37
+Date: 2018-11-23 16:39:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -283,17 +283,14 @@ CREATE TABLE `syc_baojia` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `order_sn` (`order_sn`,`company_name`,`company_short`,`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_baojia
 -- ----------------------------
 INSERT INTO `syc_baojia` VALUES ('13', '2', '1688', 'CS-Q-10/01182013131013', '彭立新', '惠州市利贞电子有限公司', '惠州利贞', '叶秋兰', '0752-6687598', '354575573@qq.com', '1、以上订单请开给：四川众山化有限公司\n联系人：华南办事处 范小姐13927377526\n电话傎真：0752-3775246  邮箱：SC_CSUN@163.COM\n2、以上报价含16%增值税\n3、付款条件月结60天，如2018年8月货款，请于2018年11月15日前电汇付款。若买方逾期付款，卖方有权要求买方：按逾期货款每天万分之五的比例支付拖欠买方货款赔偿。\n', '0', '0', '1538389239', '1540606136');
 INSERT INTO `syc_baojia` VALUES ('14', '2', '1689', 'CS-Q-11/03213902021102', '彭立新', '清远市富盈电子有限公司', '清远富盈', '张玉玲', '0763-3697998', '1040312149@QQ.COM', '1、以上订单请开给：四川众山化有限公司\n联系人：华南办事处 范小姐13927377526\n电话傎真：0752-3775246  邮箱：SC_CSUN@163.COM\n2、以上报价含16%增值税\n3、付款条件月结60天，如2018年8月货款，请于2018年11月15日前电汇付款。若买方逾期付款，卖方有权要求买方：按逾期货款每天万分之五的比例支付拖欠买方货款赔偿。\n', '0', '0', '1541252365', '1541252365');
-INSERT INTO `syc_baojia` VALUES ('15', '2', '1690', 'CS-Q-11/06230523231123', '范丽湘', '惠州市纬德电路有限公司', '惠州纬德', '张文圣', '0752-5710768', '1040312149@qq.com', null, '1', '1542886056', '1541516774', '1541731321');
-INSERT INTO `syc_baojia` VALUES ('16', '2', '1688', 'CS-Q-11/22192746461146', '范丽湘', '惠州市利贞电子有限公司', '惠州利贞', '叶秋兰', '0752-6687598', '1040312149@QQ.COM', '1、以上订单请开给：四川众山化有限公司\n联系人：华南办事处 范小姐13927377526\n电话傎真：0752-3775246  邮箱：SC_CSUN@163.COM\n2、以上报价含16%增值税\n3、付款条件月结60天，如2018年8月货款，请于2018年11月15日前电汇付款。若买方逾期付款，卖方有权要求买方：按逾期货款每天万分之五的比例支付拖欠买方货款赔偿。\n', '0', '0', '1542886096', '1542886096');
-INSERT INTO `syc_baojia` VALUES ('17', '2', '1691', 'CS-Q-11/22192954541154', '彭立新', '珠海精毅电路有限公司', '珠海精毅', '付立元', '0756-6210202', '1040312149@QQ.COM', '1、以上订单请开给：四川众山化有限公司\n联系人：华南办事处 范小姐13927377526\n电话傎真：0752-3775246  邮箱：SC_CSUN@163.COM\n2、以上报价含16%增值税\n3、付款条件月结60天，如2018年8月货款，请于2018年11月15日前电汇付款。若买方逾期付款，卖方有权要求买方：按逾期货款每天万分之五的比例支付拖欠买方货款赔偿。\n', '0', '0', '1542886203', '1542886203');
-INSERT INTO `syc_baojia` VALUES ('18', '2', '1690', 'CS-Q-11/22193009091109', '范丽湘', '惠州市纬德电路有限公司', '惠州纬德', '张文圣', '0752-5710768', '1040312149@qq.com', '1、以上订单请开给：四川众山化有限公司\n联系人：华南办事处 范小姐13927377526\n电话傎真：0752-3775246  邮箱：SC_CSUN@163.COM\n2、以上报价含16%增值税\n3、付款条件月结60天，如2018年8月货款，请于2018年11月15日前电汇付款。若买方逾期付款，卖方有权要求买方：按逾期货款每天万分之五的比例支付拖欠买方货款赔偿。\n', '0', '0', '1542886220', '1542886220');
+INSERT INTO `syc_baojia` VALUES ('15', '2', '1690', 'CS-Q-11/06230523231123', '范丽湘', '惠州市纬德电路有限公司', '惠州纬德', '张文圣', '0752-5710768', '1040312149@qq.com', null, '0', '0', '1541516774', '1541731321');
 
 -- ----------------------------
 -- Table structure for syc_baojia_goods
@@ -310,7 +307,7 @@ CREATE TABLE `syc_baojia_goods` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `baojia_id` (`baojia_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_baojia_goods
@@ -319,9 +316,6 @@ INSERT INTO `syc_baojia_goods` VALUES ('30', '13', '8', 'FR-4 CTI≥600 1.1MM H/
 INSERT INTO `syc_baojia_goods` VALUES ('31', '13', '9', 'FR-4 TG140 1.4MM H/H 37\"*49\" 含铜 黄料 无水印', '张', '113.00', '', '1538389239');
 INSERT INTO `syc_baojia_goods` VALUES ('32', '14', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '100.00', '', '1541252365');
 INSERT INTO `syc_baojia_goods` VALUES ('33', '15', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '箱', '98.88', '测试商品q', '1541516774');
-INSERT INTO `syc_baojia_goods` VALUES ('34', '16', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '10.00', '', '1542886096');
-INSERT INTO `syc_baojia_goods` VALUES ('35', '17', '28', '长春干膜 FF-9040S 14.500 *600FT *2卷', '箱', '0.00', '', '1542886203');
-INSERT INTO `syc_baojia_goods` VALUES ('36', '18', '29', '长春干膜 FF-9040S 14.750 *600FT *2卷', '箱', '0.00', '', '1542886220');
 
 -- ----------------------------
 -- Table structure for syc_config
@@ -531,11 +525,13 @@ CREATE TABLE `syc_delivery_goods` (
   `remark` text,
   PRIMARY KEY (`id`),
   KEY `delivery_id` (`delivery_id`,`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_delivery_goods
 -- ----------------------------
+INSERT INTO `syc_delivery_goods` VALUES ('1', '1', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '10.00', '箱', '[]', '5', '5', '商品备注');
+INSERT INTO `syc_delivery_goods` VALUES ('2', '1', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '20.00', '箱', '[]', '10', '10', '商品备注');
 
 -- ----------------------------
 -- Table structure for syc_delivery_order
@@ -552,8 +548,9 @@ CREATE TABLE `syc_delivery_order` (
   `purchase_money` decimal(10,2) NOT NULL DEFAULT '0.00',
   `order_id` int(10) unsigned NOT NULL DEFAULT '0',
   `order_sn` varchar(255) NOT NULL DEFAULT '',
+  `cus_order_sn` varchar(255) NOT NULL DEFAULT '' COMMENT '客户订单号',
+  `relation_input_id` varchar(255) NOT NULL DEFAULT '' COMMENT '关联入库单',
   `cus_name` varchar(255) NOT NULL DEFAULT '',
-  `relation_input_id` varchar(255) NOT NULL DEFAULT '' COMMENT '关系入库单',
   `cus_id` int(10) unsigned NOT NULL DEFAULT '0',
   `contacts` varchar(50) NOT NULL DEFAULT '',
   `contacts_tel` varchar(50) NOT NULL DEFAULT '',
@@ -572,11 +569,12 @@ CREATE TABLE `syc_delivery_order` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `purchase_id` (`purchase_id`,`order_id`,`cus_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_delivery_order
 -- ----------------------------
+INSERT INTO `syc_delivery_order` VALUES ('1', '2', '47', 'DN201810165585184', 'PO201811213231311131', '2018-11-28', '2018-11-21', '0.00', '58', 'SO201811213016161116', '', '2', '惠州市利贞电子有限公司', '1688', '叶秋兰', '13686294290', '广东省惠州市博罗县龙溪镇埔上村建时工业园内', '09328504385', '货运', '司机', '13800138000', '0', '0', '0', '0', '0', '0', '1542960312', '1542960312');
 
 -- ----------------------------
 -- Table structure for syc_finance
@@ -1462,15 +1460,13 @@ CREATE TABLE `syc_input_goods` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `input_id` (`input_id`,`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='入库商品表';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='入库商品表';
 
 -- ----------------------------
 -- Records of syc_input_goods
 -- ----------------------------
 INSERT INTO `syc_input_goods` VALUES ('15', '2', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '箱', '10.00', '5', '备注1', '1542768990');
 INSERT INTO `syc_input_goods` VALUES ('16', '2', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '20.00', '10', '备注2', '1542768990');
-INSERT INTO `syc_input_goods` VALUES ('18', '3', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '箱', '10.00', '5', '备注', '1542888887');
-INSERT INTO `syc_input_goods` VALUES ('19', '3', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '20.00', '10', '备注', '1542888887');
 
 -- ----------------------------
 -- Table structure for syc_input_store
@@ -1491,13 +1487,12 @@ CREATE TABLE `syc_input_store` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `store_sn` (`store_sn`,`po_sn`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='入库表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='入库表';
 
 -- ----------------------------
 -- Records of syc_input_store
 -- ----------------------------
 INSERT INTO `syc_input_store` VALUES ('2', '2', 'ST201810165544142', '47', 'PO201811213231311131', '惠州市利贞电子有限公司', '2', '采购入库备注', '2018-11-21', '0', '1542768990', '1542768990');
-INSERT INTO `syc_input_store` VALUES ('3', '2', 'ST201810165515522', '47', 'PO201811213231311131', '惠州市利贞电子有限公司', '2', '二次入库', '2018-11-21', '0', '1542888887', '1542888887');
 
 -- ----------------------------
 -- Table structure for syc_logistics
@@ -1619,8 +1614,8 @@ CREATE TABLE `syc_order_goods` (
 -- ----------------------------
 -- Records of syc_order_goods
 -- ----------------------------
-INSERT INTO `syc_order_goods` VALUES ('148', '58', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '箱', '10', '0', '10.00', '0.00', '[]', '商品备注', '1542767535');
-INSERT INTO `syc_order_goods` VALUES ('149', '58', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '20', '0', '20.00', '0.00', '[]', '商品备注', '1542767535');
+INSERT INTO `syc_order_goods` VALUES ('148', '58', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '箱', '10', '5', '10.00', '0.00', '[]', '商品备注', '1542767535');
+INSERT INTO `syc_order_goods` VALUES ('149', '58', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '20', '10', '20.00', '0.00', '[]', '商品备注', '1542767535');
 INSERT INTO `syc_order_goods` VALUES ('150', '59', '27', '长春干膜 FF-9040S 12.500 *600FT *2卷', '箱', '10', '0', '100.00', '0.00', '[]', '', '1542768407');
 
 -- ----------------------------
@@ -1932,8 +1927,8 @@ CREATE TABLE `syc_purchase_goods` (
 -- ----------------------------
 -- Records of syc_purchase_goods
 -- ----------------------------
-INSERT INTO `syc_purchase_goods` VALUES ('115', '47', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '箱', '10', '10', '0', '10.00', '100.00', '[]', '1542767584');
-INSERT INTO `syc_purchase_goods` VALUES ('116', '47', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '20', '20', '0', '20.00', '400.00', '[]', '1542767584');
+INSERT INTO `syc_purchase_goods` VALUES ('115', '47', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '箱', '10', '5', '0', '10.00', '100.00', '[]', '1542767584');
+INSERT INTO `syc_purchase_goods` VALUES ('116', '47', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '箱', '20', '10', '0', '20.00', '400.00', '[]', '1542767584');
 
 -- ----------------------------
 -- Table structure for syc_purchase_orders
@@ -2191,15 +2186,13 @@ CREATE TABLE `syc_store_log` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `delivery_id` (`delivery_id`,`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of syc_store_log
 -- ----------------------------
 INSERT INTO `syc_store_log` VALUES ('129', '2', '0', '0', '5', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '5', '1542768990');
 INSERT INTO `syc_store_log` VALUES ('130', '2', '0', '0', '5', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '10', '1542768990');
-INSERT INTO `syc_store_log` VALUES ('131', '3', '0', '0', '5', '25', '长春干膜 FF-9040S 11.000 *600FT *2卷', '5', '1542888887');
-INSERT INTO `syc_store_log` VALUES ('132', '3', '0', '0', '5', '26', '长春干膜 FF-9040S 12.000 *600FT *2卷', '10', '1542888887');
 
 -- ----------------------------
 -- Table structure for syc_supplier
@@ -2295,7 +2288,8 @@ CREATE TABLE `syc_users` (
 -- Records of syc_users
 -- ----------------------------
 INSERT INTO `syc_users` VALUES ('1', 'asdasd', 'sha256:1000:X2vbzkCcKSScvZZ5ZUDs7DvTmergIc5u:fQt8UQynrp5psap5MoOq4scNMLNhcjIl', '开发者', '1', '354575573@qq.com', '/uploads/avatar/582d3a26a3369.jpg', '2017-01-01', '180', '1451577600', '1538191190', '127.0.0.1', '127.0.0.1', '16', '1');
-INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '91', '1533480247', '1542885735', '192.168.1.225', '', '16', '1');
+INSERT INTO `syc_users` VALUES ('2', 'admin', 'sha256:1000:bb+qr8kui4m4JriYM/aLnznOODBwZfbi:30utxhFU7cxebnazg8Xh5TEkAmzR6ymJ', '管理员', '1', 'nice172@126.com', '', '2018-08-05', '91', '1533480247', '1542938665', '192.168.1.225', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('3', 'nice172', 'sha256:1000:GM0kcPbE+QNRSpmsG58qckJUkekhvpwi:XwmDtVMPAfE8DDYUdVW5DF5AOLljRm8q', '测试号', '1', 'nice172@163.com', '', '2018-08-06', '9', '1533526543', '1536806739', '10.10.0.99', '', '14', '1');
 INSERT INTO `syc_users` VALUES ('4', 'tom', 'sha256:1000:VqFfxce0SSP92ZahxbPXg7BTznRFzDk9:o/oG8udat6G/OTMVUaxT+UXp+QaGoU1p', '彭立新', '1', 'tompeng@qq.com', '', '2015-09-01', '24', '1536054353', '1539048764', '183.4.133.164', '', '16', '1');
 INSERT INTO `syc_users` VALUES ('5', 'wzc1997', 'sha256:1000:+78wHUCJ2i0Pqv/BtFpJNezAZSrysrl3:2M4x66/txhRftgPkD+Zzjvvux4k69OG4', '韦宗超', '1', '11418212@qq.com', '', '2018-09-01', '2', '1536058218', '1536216215', '183.4.133.164', '', '16', '1');
+SET FOREIGN_KEY_CHECKS=1;
