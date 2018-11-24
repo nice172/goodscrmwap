@@ -40,7 +40,7 @@
                                         <span>{$data.po_sn}</span>
                                     </td>
                                     <td width="15%" class="right-color"><span>订购日期:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" readonly="readonly" value="{$data.create_time|date='Y-m-d',###}" name="create_date" id="create_date"></td>
+                                    <td width="35%">{$data.create_time|date='Y-m-d',###}</td>
                                 </tr>
                                 <tr>
                                 <td width="15%" class="right-color"><span>供应商:</span></td>

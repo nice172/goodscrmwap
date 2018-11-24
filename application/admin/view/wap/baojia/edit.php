@@ -9,37 +9,15 @@
 .list .weui-form-preview__value{text-align:left;}
 .list .remark input{border:1px solid #e5e5e5;width:80% !important;padding:5px;}
 .list .price_input {border:1px solid #e5e5e5;width:80px !important;padding:5px;}
-.weui-form-preview:before{
-	border:none;
-}
-.weui-form-preview{
-	margin-bottom:5px;
-}
-.button-block{
-	border-top:1px solid #f6f6f6;
-	text-align:right;
-	padding:7px 7px 7px 0;
-	margin:0;
-}
-.list .weui-btn{
-	border-radius:50px;
-}
-.weui-btn+.weui-btn{
-	margin-top:0;
-	margin-left:10px;
-}
-.inputspan,.tab_hide{
-	display:none;
-}
-.inputspan-show{
-	display:inline;
-}
-.input-hide{
-	display:none;
-}
-.input-show {
-	display:inline;
-}
+.weui-form-preview:before{border:none;}
+.weui-form-preview{margin-bottom:5px;}
+.button-block{border-top:1px solid #f6f6f6;text-align:right;padding:7px 7px 7px 0;margin:0;}
+.list .weui-btn{border-radius:50px;}
+.weui-btn+.weui-btn{margin-top:0;margin-left:10px;}
+.inputspan,.tab_hide{display:none;}
+.inputspan-show{display:inline;}
+.input-hide{display:none;}
+.input-show{display:inline;}
 </style>
 {/block}
 

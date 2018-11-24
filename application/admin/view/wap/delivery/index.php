@@ -1,60 +1,17 @@
 {extend name="public/common" /}
 {block name="header"}
 <style type="text/css">
-.main {
-	margin-top:90px;
-	margin-bottom:60px;
-}
-.weui-form-preview:before{
-	border:none;
-}
-.weui-form-preview{
-	margin-bottom:5px;
-}
-.button-block{
-	border-top:1px solid #f6f6f6;
-	text-align:right;
-	padding:7px 7px 7px 0;
-	margin:0;
-}
-.list .weui-btn{
-	border-radius:50px;
-}
-.weui-btn+.weui-btn{
-	margin-top:0;
-}
-.search{
-	position:fixed;
-	top:0;
-	width:100%;
-	z-index:99999;
-}
-.search .weui-btn{
-	line-height:2;
-	border-color:#999;
-}
-.block10{
-	margin-top:5px;
-}
-.clear{
-	clear:both;
-}
-.weui-form-preview__value input {
-	border:1px solid #e5e5e5;
-	padding:5px;
-	width:39%;
-	outline: none;
-}
-.bottom {
-	position:fixed;
-	bottom:0px;
-	width:100%;
-	height:50px;
-	background:#1aad19;
-	color:#fff;
-	text-align:center;
-	line-height:50px;
-}
+.main{margin-top:90px;margin-bottom:60px;}
+.weui-form-preview:before{border:none;}
+.weui-form-preview{margin-bottom:5px;}
+.button-block{border-top:1px solid #f6f6f6;text-align:right;padding:7px 7px 7px 0;margin:0;}
+.list .weui-btn{border-radius:50px;}
+.weui-btn+.weui-btn{margin-top:0;}
+.search{position:fixed;top:0;width:100%;z-index:99999;}
+.search .weui-btn{line-height:2;border-color:#999;}
+.block10{margin-top:5px;}
+.weui-form-preview__value input{border:1px solid #e5e5e5;padding:5px;width:39%;outline: none;}
+.weui-loadmore_line{margin-top:110px;}
 </style>
 {/block}
 
@@ -66,7 +23,7 @@
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">创建时间：</label>
           <span class="weui-form-preview__value" style="text-align: left;">
-          <input type="text" readonly="readonly" id="start_time" name="start_time"/>&nbsp;TO&nbsp;<input type="text" readonly="readonly" id="end_time" name="end_time" />
+          <input type="text" readonly="readonly" id="start_time" <?php if (isset($_GET['start_time'])):?>value="<?php echo $_GET['start_time'];?>"<?php endif;?> name="start_time"/>&nbsp;TO&nbsp;<input type="text" readonly="readonly" <?php if (isset($_GET['end_time'])):?>value="<?php echo $_GET['end_time'];?>"<?php endif;?> id="end_time" name="end_time" />
           </span>
         </div>
     	</div>
@@ -74,7 +31,7 @@
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">客户名称：</label>
           <span class="weui-form-preview__value" style="text-align: left;">
-          <input type="text" name="cus_name" />&nbsp;<button type="submit" class="weui-btn weui-btn_mini weui-btn_plain-default">查询</button>
+          <input type="text" name="cus_name" <?php if (isset($_GET['cus_name'])):?>value="<?php echo $_GET['cus_name'];?>"<?php endif;?> style="width:67%"/>&nbsp;<button type="submit" class="weui-btn weui-btn_mini weui-btn_plain-default">查询</button>
           </span>
         </div>
     	</div>

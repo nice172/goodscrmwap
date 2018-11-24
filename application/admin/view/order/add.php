@@ -82,7 +82,7 @@
                                     </td>
                                 </tr>
                                    <tr>
-                                    <td width="15%" class="right"><span>备注:</span></td>
+                                    <td width="15%" class="right-color"><span>备注:</span></td>
                                     <td colspan="3"><textarea class="form-control" name="order_remark" id="order_remark" rows="6"></textarea> </td>
                                 </tr>
                                 

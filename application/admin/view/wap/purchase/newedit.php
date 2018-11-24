@@ -10,59 +10,22 @@ body{background:#fff;}
 .list .weui-form-preview__value{text-align:left;}
 .list .goods_number input,.list .purchase_number input,.list .remark input{border:1px solid #e5e5e5;width:80% !important;padding:5px;}
 .list .price_input {border:1px solid #e5e5e5;width:80px !important;padding:5px;}
-.weui-form-preview:before{
-	border:none;
-}
-.weui-form-preview{
-	margin-bottom:5px;
-}
-.button-block{
-	border-top:1px solid #f6f6f6;
-	text-align:right;
-	padding:7px 7px 7px 0;
-	margin:0;
-}
-.list .weui-btn{
-	border-radius:50px;
-}
-.weui-btn+.weui-btn{
-	margin-top:0;
-	margin-left:10px;
-}
-.inputspan,.tab_hide{
-	display:none;
-}
-.inputspan-show{
-	display:inline;
-}
-.input-hide{
-	display:none;
-}
-.input-show {
-	display:inline;
-}
-.weui-cells:before{
-	border:none;
-}
-.weui-cells:after{
-	border:none;
-}
-.weui-uploader__input-box{
-	width:30px;
-	height:30px;
-}
-.weui-uploader__input-box:before{
-	height:30px;
-}
-.weui-uploader__input-box:after{
-	width:30px;
-}
-.delete-file{
-	color:#06f;
-}
-.weui-picker-overlay, .weui-picker-container{
-    bottom:45px;
-}
+.weui-form-preview:before{border:none;}
+.weui-form-preview{margin-bottom:5px;}
+.button-block{border-top:1px solid #f6f6f6;text-align:right;padding:7px 7px 7px 0;margin:0;}
+.list .weui-btn{border-radius:50px;}
+.weui-btn+.weui-btn{margin-top:0;margin-left:10px;}
+.inputspan,.tab_hide{display:none;}
+.inputspan-show{display:inline;}
+.input-hide{display:none;}
+.input-show{display:inline;}
+.weui-cells:before{border:none;}
+.weui-cells:after{border:none;}
+.weui-uploader__input-box{width:30px;height:30px;}
+.weui-uploader__input-box:before{height:30px;}
+.weui-uploader__input-box:after{width:30px;}
+.delete-file{color:#06f;}
+.weui-picker-overlay, .weui-picker-container{bottom:45px;}
 </style>
 {/block}
 

@@ -36,7 +36,7 @@
                                         <input type="text" class="form-control w300" readonly="readonly" value="DN{:StrOrderOne()}" name="order_dn" id="order_dn">
                                     </td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>送货日期:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="delivery_date" id="delivery_date"></td>
+                                    <td width="35%"><input type="text" class="form-control w300" name="delivery_date" value="{:date('Y-m-d')}" id="delivery_date"></td>
                                 </tr>
 								
                                 <tr>
@@ -112,6 +112,10 @@
                                     </td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>司机电话:</span></td>
                                     <td width="35%"><input type="text" class="form-control w300" name="driver_tel" id="driver_tel"></td>
+                                </tr>
+                                   <tr>
+                                    <td width="15%" class="right-color"><span>备注:</span></td>
+                                    <td colspan="3"><textarea class="form-control" name="order_remark" id="order_remark" rows="6"></textarea> </td>
                                 </tr>
                     </tbody>
                     </table>

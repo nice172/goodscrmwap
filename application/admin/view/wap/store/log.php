@@ -1,75 +1,21 @@
 {extend name="public/common" /}
 {block name="header"}
 <style type="text/css">
-.weui-form-preview:before{
-	border:none;
-}
-.weui-form-preview__hd{
-    padding:0px 10px;
-}
-.weui-form-preview__hd:after{
-    left:0;
-}
-.weui-form-preview{
-	margin-bottom:5px;
-}
-.button-block{
-	border-top:1px solid #f6f6f6;
-	text-align:right;
-	padding:7px 7px 7px 0;
-	margin:0;
-}
-.list .weui-btn{
-	border-radius:50px;
-}
-.weui-btn+.weui-btn{
-	margin-top:0;
-}
-.search{
-	position:fixed;
-	top:0;
-	width:100%;
-	z-index:1000;
-}
-.search .weui-btn{
-	line-height:2;
-	border-color:#999;
-}
-.block10{
-	margin-top:5px;
-}
-.clear{
-	clear:both;
-}
-.weui-form-preview__value input {
-	border:1px solid #e5e5e5;
-	padding:5px;
-	width:90%;
-	outline: none;
-}
-.weui-form-preview__value {
-	text-align:left;
-}
-.bottom {
-	position:fixed;
-	bottom:0px;
-	width:100%;
-	height:50px;
-	background:#1aad19;
-	color:#fff;
-	text-align:center;
-	line-height:50px;
-}
-#category_id{
-	outline: none;
-	background-color: #ffffff;
-    background-image: none !important;
-    filter: none !important;
-    border: 1px solid #e5e5e5;
-    outline: none;
-    height: 28px !important;
-    line-height: 28px;
-}
+.weui-form-preview:before{border:none;}
+.weui-form-preview__hd{padding:0px 10px;}
+.weui-form-preview__hd:after{left:0;}
+.weui-form-preview{margin-bottom:5px;}
+.button-block{border-top:1px solid #f6f6f6;text-align:right;padding:7px 7px 7px 0;margin:0;}
+.list .weui-btn{border-radius:50px;}
+.weui-btn+.weui-btn{margin-top:0;}
+.search{position:fixed;top:0;width:100%;z-index:1000;}
+.search .weui-btn{line-height:2;border-color:#999;}
+.block10{margin-top:5px;}
+.clear{clear:both;}
+.weui-form-preview__value input{border:1px solid #e5e5e5;padding:5px;width:90%;outline: none;}
+.weui-form-preview__value{text-align:left;}
+.bottom{position:fixed;bottom:0px;width:100%;height:50px;background:#1aad19;color:#fff;text-align:center;line-height:50px;}
+#category_id{outline: none;background-color: #ffffff; background-image: none !important; filter: none !important; border: 1px solid #e5e5e5; outline: none; height: 28px !important; line-height: 28px;}
 </style>
 {/block}
 

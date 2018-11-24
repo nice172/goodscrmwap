@@ -17,7 +17,7 @@
                             </div>
                         </div>
                     </div>
-                </div>           
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="portlet">
@@ -40,34 +40,36 @@
                                     <td width="35%"><input type="text" class="form-control w300" value="{$delivery.delivery_date}" name="delivery_date" id="delivery_date"></td>
                                 </tr>
                                 <tr>
-                                <td width="15%" class="right-color"><span class="text-danger">*</span><span>采购单:</span></td>
-                                <td width="35%" colspan="3">
-                                	<input type="text" class="form-control w300" readonly="readonly" style="display:inline-block;" value="{$delivery.po_sn}" name="po_sn" id="po_sn">
+                                <td width="15%" class="right-color"><span class="text-danger">*</span><span>订单号码:</span></td>
+                                <td width="35%">
+                                	<input type="text" class="form-control w300" readonly="readonly" style="display:inline-block;" value="{$delivery.order_sn}" name="po_sn" id="po_sn">
                                 	<!-- <button type="button" class="btn btn-primary search_purchase" style="margin-top:-4px;">查找</button> -->
                                 </td>
-                                </tr>
-                                <tr>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>采购日期:</span></td>
-                                    <td width="35%">
-                                        <input type="text" class="form-control w300" readonly="readonly" name="purchase_date" value="{$delivery.purchase_date}" id="purchase_date">
-                                    </td>
-                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>采购金额:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="purchase_money" value="{$delivery.purchase_money}" id="purchase_money"></td>
-                                </tr>
-                                
-                                <tr>
-                                <td width="15%" class="right-color"><span class="text-danger">*</span><span>关联订单:</span></td>
-                                <td width="35%" colspan="3">
-                                	<input type="text" class="form-control w300" readonly="readonly" value="{$delivery.order_sn}" style="display:inline-block;" name="order_sn" id="order_sn">
-                                	<button type="button" style="display: none;" class="btn btn-primary relation_order" style="margin-top:-4px;">查找</button>
-                                </td>
+								  <td width="15%" class="right-color"><span class="text-danger">*</span><span>客户订单号:</span></td>
+                                  <td width="35%"><input type="text" class="form-control w300" readonly="readonly" name="cus_order_sn" value="{$delivery.cus_order_sn}" id="cus_order_sn"></td>
                                 </tr>
                                 
                                 <tr>
                                 <td width="15%" class="right-color"><span class="text-danger">*</span><span>送货公司:</span></td>
-                                <td width="35%" colspan="3">
+                                <td width="35%">
                                 	<input type="text" class="form-control w300" style="display:inline-block;" value="{$delivery.cus_name}" name="cus_name" id="cus_name">
                                 </td>
+                                <td width="15%" class="right-color"><span class="text-danger">*</span><span>送货地址:</span></td>
+                                <td width="35%">
+                                	<input type="text" class="form-control w300" name="delivery_address" value="{$delivery.delivery_address}" id="delivery_address">
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width="15%" class="right-color"><span class="text-danger">*</span><span>关联入库单:</span></td>
+                                <td width="35%">
+                                <input type="hidden" name="input_id" id="input_id" value="{$delivery.relation_input_id}" />
+                                	<input type="text" class="form-control w300" readonly="readonly" value="{$delivery.input_sn_list}" style="display:inline-block;" name="order_sn" id="order_sn">
+                                	<button type="button" style="display: none;" class="btn btn-primary relation_order" style="margin-top:-4px;">查找</button>
+                                </td>
+                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>关联采购单:</span></td>
+                                    <td width="35%">
+                                        <input type="text" class="form-control w300" readonly="readonly" name="po_sn" value="{$delivery.po_sn}" id="po_sn">
+                                    </td>
                                 </tr>
                                 
                                 <tr>
@@ -77,12 +79,6 @@
                                     <td width="35%">
                                         <input type="text" class="form-control w300" name="contacts_tel" value="{$delivery.contacts_tel}" id="contacts_tel">
                                     </td>
-                                </tr>
-                                 <tr>
-                                <td width="15%" class="right-color"><span class="text-danger">*</span><span>送货地址:</span></td>
-                                <td width="35%" colspan="3">
-                                	<input type="text" class="form-control w300" name="delivery_address" value="{$delivery.delivery_address}" id="delivery_address">
-                                </td>
                                 </tr>
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>物流单号:</span></td>
@@ -100,6 +96,10 @@
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>司机电话:</span></td>
                                     <td width="35%"><input type="text" class="form-control w300" name="driver_tel" value="{$delivery.driver_tel}" id="driver_tel"></td>
                                 </tr>
+                                   <tr>
+                                    <td width="15%" class="right-color"><span>备注:</span></td>
+                                    <td colspan="3"><textarea class="form-control" name="order_remark" id="order_remark" rows="6">{$delivery.order_remark}</textarea> </td>
+                                </tr>
                     </tbody>
                     </table>
 
@@ -108,16 +108,16 @@
                         <table class="table table-hover syc-table border">
                             <thead>
                                 <tr>
-                                    <th>序号</th>
-                                    <th>商品分类</th>
-                                    <th>商品名称</th>
-                                    <th>单位</th>
-                                    <th>未交数量</th>
-                                    <th>库存数量</th>
-                                    <th>本次送货数量</th>
-                                    <th>入库数量</th>
-                                    <th style="width:200px;">备注</th>
-                                    <th>操作</th>
+                                    <th width="5%">序号</th>
+                                    <th width="10%">商品分类</th>
+                                    <th width="20%">商品名称</th>
+                                    <th width="10%">单位</th>
+                                    <th width="5%">未交数量</th>
+                                    <!-- <th>库存数量</th> -->
+                                    <th width="10%">本次送货数量</th>
+                                    <th width="10%">入库数量</th>
+                                    <th width="20%">备注</th>
+                                    <th width="10%">操作</th>
                                 </tr>
                             </thead>
                             <tbody class="goodsList"></tbody>
@@ -361,9 +361,9 @@ function goodsList(goods_info){
 		html += '<td>'+goods_info[j]['goods_name']+'</td>';
 		html += '<td>'+goods_info[j]['unit']+'</td>';
 		html += '<td>'+goods_info[j]['diff_number']+'</td>';
-		html += '<td class="store_number"><span class="">'+goods_info[j]['store_number']+'</span></td>';
+		//html += '<td class="store_number"><span class="">'+goods_info[j]['store_number']+'</span></td>';
 		html += '<td class="current_send_number"><input type="text" data-current_send_number="'+goods_info[j]['current_send_number']+'" oninput="checkNum2(this)" name="current_send_number" style="width:80px;display:none;" value="'+goods_info[j]['current_send_number']+'" /><span class="inputspan">'+goods_info[j]['current_send_number']+'</span></td>';
-		html += '<td class="add_number"><input type="text" data-add_number="'+goods_info[j]['add_number']+'" oninput="checkNum2(this)" name="add_number" style="width:80px;display:none;" value="'+goods_info[j]['add_number']+'" /><span class="inputspan">'+goods_info[j]['add_number']+'</span></td>';
+		html += '<td class="add_number">'+goods_info[j]['add_number']+'</td>';
 		html += '<td class="remark"><input type="text" name="remark" style="width:200px;display:none;" value="'+goods_info[j]['remark']+'" /><span class="inputspan">'+goods_info[j]['remark']+'</span></td>';
 		html += '<td><a href="javascript:;" onclick="update('+j+')" class="update">修改</a><span class="text-explode">|</span><a href="javascript:;" onclick="_delete('+j+')" class="delete">删除</a></td>';
 		html += '</tr>';
@@ -378,19 +378,19 @@ function update(index){
 		if(current_send_number == ''){
 			current_send_number = $('.goods_'+index+' input[name=current_send_number]').attr('data-current_send_number');
 		}
-		var add_number = $('.goods_'+index+' input[name=add_number]').val();
-		if(add_number == ''){
-			add_number = $('.goods_'+index+' input[name=add_number]').attr('data-add_number');
-		}
+		//var add_number = $('.goods_'+index+' input[name=add_number]').val();
+		//if(add_number == ''){
+		//	add_number = $('.goods_'+index+' input[name=add_number]').attr('data-add_number');
+		//}
+		//add_number = parseInt(add_number);
 		current_send_number = parseInt(current_send_number);
-		add_number = parseInt(add_number);
-		if(current_send_number+add_number > goods_info[index]['goods_number']){
-			alert('“'+goods_info[index]['goods_name']+'”本次送货数量+入库数量不能大于采购单的未交数量');
+		if(current_send_number != goods_info[index]['add_number']){
+			alert('“'+goods_info[index]['goods_name']+'”出库数量和本次出货数量必须等于！');
 			status = 2;
 			return;
 		}
 		goods_info[index]['current_send_number'] = current_send_number;
-		goods_info[index]['add_number'] = add_number;
+		//goods_info[index]['add_number'] = add_number;
 		goods_info[index]['remark'] = $('.goods_'+index+' input[name=remark]').val();
 		goodsList(goods_info);
 		return;

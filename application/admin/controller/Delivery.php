@@ -10,8 +10,8 @@ class Delivery extends Base {
         'order_dn' => 'require',
         'delivery_date' => 'require',
         'po_sn' => 'require',
-        'purchase_date' => 'require',
-        'purchase_money' => 'require',
+        //'purchase_date' => 'require',
+        //'purchase_money' => 'require',
         'order_sn' => 'require',
         'cus_name' => 'require',
         'contacts' => 'require',
@@ -28,8 +28,8 @@ class Delivery extends Base {
         'order_dn.require' => '送货单号不能为空',
         'delivery_date.require' => '送货日期不能为空',
         'po_sn.require' => '采购单不能为空',
-        'purchase_date.require' => '采购日期不能为空',
-        'purchase_money.require' => '采购金额不能为空',
+        //'purchase_date.require' => '采购日期不能为空',
+        //'purchase_money.require' => '采购金额不能为空',
         'order_sn.require' => '关联订单不能为空',
         'cus_name.require' => '送货公司不能为空',
         'contacts.require' => '联系人不能为空',
@@ -43,7 +43,7 @@ class Delivery extends Base {
     
     protected $scene = [
         'add' => [],
-        'edit' => ['delivery_date','purchase_money',
+        'edit' => ['delivery_date',//'purchase_money',
             'cus_name','contacts','contacts_tel',
             'delivery_address','delivery_sn','delivery_way',
             'delivery_driver','driver_tel']
@@ -98,8 +98,8 @@ class Delivery extends Base {
 		
         $goods_info = db('delivery_goods')->where(['delivery_id' => $id])->select();
         
-        $db = db('purchase_goods og');
-        $db->where(['og.purchase_id' => $delivery_order['purchase_id']]);
+        $db = db('order_goods og');
+        $db->where(['og.order_id' => $delivery_order['order_id']]);
         $db->join('__GOODS__ g','og.goods_id=g.goods_id');
         $db->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id');
         $goodslist = $db->field('og.*,g.store_number,gc.category_name')->select();
@@ -112,16 +112,22 @@ class Delivery extends Base {
                 if ($value['goods_id'] == $val['goods_id']){
                 	$value['current_send_number'] = $val['current_send_number']; //本次送货数量
                 	$value['add_number'] = $val['add_number']; //入库数量
-                	if ($delivery_order['order_id']){
-                		$value['remark'] = db('order_goods')->where(['order_id' => $delivery_order['order_id'],'goods_id' => $value['goods_id']])->value('remark');
-                	}else{
-                		$value['remark'] = '';
-                	}
+                	$value['remark'] = $val['remark'];
                 	$templist[] = $value;
                 }
             }
             $totalMoney += $value['goods_number']*$value['goods_price'];
         }
+        
+        $input_sn = db('input_store')->where(['id' => ['in',$delivery_order['relation_input_id']]])
+        ->field('store_sn')->select();
+        $input_sn_list = '';
+        foreach ($input_sn as $value){
+        	$input_sn_list .= $value['store_sn'].',';
+        }
+        $input_sn_list = trim($input_sn_list,',');
+        $delivery_order['input_sn_list'] = $input_sn_list;
+        
         $this->assign('goodslist',json_encode($templist));
         $this->assign('goodslistArr',$templist);
         $this->assign('delivery',$delivery_order);
@@ -154,7 +160,8 @@ class Delivery extends Base {
     	if ($category_id > 0) {
     	    $db->where(['g.category_id' => $category_id]);
     	}
-    	$db->field('i.*,p.order_id,p.delivery_type,p.cus_order_sn,g.category_id,ig.goods_id,ig.goods_name,ig.goods_price,ig.unit,ig.goods_number,ig.remark,s.supplier_name');
+    	$db->where(['i.is_cancel' => 0]);
+    	$db->field('i.*,p.order_id,p.delivery_type,p.cus_order_sn,g.category_id,ig.goods_id,ig.goods_name,ig.goods_price,ig.unit,ig.goods_number,ig.remark,s.supplier_name,s.supplier_short');
     	$result = $db->paginate(config('page_size'),false,['query' => $this->request->param()]);
     	$data = $result->all();
     	$categoryModel = db('goods_category');
@@ -170,8 +177,11 @@ class Delivery extends Base {
     	$this->assign('pojson',json_encode($data));
     	$this->assign('current_page', $result->getCurrentPage());
     	$this->assign('total_page', $result->lastPage());
-    	$this->assign('params', $this->request->query());
+    	$this->assign('query', $this->request->query());
     	$this->assign('title','查找入库单');
+    	if ($this->request->isMobile() && $this->request->isAjax()){
+    		$this->success('','', $data);
+    	}
     	return $this->fetch();
     }
     
@@ -195,10 +205,8 @@ class Delivery extends Base {
             if (empty($delivery_order)) $this->error('送货单不存在');
             $order = db('order')->where(['id' => $delivery_order['order_id']])->find();
             $delivery_goods = db('delivery_goods')->where(['delivery_id' => $id])->select();
+            /*
             $purchase_goods = db('purchase_goods')->where(['purchase_id' => $delivery_order['purchase_id']])->select();
-//          p($delivery_goods);
-//          p($purchase_goods);
-//          exit;
             foreach ($delivery_goods as $key => $value){
                 foreach ($purchase_goods as $k => $val){
                 	if ($value['goods_id'] == $val['goods_id']){
@@ -208,6 +216,24 @@ class Delivery extends Base {
                 	}
                 }
             }
+            */
+            $goods_info = $this->request->post('goods_info/a');
+            foreach ($goods_info as $key => $value){
+            	if ($value['current_send_number'] <= 0){
+            		$this->error('“'.$value['goods_name'].'”本次送货数量不能小于1');
+            	}
+            	if ($value['current_send_number'] != $value['add_number']){
+            		$this->error('“'.$value['goods_name'].'”出库数量和本次出货数量必须等于！');
+            	}
+            }
+            
+            if ($value['current_send_number'] <= 0){
+            	$this->error('“'.$value['goods_name'].'”本次送货数量不能小于1');
+            }
+            if ($value['current_send_number'] != $value['add_number']){
+            	$this->error('“'.$value['goods_name'].'”出库数量和本次出货数量必须等于！');
+            }
+            
             db()->startTrans();
             if (db('delivery_order')->where(['id' => $id])->setField('is_confirm',1)){
                 //1入库，2出库，3报溢，4报损
@@ -282,7 +308,7 @@ class Delivery extends Base {
             $update = [
                 'id' => $data['id'],
                 'delivery_date' => $data['delivery_date'],
-                'purchase_money' => $data['purchase_money'],
+                //'purchase_money' => $data['purchase_money'],
                 'cus_name' => $data['cus_name'],
                 'contacts' => $data['contacts'],
                 'contacts_tel' => $data['contacts_tel'],
@@ -291,6 +317,7 @@ class Delivery extends Base {
                 'delivery_way' => $data['delivery_way'],
                 'delivery_driver' => $data['delivery_driver'],
                 'driver_tel' => $data['driver_tel'],
+            	'order_remark' => $data['order_remark'],
                 'update_time' => time()
             ];
             if (db('delivery_order')->where(['id' => ['neq',$data['id']],'delivery_sn' => $data['delivery_sn']])->find()){
@@ -305,9 +332,9 @@ class Delivery extends Base {
             	if ($value['current_send_number'] <= 0){
             		$this->error('“'.$value['goods_name'].'”本次送货数量不能小于1');
             	}
-                if ($value['current_send_number']+$value['add_number'] > $value['goods_number']){
-                    $this->error('“'.$value['goods_name'].'”本次送货数量+入库数量不能大于采购单的未交数量');
-                }
+            	if ($value['current_send_number'] != $value['add_number']){
+            		$this->error('“'.$value['goods_name'].'”出库数量和本次出货数量必须等于！');
+            	}
             }
             if (db('delivery_order')->update($update)){
                 $delivery_id = $data['id'];
@@ -353,8 +380,8 @@ class Delivery extends Base {
         
         $goods_info = db('delivery_goods')->where(['delivery_id' => $id])->select();
         
-        $db = db('purchase_goods og');
-        $db->where(['og.purchase_id' => $delivery_order['purchase_id']]);
+        $db = db('order_goods og');
+        $db->where(['og.order_id' => $delivery_order['order_id']]);
         $db->join('__GOODS__ g','og.goods_id=g.goods_id');
         $db->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id');
         $goodslist = $db->field('og.*,g.store_number,gc.category_name')->select();
@@ -367,17 +394,24 @@ class Delivery extends Base {
                 	$value['current_send_number'] = $val['current_send_number']; //本次送货数量
                 	$value['add_number'] = $val['add_number']; //入库数量
                 	$value['id'] = $val['id'];
-                	if ($delivery_order['order_id']){
-                		$value['remark'] = db('order_goods')->where(['order_id' => $delivery_order['order_id'],'goods_id' => $value['goods_id']])->value('remark');
-                	}else{
-                		$value['remark'] = '';
-                	}
+                	$value['remark'] = $val['remark'];
                 	$tempList[] = $value;
                 }
             }
             $totalMoney += $value['goods_number']*$value['goods_price'];
         }
+        $cus_order_sn = db('order')->where(['id' => $delivery_order['order_id']])->value('cus_order_sn');
         $this->assign('goodslist',json_encode($tempList));
+        $delivery_order['cus_order_sn'] = $cus_order_sn;
+        $input_sn = db('input_store')->where(['id' => ['in',$delivery_order['relation_input_id']]])
+        ->field('store_sn')->select();
+        $input_sn_list = '';
+        foreach ($input_sn as $value){
+        	$input_sn_list .= $value['store_sn'].',';
+        }
+        $input_sn_list = trim($input_sn_list,',');
+        $delivery_order['input_sn_list'] = $input_sn_list;
+        
         $this->assign('delivery',$delivery_order);
         $this->assign('title','编辑送货单');
         return $this->fetch();
@@ -572,7 +606,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
                         'add_number' => $value['out_number'],
                         'remark' => $value['remark']
                     ])){
-                        
+                    	/*
                         $store_log = db('store_log')->insert([
                             'goods_id' => $value['goods_id'],
                             'goods_name' => $value['goods_name'],
@@ -580,7 +614,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
                             'number' => $value['out_number'],
                             'create_time' => time()
                         ]);
-                        $update_send_num = db('order_goods')->where(['goods_id' => $value['goods_id'],'order_id' => $data['order_id']])->setInc('send_num',$value['out_number']);
+                        $update_send_num = db('order_goods')->where(['goods_id' => $value['goods_id'],'order_id' => $data['order_id']])
+                        ->setInc('send_num',$value['out_number']);
                         
                         if ($update_send_num && $store_log){
                             $success_num++;
@@ -588,6 +623,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
                             db()->rollback();
                             $this->error('保存失败');
                         }
+                        */
+                    	$success_num++;
                     }
                 }
                 if ($success_num == count($goods_info)) {
@@ -617,11 +654,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         }
 		
         if ($supplier_name != ''){
-
             $db->where('s.supplier_short|s.supplier_name','like',"%{$supplier_name}%");
-			
         }
-		
 		
         $db->where($where);
         if ($start_time != '' && $end_time != ''){
@@ -703,11 +737,19 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             $data[$key]['category_name'] = $category_name;
             $data[$key]['require_time'] = date('Y-m-d',$value['require_time']);
             $data[$key]['purchase_date'] = date('Y-m-d',$value['create_time']);
+            $data[$key]['diff_number'] = $value['goods_number'] - $value['send_num'];
             $data[$key]['show_input'] = true;
         }
         $this->assign('page',$result->render());
         $this->assign('data',$data);
         $this->assign('pojson',json_encode($data));
+        if ($this->request->isMobile() && $this->request->isAjax()) {
+        	$this->success('ok','',$data);
+        }
+        $this->assign('current_page', $result->getCurrentPage());
+        $this->assign('total_page', $result->lastPage());
+        $this->assign('query', $this->request->query());
+        $this->assign('title','查找订单');
         return $this->fetch();
     }
     

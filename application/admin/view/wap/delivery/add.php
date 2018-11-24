@@ -8,58 +8,24 @@ body{background:#fff;}
 .weui-cell{padding:10px;}
 .main{padding-top:25px;margin-bottom:60px;}
 .list .weui-form-preview__value{text-align:left;}
-.list .goods_number input,.list .remark input{border:1px solid #e5e5e5;width:80% !important;padding:5px;}
+.list .goods_number input{border:1px solid #e5e5e5;width:50% !important;padding:5px;
+}.list .remark input{border:1px solid #e5e5e5;width:80% !important;padding:5px;}
 .list .price_input {border:1px solid #e5e5e5;width:80px !important;padding:5px;}
-.weui-form-preview:before{
-	border:none;
-}
-.weui-form-preview{
-	margin-bottom:5px;
-}
-.button-block{
-	border-top:1px solid #f6f6f6;
-	text-align:right;
-	padding:7px 7px 7px 0;
-	margin:0;
-}
-.list .weui-btn{
-	border-radius:50px;
-}
-.weui-btn+.weui-btn{
-	margin-top:0;
-	margin-left:10px;
-}
-.inputspan,.tab_hide{
-	display:none;
-}
-.inputspan-show{
-	display:inline;
-}
-.input-hide{
-	display:none;
-}
-.input-show {
-	display:inline;
-}
-.weui-cells:before{
-	border:none;
-}
-.weui-cells:after{
-	border:none;
-}
-.weui-uploader__input-box{
-	width:30px;
-	height:30px;
-}
-.weui-uploader__input-box:before{
-	height:30px;
-}
-.weui-uploader__input-box:after{
-	width:30px;
-}
-.delete-file{
-	color:#06f;
-}
+.weui-form-preview:before{border:none;}
+.weui-form-preview{margin-bottom:5px;}
+.button-block{border-top:1px solid #f6f6f6;text-align:right;padding:7px 7px 7px 0;margin:0;}
+.list .weui-btn{border-radius:50px;}
+.weui-btn+.weui-btn{margin-top:0;margin-left:10px;}
+.inputspan,.tab_hide{display:none;}
+.inputspan-show{display:inline;}
+.input-hide{display:none;}
+.input-show{display:inline;}
+.weui-cells:before{border:none;}
+.weui-cells:after{border:none;}
+.weui-uploader__input-box{width:30px;height:30px;}
+.weui-uploader__input-box:before{height:30px;}
+.weui-uploader__input-box:after{width:30px;}
+.delete-file{color:#06f;}
 </style>
 {/block}
 
@@ -104,7 +70,7 @@ body{background:#fff;}
       <div class="weui-cell" >
         <div class="weui-cell__hd"><label class="weui-label">客户单号：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="cus_order_sn" placeholder="输入客户订单号" id="cus_order_sn"/>
+          <input class="weui-input" type="text" readonly="readonly" name="cus_order_sn" placeholder="输入客户订单号" id="cus_order_sn"/>
         </div>
       </div>
       
@@ -137,15 +103,17 @@ body{background:#fff;}
       
             <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">关联入库：</label></div>
-        <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="relation_order" placeholder="关联入库单" id="relation_order" />
+        <div class="weui-cell__bd" style="position:relative;">
+        <input type="hidden" name="input_id" id="input_id" />
+          <input class="weui-input" type="text" readonly="readonly" name="input_sn" placeholder="关联入库单" id="input_sn" />
+          <button type="button" style="position: absolute;right:0;top:-2px;" class="weui-btn weui-btn_mini weui-btn_primary" id="search_input">查找</button>
         </div>
       </div>
        
        <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">关联采购：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" name="relation_po" placeholder="关联采购单" id="relation_po" />
+          <input class="weui-input" type="text" readonly="readonly" name="po_sn" placeholder="关联采购单" id="po_sn" />
         </div>
       </div>
       
@@ -182,7 +150,7 @@ body{background:#fff;}
     <div class="weui-cells">
       <div class="weui-cell">
         <div class="weui-cell__bd">
-          <textarea class="weui-textarea" name="remark" style="height:150px;" placeholder="输入内容"></textarea>
+          <textarea class="weui-textarea" name="order_remark" style="height:150px;" placeholder="输入内容"></textarea>
         </div>
       </div>
     </div>
@@ -190,7 +158,7 @@ body{background:#fff;}
 </div>
 
 <div id="tab2" class="weui-tab__bd-item tab_hide">
-<div class="appendList"></div>
+<div class="appendList" style="margin-top:20px;"></div>
 </div>
 </div>
 <div class="weui-btn-area bottom-block">
@@ -222,32 +190,38 @@ $('#search_company').click(function(){
     	 content: '{:url(\'search_company\')}',
    });	
 });
-$('.get_goods').click(function(){
-    if($('#cus_id').val() == ''){
-		alert('请先选择客户');
+$('#search_input').click(function(){
+    var order_id = $('#order_id').val();
+    if(!order_id){
+		$.toptip('请先选择订单');
 		return;
     }
-	var title = '选择商品';
     index_layer = layer.open({
    	 type: 2,
    	 title: false,
    	 closeBtn: true,
    	 shade: 0.3,
    	 area: ['90%', '90%'],
-   	 content: '{:url(\'get_goods\')}?cus_id='+$('#cus_id').val(),
+   	 content: '{:url(\'input_order\')}?order_id='+order_id,
   });
 });
 $("#search_order").click(function () {
     var title = '查找订单';
+    var purchase_id = $('#purchase_id').val();
     index_layer = layer.open({
       	 type: 2,
       	 title: false,
       	 closeBtn: true,
       	 shade: 0.3,
       	 area: ['90%', '90%'],
-      	 content: '{:url(\'relation_order\')}?purchase_id=0',
+      	 content: '{:url(\'relation_order\')}?purchase_id='+purchase_id,
      });
 });
+
+function close_layer(){
+	layer.close(index_layer);
+}
+
 function client_info(data){
 	$('#cus_id').val(data.id);
 	$('#company_name').val(data.company_name);
@@ -260,19 +234,62 @@ function client_info(data){
 }
 
 var goods_info = new Array();
-function put(data){
-	var flag = false;
-	for(var i in goods_info){
-		if(goods_info[i]['goods_id'] == data.goods_id){
-			flag = true;
-			break;
+function relation_order(data){
+	//console.log(data);
+	relation_type = 0;
+	goods_info = [];
+	$('#purchase_date').val(data.purchase_date);
+	$('#order_sn').val(data.order_sn);
+	$('#order_id').val(data.orderid);
+	var purchase_id = $('#purchase_id').val();
+	$.get('<?php echo url('rel_order');?>?purchase_id='+purchase_id+'&order_id='+data.orderid,{},function(res){
+		if(res.code == 1){
+			$('#cus_name').val(res.data.cus_name);
+			$('#cus_id').val(res.data.cus_id);
+	    	$('#order_sn').val(res.data.order_sn);
+	    	$('#cus_order_sn').val(res.data.cus_order_sn);
+	    	$('#delivery_address').val(res.data.delivery_address);
+	    	$('#contacts').val(res.data.contacts);
+	    	$('#contacts_tel').val(res.data.cus_phome);
+	    	$('#purchase_money').val(res.data.total_money);
+		}else{
+			$('#cus_name,#purchase_id,#po_sn,#delivery_way,#cus_id,#order_id,#order_sn,#cus_order_sn,#delivery_address,#contacts,#contacts_tel').val('');
+			$.toptip(res.msg);
 		}
+	});
+}
+
+function goods_merge(data){
+	console.log(data);
+	var po_sn = $('#po_sn').val();
+	var purchase_id = $('#purchase_id').val();
+	if((purchase_id != '' && purchase_id != data.po_id) || purchase_id == ''){
+		$('#po_sn').val(data.po_sn);
+		$('#input_sn').val(data.store_sn);
+		$('#delivery_way').val(data.delivery_type);
+		$('#purchase_id').val(data.po_id);
+		$('#input_id').val(data.id);
+		var input_id = $('#input_id').val();
 	}
-	if(!flag){
-		data['is_show'] = true;
-		goods_info.push(data);
+	if(purchase_id == data.po_id) {
+		var inputsn_arr = $('#input_sn').val().split(',');
+		var flag = true;
+		for(var i in inputsn_arr) {
+			if(data.store_sn == inputsn_arr[i]){
+				flag = false;
+				break;
+			}
+		}
+		if(!flag) return;
+		
+		$('#input_id').val($('#input_id').val()+','+data.id);
+		$('#input_sn').val($('#input_sn').val()+','+data.store_sn);
+		var input_id = $('#input_id').val();
 	}
-	goodsList(goods_info);
+	$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:data.order_id,po_id:data.po_id},function(res){
+		goods_info = res;
+		goodsList(res);
+	});
 }
 
 function goodsList(data){
@@ -289,11 +306,11 @@ function goodsList(data){
 	html +='</div>';
 	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 	html +='<label class="weui-form-preview__label">单位：</label>';
-	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;" class="shop_price">单价：<input type="text" class="price_input '+input_css+'" data-shop_price="'+data[i]['shop_price']+'" oninput="checkNum(this)" value="'+data[i]['shop_price']+'" name="shop_price"/><span class="'+span_css+'">'+data[i]['shop_price']+'</span>元</span></span>';
+	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;float:right;" class="shop_price">未交数量：'+data[i]['diff_number']+'</span></span>';
 	html +='</div>';
 	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
-	html +='<label class="weui-form-preview__label">数量：</label>';
-	html +='<span class="weui-form-preview__value goods_number"><input type="text" class="'+input_css+'" value="'+data[i]['goods_number']+'" data-goods_number="'+goods_info[i]['goods_number']+'" oninput="checkNum2(this)" name="goods_number"/><span class="'+span_css+'">'+data[i]['goods_number']+'</span></span>';
+	html +='<label class="weui-form-preview__label">本次送货数量：</label>';
+	html +='<span class="weui-form-preview__value goods_number"><input type="text" class="'+input_css+'" value="'+data[i]['current_send_number']+'" data-current_send_number="'+goods_info[i]['goods_number']+'" oninput="checkNum2(this)" name="current_send_number"/><span class="'+span_css+'">'+data[i]['current_send_number']+'</span><span style="float:right;">出库数量：'+data[i]['out_number']+'<span></span>';
 	html +='</div>';
 	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 	html +='<label class="weui-form-preview__label">备注：</label>';
@@ -318,16 +335,17 @@ function get_goods(){
 
 function _update(index){
 	if(goods_info[index]['is_show'] == true){
-		var shop_price = $('.goods_'+index+' input[name=shop_price]').val();
-		if(shop_price == ''){
-			shop_price = $('.goods_'+index+' input[name=shop_price]').attr('data-shop_price');
+		var current_send_number = $('.goods_'+index+' input[name=current_send_number]').val();
+		if(current_send_number == ''){
+			current_send_number = $('.goods_'+index+' input[name=current_send_number]').attr('data-current_send_number');
 		}
-		var goods_number = $('.goods_'+index+' input[name=goods_number]').val();
-		if(goods_number == ''){
-			goods_number = $('.goods_'+index+' input[name=goods_number]').attr('data-goods_number');
+		if(current_send_number != goods_info[index]['out_number']){
+			alert('“'+goods_info[index]['goods_name']+'”出库数量和本次出货数量必须等于！');
+			return;
 		}
-		goods_info[index]['goods_number'] = parseInt(goods_number);
-		goods_info[index]['shop_price'] = _formatMoney(parseFloat(shop_price));
+		//goods_info[index]['goods_number'] = parseInt(goods_number);
+		//goods_info[index]['shop_price'] = _formatMoney(parseFloat(shop_price));
+		goods_info[index]['current_send_number'] = current_send_number;
 		goods_info[index]['remark'] = $('.goods_'+index+' input[name=remark]').val();
 		goods_info[index]['is_show'] = false;
 		$('.list').each(function(idx){
@@ -347,11 +365,19 @@ function _update(index){
 }
 
 function saveOther(eIndex,is_show){
-	var market_price = $('.goods_'+eIndex+' input[name=market_price]').val();
-	if(market_price == ''){
-		market_price = $('.goods_'+eIndex+' input[name=market_price]').attr('data-market_price');
+// 	var market_price = $('.goods_'+eIndex+' input[name=market_price]').val();
+// 	if(market_price == ''){
+// 		market_price = $('.goods_'+eIndex+' input[name=market_price]').attr('data-market_price');
+// 	}
+	//goods_info[eIndex]['market_price'] = _formatMoney(parseFloat(market_price));
+	var current_send_number = $('.goods_'+eIndex+' input[name=current_send_number]').val();
+	if(current_send_number == ''){
+		current_send_number = $('.goods_'+eIndex+' input[name=current_send_number]').attr('data-current_send_number');
 	}
-	goods_info[eIndex]['market_price'] = _formatMoney(parseFloat(market_price));
+	if(current_send_number != goods_info[eIndex]['out_number']){
+		alert('“'+goods_info[eIndex]['goods_name']+'”出库数量和本次出货数量必须等于！');
+		return;
+	}
 	goods_info[eIndex]['remark'] = $('.goods_'+eIndex+' input[name=remark]').val();
 	if(!goods_info[eIndex]['is_show']){
 		goods_info[eIndex]['is_show'] = false;
@@ -415,7 +441,8 @@ $(function() {
     			if(res.code == 0){
     				$.toptip(res.msg);
     				}else{
-    				$.toptip(res.msg,'success');
+    				setTimeout(() => {
+    					$.toptip(res.msg,'success');},2000);
     				}
     		},
     	     complete: function(XMLHttpRequest, textStatus) { 
