@@ -72,8 +72,10 @@
       </div>
         <div class="button-block">
         	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['id' => $v['id']])}'">查看</button>
+        	{if condition="!$v['is_confirm']"}
             <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['id' => $v['id']])}'">编辑</button>
-          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="cancel(this,{$v.id})">取消</button>
+          	{/if}
+          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="deleteOrder(this,{$v.id})">删除</button>
         </div>
 </div>
 {/foreach}
@@ -104,6 +106,20 @@
             return false;
         }
     }
+
+	function deleteOrder(e,orderId){
+		$.confirm('确认删除？',function(){
+			var data={name:'scrap',id:orderId};
+			$.get("{:url('delete')}",data,function(res){
+				if(res.code){$.toptip(res.msg,'success');
+				setTimeout(() => {window.location.reload();},2000);
+				}else{
+					$.toptip(res.msg);}
+			});
+		},function(){});
+        return false;
+	}
+    
     $("#start_time,#end_time").calendar({
     	dateFormat: 'yyyy-mm-dd'
     });

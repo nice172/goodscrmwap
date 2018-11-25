@@ -87,7 +87,7 @@ body{background:#fff;}
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">备注信息：</label>
-          <span class="weui-form-preview__value" style="text-align: left;">{$delivery.remark}</span>
+          <span class="weui-form-preview__value" style="text-align: left;">{$delivery.order_remark}</span>
         </div>
       </div>
 </div>
@@ -151,10 +151,16 @@ $(function() {
 		$('.weui-tab__bd-item').hide();
 		$('.weui-tab__bd-item').eq($(this).index()).show();
     });
+    var goods_info = new Array();
+    <?php if (!empty($goodslist)){?>
+    goods_info = <?php echo $goodslist;?>;
+    <?php }?>
 
+    var status = 1;
+    var relation_type = 1; //默认关联订单
     $('.confirm').click(function(){
         var _this = $(this);
-		$.get("{:url('confirm')}",{id:infoId},function(res){
+		$.post("{:url('confirm')}",{goods_info:goods_info,id:infoId},function(res){
 			if(res.code){
 				$.toptip(res.msg,'success');
 				setTimeout(function(){
@@ -165,16 +171,7 @@ $(function() {
 			}
 		});
     });
-
-
-
-
-
-
-
-
-
-    
+  
 });
 </script>
 {/block}

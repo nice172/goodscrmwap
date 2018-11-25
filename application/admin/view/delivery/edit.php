@@ -42,7 +42,7 @@
                                 <tr>
                                 <td width="15%" class="right-color"><span class="text-danger">*</span><span>订单号码:</span></td>
                                 <td width="35%">
-                                	<input type="text" class="form-control w300" readonly="readonly" style="display:inline-block;" value="{$delivery.order_sn}" name="po_sn" id="po_sn">
+                                	<input type="text" class="form-control w300" readonly="readonly" style="display:inline-block;" value="{$delivery.order_sn}" name="order_sn" id="order_sn">
                                 	<!-- <button type="button" class="btn btn-primary search_purchase" style="margin-top:-4px;">查找</button> -->
                                 </td>
 								  <td width="15%" class="right-color"><span class="text-danger">*</span><span>客户订单号:</span></td>
