@@ -39,7 +39,7 @@
         <div class="weui-grid__icon">
           <img src="__UI__/demos/images/icon_nav_dialog.png" alt="">
         </div>
-        <p class="weui-grid__label">退出</p>
+        <p class="weui-grid__label">退出系统</p>
       </a>
     </div>
 {/block}

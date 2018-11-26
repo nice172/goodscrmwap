@@ -57,7 +57,11 @@ nav{height:45px;background:#1aad19;color:#fff;position:fixed;top:0;width:100%;z-
 nav .nav-left{width:15%;float:left;height:45px;}
 nav .nav-center{width:70%;float:left;height:45px;line-height:45px;text-align:center;}
 nav .nav-right{width:15%;float:right;height:45px;line-height:45px;text-align:center;}
-.modal{background:rgba(0,0,0,0.3);position:fixed;top:0;z-index:9999999;display:none;}
+.modal{background:rgba(0,0,0,0.1);position:fixed;top:0;z-index:9999999;display:none;}
+.modal ul{text-align:center;width:150px;position:fixed;top:0;right:-150px;background:#fff;box-shadow:0 0 30px #888888;}
+.modal ul li a{color:#000;}
+.modal ul li {height:40px;border-bottom:1px solid #eee;line-height:40px;}
+.menu-head h3 strong{color:#333;}
 </style>
 </head>
 <body ontouchstart>
@@ -73,7 +77,17 @@ nav .nav-right{width:15%;float:right;height:45px;line-height:45px;text-align:cen
 <?php }?>
 {block name="main"}{/block}
 </div>
-<div class="modal"></div>
+<div id="modal" class="modal">
+<ul>
+<li class="menu-head"><h3><strong>菜单</strong></h3></li>
+<li class="li-a"><a href="{:url('baojia/index')}">报价管理</a></li>
+<li class="li-a"><a href="{:url('order/index')}">订单管理</a></li>
+<li class="li-a"><a href="{:url('purchase/index')}">采购管理</a></li>
+<li class="li-a"><a href="{:url('store/relation')}">库存管理</a></li>
+<li class="li-a"><a href="{:url('delivery/index')}">送货管理</a></li>
+<li class="li-a"><a href="{:url('login/logout')}">退出系统</a></li>
+</ul>
+</div>
 <script src="__UI__/lib/jquery-2.1.4.js"></script>
 <script src="__UI__/lib/fastclick.js"></script>
 <script src="__UI__/js/jquery-weui.js"></script>
@@ -121,16 +135,34 @@ function checkNum2(obj){
 	obj.value = obj.value.replace(/^\./g,"");//验证第一个字符是数字而不是
 	obj.value = obj.value.replace(/\.{1}/g,"");//如果有一个. 就清除
 }
-$('.fa-list-ul').click(function(){
-	var w = $(window).width();
-	var h = $(window).height();
-	$('.modal').css({
-		width: w,height: h,
-	}).fadeIn();
-	$('.modal').click(function(){
-		$(this).fadeOut();
-	});
+var w = $(window).width();
+var h = $(window).height();
+$('.modal').css({
+	width: w,height: h,
 });
+$('.modal ul').css('height',h+'px');
+$('.fa-list-ul').click(function(){
+	$('.modal').fadeIn();
+	$('.modal ul').animate({right:'0px'},function(){});
+});
+$('.modal').click(function(e){
+	var _this = $(this);
+	if(e.target.nodeName == 'DIV'){
+		$('.modal ul').animate({right:'-150px'},function(){
+			_this.fadeOut();});
+	}
+});
+// var obj = document.getElementById('modal');
+// obj.addEventListener('touchmove', function(event) {
+//     if (event.targetTouches.length == 1) {
+// 　　　　 	event.preventDefault();
+//         //var touch = event.targetTouches[0];
+//         //obj.style.left = touch.pageX-50 + 'px';
+//         //obj.style.top = touch.pageY-50 + 'px';
+// 		$('.modal ul').animate({right:'-150px'},function(){
+// 			$('.modal').fadeOut();});
+//       }
+// }, false);
 </script>
 </body>
 </html>
