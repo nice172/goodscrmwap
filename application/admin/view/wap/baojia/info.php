@@ -2,7 +2,7 @@
 {block name="header"}
 <style type="text/css">
 body{background:#fff;}
-.main{margin-top:40px;}
+.main{margin-top:10px;}
 .goods_list .weui-form-preview__value{text-align:left;line-height:1.2;padding-top:8px;}
 .goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;}
 </style>

@@ -2,8 +2,8 @@
 {block name="header"}
 <style>body{background:#fff;}</style>
 {/block}
-
 {block name="main"}
+<div class="block45-h"></div>
     <div class="weui-grids">
       <a href="{:url('baojia/index')}" class="weui-grid js_grid">
         <div class="weui-grid__icon">
