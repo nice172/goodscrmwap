@@ -248,15 +248,15 @@ class Delivery extends Base {
                         'number' => $value['current_send_number'],
                         'create_time' => time()
                     ]);
-                    db('store_log')->insert([
-                        'goods_id' => $value['goods_id'],
-                        'goods_name' => $value['goods_name'],
-                        'delivery_id' => $id,
-                        'order_id' => $delivery_order['order_id'],
-                        'type' => 1,
-                        'number' => $value['add_number'],
-                        'create_time' => time()
-                    ]);
+//                     db('store_log')->insert([
+//                         'goods_id' => $value['goods_id'],
+//                         'goods_name' => $value['goods_name'],
+//                         'delivery_id' => $id,
+//                         'order_id' => $delivery_order['order_id'],
+//                         'type' => 1,
+//                         'number' => $value['add_number'],
+//                         'create_time' => time()
+//                     ]);
                     if ($value['add_number'] > 0){
                     	db('goods')->where(['goods_id' => $value['goods_id']])->setInc('store_number',$value['add_number']);
                     }
