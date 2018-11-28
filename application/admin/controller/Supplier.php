@@ -250,7 +250,7 @@ class Supplier extends Base {
         'con_section' => 'require',
         'con_post' => 'require',
         'con_email' => 'email|checkContactsEmail:1',
-        'con_address' => 'require'
+        //'con_address' => 'require'
     ];
     
     protected $contacts_message = [
@@ -262,7 +262,7 @@ class Supplier extends Base {
         'con_post.require' => '职务不能为空',
         'con_email.email' => '邮箱格式不合法',
         'con_email.checkContactsEmail' => '邮箱已存在',
-        'con_address.require' => '送货地址不能为空',
+        //'con_address.require' => '送货地址不能为空',
     ];
     
     public function checkContacts($value,$rule,$data){

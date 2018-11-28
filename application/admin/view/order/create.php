@@ -407,6 +407,11 @@ function update(index){
 				return;
 			}
 		}
+		if(parseFloat(shop_price) <= 0){
+			alert('采购单价不能为0');
+			status = 2;
+			return;
+		}
 		var goods_number = $('.goods_'+index+' input[name=goods_number]').val();
 		if(goods_number == ''){
 			goods_number = $('.goods_'+index+' input[name=goods_number]').attr('data-goods_number');

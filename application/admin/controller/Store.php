@@ -76,17 +76,18 @@ class Store extends Base {
             $db->where('s.supplier_name|s.supplier_short','like',"%{$supplier_name}%");
         }
         if ($goods_name != ''){
-            $db->where('g.goods_name|pg.goods_name','like',"%{$goods_name}%");
-        }
-        if ($category_id > 0){
-            $where['gc.category_id'] = $category_id;
+            //$db->where('g.goods_name|pg.goods_name','like',"%{$goods_name}%");
+            $db->where('pg.goods_name','like',"%{$goods_name}%");
         }
         
         $db->where($where);
-        $db->field('p.*,p.id as purchase_id,g.store_number,pg.goods_id,pg.goods_name,pg.unit,pg.goods_number,pg.goods_price,gc.category_name,s.supplier_name');
-        $db->join('__PURCHASE_GOODS__ pg','p.id=pg.purchase_id');
-        $db->join('__GOODS__ g ','pg.goods_id=g.goods_id');
-        $db->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id');
+        $db->field('p.*,p.id as purchase_id,pg.goods_number as store_number,pg.goods_id,pg.goods_name,pg.unit,pg.goods_number,pg.goods_price,s.supplier_name');
+        $db->join('__INPUT_STORE__ i','p.id=i.po_id');
+        $db->join('__INPUT_GOODS__ pg','i.id=pg.input_id');
+        if ($category_id > 0){
+            $db->where(['g.category_id' => $category_id]);
+            $db->join('__GOODS__ g ','pg.goods_id=g.goods_id');
+        }
         $db->join('__SUPPLIER__ s','s.id=p.supplier_id');
         
         //$db->join('__DELIVERY_ORDER__ do','p.order_id=do.order_id');
@@ -94,9 +95,16 @@ class Store extends Base {
         
         $result = $db->order('p.create_time desc')->paginate(config('PAGE_SIZE'),false, ['query' => $this->request->param()]);
         $list = $result->all();
+        //库存数量=采购入库数量  - 出库数量  + 盘点报溢数量  - 盘点报损数量
         foreach ($list as $key => $value){
         	if ($value['create_type'] == 1){
         		$list[$key]['order_id'] = db('delivery_order')->where(['purchase_id' => $value['id']])->value('order_id');
+        	}
+        	if ($category_id > 0){
+        	    $list[$key]['category_name'] = db('goods_category')->where(['category_id' => $category_id])->value('category_name');
+        	}else{
+            	$list[$key]['category_name'] = db('goods g')->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
+            	->where(['g.goods_id' => $value['goods_id']])->value('category_name');
         	}
         }
         $this->assign('current_page', $result->getCurrentPage());
@@ -337,6 +345,11 @@ class Store extends Base {
         ->select();
         foreach ($result as $key => $value){
             $result[$key]['create_date'] = date('Y-m-d',$value['create_time']);
+            if (!$value['input_store']){
+                $result[$key]['input_store'] = $value['goods_number'];
+            }else{
+                $result[$key]['input_store'] = $value['goods_number']-$value['input_store'];
+            }
         }
         return $result;
     }

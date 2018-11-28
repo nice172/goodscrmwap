@@ -315,7 +315,6 @@ $('button[type=submit]').click(function(){
 	$('.ajaxForm2').ajaxSubmit({
 		data:{goods_info:goods_info,type:send},
 		success: function(res){
-			$('.modal-footer button').removeAttr('disabled');
 			if(send == 'email'){$(_this).text('生成PDF文件并发送');}
 			if(res.code == 1){
 				toastr.success(res.msg);
@@ -330,6 +329,7 @@ $('button[type=submit]').click(function(){
 						}
 			}else{
 				toastr.error(res.msg);
+				$('.modal-footer button').removeAttr('disabled');
 				}
 		}
 	});

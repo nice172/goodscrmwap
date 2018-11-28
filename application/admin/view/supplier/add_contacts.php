@@ -64,7 +64,7 @@
                         <input type="text" class="form-control w300 fleft" name="con_email" id="inputemail" placeholder="邮箱">
                     </div>
                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="display: none;">
                     <label for="inputdescription" class="col-sm-2 control-label">送货地址</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control w300 fleft" name="con_address" id="con_address" placeholder="送货地址">

@@ -534,6 +534,9 @@ class Order extends Base {
     		    if ($value['purchase_number'] <= 0){
     		        $this->error('“'.$value['goods_name'].'”采购数量不能小于1');
     		    }
+    		    if (_formatMoney($value['shop_price']) <= 0){
+    		        $this->error('“'.$value['goods_name'].'”采购单价不能为0');
+    		    }
     			$countMoney = _formatMoney($value['purchase_number']*$value['shop_price']);
     			$purchseGoods[] = [
     				'goods_id' => $value['goods_id'],
@@ -570,7 +573,12 @@ class Order extends Base {
     	$goodsInfo = db('order_goods')->where(['order_id' => $order['id']])->select();
     	if (!empty($goodsInfo)){
     		foreach ($goodsInfo as $key => $value){
-    			$value['shop_price'] = $value['goods_price']; //实际价格
+    			$cus_id = $order['cus_id'];
+    			$last_order = db('order o')->join('__ORDER_GOODS__ og','o.id=og.order_id')
+    			->where(['o.cus_id' => $cus_id,'og.goods_id' => $value['goods_id']])
+    			->where("o.status=2 OR o.status=3 OR o.status=6")->value('goods_price');
+    			$value['shop_price'] = _formatMoney($last_order['goods_price']);
+    			//$value['shop_price'] = $value['goods_price']; //实际价格
     			//$value['purchase_number'] = 0;
     			$value['purchase_number'] = $value['goods_number'];
     			$value['store_number'] = db('goods')->where(['goods_id' => $value['goods_id']])->value('store_number');

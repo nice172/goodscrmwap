@@ -36,10 +36,13 @@ class Account extends Base {
     		$id = intval($this->request->param('id'));
     		$ticket_date = $this->request->param('ticket_date');
     		$ticket_sn = $this->request->param('ticket_sn');
-    		$money = $this->request->param('money');
+    		$money = _formatMoney($this->request->param('money',0));
     		$remark = $this->request->param('remark');
     		$res = db('receivables')->where(['id' => $id,'is_delete' => 0])->find();
     		if (empty($res)) $this->error('开票数据错误');
+    		if ($money <= 0){
+    		    $this->error('开票金额不能为0');
+    		}
     		$total_money = db('receivable_ticket')->where(['rec_id' => $id])->sum('money');
     		if($res['confirm_money'] - $total_money < $money){
     			$this->error('开票金额错误');
@@ -61,6 +64,39 @@ class Account extends Base {
     		return;
     	}
     	return $this->fetch('open_ticket');
+    }
+    
+    private function export_csv($info_data,$list){
+        
+        // 加输出头
+        $title = "送货单号,送货日期,订单号,下单日期,客户名称,商品分类,商品名称,单位,单价,是否对账,交货数量\n";
+        
+        // 输出http header
+        $filename = '应收账款详情-' . date('Ymd') . '.csv';
+        header("Content-type:text/csv");
+        header("Content-Disposition:attachment;filename=" . $filename);
+        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
+        header('Expires:0');
+        header('Pragma:public');
+        echo @iconv('UTF-8', 'GB18030//IGNORE', $title);
+        foreach ($list as $val) {
+            if ($info_data['is_confirm']){
+                $status_text = '已对账';
+            }else{
+                $status_text = '未对账';
+            }
+            $data = sprintf(
+                "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
+                $val['order_dn'],
+                $val['delivery_date'],
+                $val['order_sn'],
+                date('Y-m-d',$val['order_create_time']),
+                $val['cus_name'],$val['category_name'],
+                $val['goods_name'],$val['unit'],$val['goods_price'],
+                $status_text,$val['current_send_number']
+                );
+            echo @iconv('UTF-8', 'GB18030//IGNORE', $data);
+        }
     }
     
     public function ticketrecrod(){
@@ -147,6 +183,11 @@ class Account extends Base {
             $category_name = db('goods g')->join('__GOODS_CATEGORY__ gc','gc.category_id=g.category_id')
             ->where(['g.goods_id' => $value['goods_id']])->value('gc.category_name');
             $result[$key]['category_name'] = $category_name;
+        }
+        $export = $this->request->param('export');
+        if ($export == 1){
+            $this->export_csv($receivables,$result);
+            exit;
         }
         $this->assign('page','');
         $this->assign('list',$result);

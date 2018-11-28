@@ -16,6 +16,7 @@
                                 </a>
                             </div>
                             <div class="pull-right">
+                            	<a href="{:url('info',['id' => $receivables['id'],'export'=> 1])}" class="btn btn-default">导出表格</a>
                                 <a href="javascript:window.location.reload();" class="btn btn-default">
                                     <span class="glyphicon glyphicon-refresh"></span>
                                     <span>刷新</span></a>
