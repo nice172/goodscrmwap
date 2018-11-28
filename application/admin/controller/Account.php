@@ -108,6 +108,15 @@ class Account extends Base {
     	return $this->fetch();
     }
     
+    public function st_ticketrecrod(){
+    	$id = intval($this->request->param('id'));
+    	$data = db('payment_ticket r')->join('__USERS__ u','r.admin_uid=u.id')
+    	->where(['r.rec_id' => $id])->field('r.*,u.user_nick')->order('create_time desc')->select();
+    	$this->assign('list',$data);
+    	$this->assign('title','发票记录');
+    	return $this->fetch();
+    }
+    
     public function delete(){
         if ($this->request->isAjax()){
             $id = $this->request->param('id',0,'intval');
@@ -159,6 +168,17 @@ class Account extends Base {
     		$id = $this->request->param('id',0,'intval');
     		if ($id <= 0) $this->error('参数错误');
     		if (db('receivables')->where(['id' => $id])->setField('is_confirm',1)){
+    			$this->success('操作成功');
+    		}
+    		$this->error('操作失败');
+    	}
+    }
+    
+    public function payment_confirm(){
+    	if ($this->request->isAjax()){
+    		$id = $this->request->param('id',0,'intval');
+    		if ($id <= 0) $this->error('参数错误');
+    		if (db('payment_order')->where(['id' => $id])->setField('is_confirm',1)){
     			$this->success('操作成功');
     		}
     		$this->error('操作失败');
@@ -576,14 +596,15 @@ class Account extends Base {
         $supplier = db('supplier')->where(['id' => $supplier_id])->find();
         if (empty($supplier)) $this->error('供应商不存在');
         $this->assign('supplier',$supplier);
-        $result = db('delivery_order do')->join('__DELIVERY_GOODS__ gd','gd.delivery_id=do.id')
+        $result = db('input_store do')->join('__INPUT_GOODS__ gd','gd.input_id=do.id')
         ->join('__GOODS__ g','gd.goods_id=g.goods_id')->join('__GOODS_CATEGORY__ gc','gc.category_id=g.category_id')
-        ->where(['do.id' => ['in',array_unique($delivery_id)]])->field('do.*,gd.goods_id,gd.goods_name,gd.goods_price,gd.unit,gd.current_send_number,gd.add_number,gc.category_name')
+        ->where(['do.id' => ['in',array_unique($delivery_id)]])->field('do.*,gd.goods_id,gd.goods_name,gd.goods_price,gd.unit,gd.goods_number,gc.category_name')
         ->order('do.create_time desc')->select();
         $totalMoney = 0;
         foreach ($result as $key => $value){
-            $result[$key]['count_money'] = _formatMoney($value['goods_price']*($value['current_send_number']+$value['add_number']));   
-            $totalMoney += $result[$key]['count_money'];
+            //$result[$key]['count_money'] = _formatMoney($value['goods_price']*($value['current_send_number']+$value['add_number']));   
+            $result[$key]['count_money'] = _formatMoney($value['goods_price']*$value['goods_number']);
+        	$totalMoney += $result[$key]['count_money'];
         }
         
         if ($this->request->isAjax()){
@@ -615,29 +636,46 @@ class Account extends Base {
                 'last_date' => $last_date,
                 'update_time' => time(),'create_time' => time()
             ];
+            db()->startTrans();
             if (db('payment_order')->insert($data)){
                 $payment_order_id = db('payment_order')->getLastInsID();
-                db('delivery_order')->where(['id' => ['in',$delivery_ids]])->setField('is_payment',1);
+                //db('delivery_order')->where(['id' => ['in',$delivery_ids]])->setField('is_payment',1);
+                db('input_store')->where(['id' => ['in',$delivery_ids]])->setField('is_payment',1);
+                $success_num = 0;
                 foreach ($result as $key => $value){
-                    db('payment_goods')->insert([
+                	$order = db('purchase')->where(['id' => $value['po_id']])->find();
+                    if(db('payment_goods')->insert([
                         'payment_order_id' => $payment_order_id,
-                        'order_id' => $value['order_id'],
-                        'order_sn' => $value['order_sn'],
-                        'purchase_id' => $value['purchase_id'],
+                        'order_id' => $order['order_id'],
+                        'order_sn' => $order['order_sn'],
+                        'purchase_id' => $value['po_id'],
                         'po_sn' => $value['po_sn'],
-                        'delivery_date' => $value['delivery_date'],
-                        'delivery_dn' => $value['order_dn'], //送货单号
+                        //'delivery_date' => $value['delivery_date'],
+                        //'delivery_dn' => $value['order_dn'], //送货单号
+                    	'delivery_date' => date('Y-m-d H:i:s',$value['create_time']), //入库日期
+                    	'delivery_dn' => $value['store_sn'], //入库单号
                         'goods_id' => $value['goods_id'],
                         'goods_name' => $value['goods_name'],
                         'unit' => $value['unit'],
                         'goods_price' => $value['goods_price'],
-                        'rec_number' => $value['current_send_number']+$value['add_number'], //收货数量
-                        'open_number' => $value['current_send_number']+$value['add_number'], //开票数量
-                        'count_money' => _formatMoney(($value['current_send_number']+$value['add_number'])*$value['goods_price'])
-                    ]);
+                        'rec_number' => $value['goods_number'],
+                    	'open_number' => $value['goods_number'],
+                    	'count_money' => _formatMoney($value['goods_number']*$value['goods_price'])
+                        //'rec_number' => $value['current_send_number']+$value['add_number'], //收货数量
+                        //'open_number' => $value['current_send_number']+$value['add_number'], //开票数量
+                        //'count_money' => _formatMoney(($value['current_send_number']+$value['add_number'])*$value['goods_price'])
+                    ])){
+                    	$success_num++;
+                    }
                 }
-                cookie('setsupplier',null);
-                $this->success('保存成功',url('payment'));
+                if ($success_num == count($result)){
+                	db()->commit();
+	                cookie('setsupplier',null);
+	                $this->success('保存成功',url('payment'));
+                }else{
+                	db()->rollback();
+                	$this->error('保存失败请重试');
+                }
             }else{
                 $this->error('保存失败请重试');
             }

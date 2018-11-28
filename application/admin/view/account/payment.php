@@ -105,6 +105,7 @@
                                 <td>{$vo.diff_money}</td>
                                 <td>
 									<a href="{:url('payment_info',['id' => $vo['id']])}">详情</a>
+                                	<!--
                                 	{if condition="$vo['status']!=0"}
                                 		{if condition="!$vo['is_open'] && $vo['status']==2"}
                                 		<span class="text-explode">|</span>
@@ -116,6 +117,31 @@
                                     	{/if}
                                 	{/if}
                                 	{if condition="!$vo['is_open'] || $vo['status']==1"}
+                                	<span class="text-explode">|</span>
+                                	<a href="{:url('payment_edit',['id' => $vo['id']])}">编辑</a>
+                                	{/if}-->
+									{if condition="$vo['status']!=0"}
+                                		{if condition="$vo['is_confirm']"}
+                                			<span class="text-explode">|</span>
+                                			<a href="{:url('st_ticketrecrod',['id' => $vo['id']])}">发票记录</a>
+	                                		{if condition="!$vo['is_open']"}
+	                                		<span class="text-explode">|</span>
+	                                		<a href="javascript:;" onclick="_open({$vo['id']})">开发票</a>
+	                                		{/if}
+	                                		{if condition="$vo['status']==1 && $vo['is_open']==1"}
+	                                    	<span class="text-explode">|</span>
+	                                    	<a href="javascript:;" onclick="_status({$vo['id']})">已核销</a>
+	                                    	{/if}
+                                    	{else}
+	                                    	<span class="text-explode">|</span>
+	                                    	<a href="javascript:;" onclick="_confirm({$vo['id']})">确认</a>
+                                    	{/if}
+                                		{if condition="$vo['status']==1 || !$vo['is_open']"}
+<!--                                 		<span class="text-explode">|</span> -->
+                                		<!--  <a href="javascript:;" onclick="_close({$vo['id']})">关闭</a>
+                                		-->{/if}
+                                	{/if}
+                                	{if condition="!$vo['is_confirm']"}
                                 	<span class="text-explode">|</span>
                                 	<a href="{:url('payment_edit',['id' => $vo['id']])}">编辑</a>
                                 	{/if}
@@ -208,6 +234,15 @@
             if (!isNaN(e) && e !== null && e !== '') {
                 var data={name:'scrap',id:e};
                 $.sycToAjax("{:url('payment_status')}", data);
+            }
+        };
+        return false;
+    }
+    function _confirm(e) {
+        if(confirm("确认操作？")){
+            if (!isNaN(e) && e !== null && e !== '') {
+                var data={name:'scrap',id:e};
+                $.sycToAjax("{:url('payment_confirm')}", data);
             }
         };
         return false;

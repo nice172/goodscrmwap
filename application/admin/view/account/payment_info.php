@@ -69,15 +69,15 @@
                             <thead>
                             <tr>
                                 <th>采购订单</th>
-                                <th>送货日期</th>
-                                <th>送货单号</th>
+                                <th>入库日期</th>
+                                <th>入库单号</th>
                                 <th>商品分类</th>
                                 <th>客户名称</th>
                                 <th>单位</th>
                                 <th>单价</th>
-                                <th>收货数量</th>
-                                <th>待开票数量</th>
-                                <th>本次开票数量</th>
+                                <th>入库数量</th>
+<!--                                 <th>待开票数量</th> -->
+<!--                                 <th>本次开票数量</th> -->
                                 <th>金额</th>
                             </tr>
                             </thead>
@@ -92,8 +92,8 @@
                                 <td>{$vo.unit}</td>
                                 <td>{$vo.goods_price}</td>
                                 <td>{$vo['rec_number']}</td>
-                                <td>{$vo['open_number']}</td>
-                                <td>{$vo['open_number']}</td>
+<!--                                 <td>{$vo['open_number']}</td> -->
+<!--                                 <td>{$vo['open_number']}</td> -->
                                 <td>{$vo['count_money']}</td>
                                 </tr>
                             {/volist}

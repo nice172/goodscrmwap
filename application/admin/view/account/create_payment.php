@@ -85,15 +85,13 @@
                             {volist name="list" id="vo" empty="$empty"}
                                 <tr>
                                 <td>{$vo.po_sn}</td>
-                                <td>{$vo.delivery_date}</td>
-                                <td>{$vo.order_dn}</td>
+                                <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                                <td>{$vo.store_sn}</td>
                                 <td>{$vo.category_name}</td>
                                 <td>{$vo.goods_name}</td>
                                 <td>{$vo.unit}</td>
                                 <td>{$vo.goods_price}</td>
-<!--                                 <td>{$vo['current_send_number']+$vo['add_number']}</td> -->
-<!--                                 <td>{$vo['current_send_number']+$vo['add_number']}</td> -->
-                                <td>0</td>
+                                <td>{$vo.goods_number}</td>
                                 <td>{$vo['count_money']}</td>
                                 </tr>
                             {/volist}
