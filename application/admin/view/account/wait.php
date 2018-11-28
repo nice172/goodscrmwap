@@ -38,7 +38,7 @@
                                 
                             </div>
                             	<div class="form-group">
-                                    <label class="control-label" for="start_time">送货日期 :</label>
+                                    <label class="control-label" for="start_time">入库日期 :</label>
                                     <input name="start_time" id="start_time" <?php if (isset($_GET['start_time'])):?>value="<?php echo $_GET['start_time'];?>"<?php endif;?> class="ipt form-control">
                                     <span>到</span>
                                 </div>
@@ -48,16 +48,16 @@
                                 </div>
                                 
                                <div class="form-group">
-                                <label class="control-label" for="order_dn">送货单号 :</label>
-                                <input name="order_dn" id="order_dn" class="ipt form-control" value="<?php if(isset($_GET['order_dn'])){echo $_GET['order_dn'];}?>" data-toggle="tooltip" data-placement="top" title="送货单号">
+                                <label class="control-label" for="store_sn">入库单号 :</label>
+                                <input name="store_sn" id="store_sn" class="ipt form-control" value="<?php if(isset($_GET['store_sn'])){echo $_GET['store_sn'];}?>" data-toggle="tooltip" data-placement="top" title="入库单号">
                                 
                             </div>
+                      
                             <div class="form-group">
                                 <label class="control-label" for="po_sn">采购单号 :</label>
                                 <input name="po_sn" id="po_sn" class="ipt form-control" value="<?php if(isset($_GET['po_sn'])){echo $_GET['po_sn'];}?>" data-toggle="tooltip" data-placement="top" title="采购单号">
                                 
                             </div>
-                                
                                 <button type="submit" class="btn btn-primary">查找</button>
                                 </form>
                         </div>
@@ -71,10 +71,15 @@
                             <tr>
                                 <th>选择</th>
                                 <th>供应商</th>
-                                <th>送货单号</th>
-                                <th>送货日期</th>
-                                <th>采购单号</th>
-                                <th>明细</th>
+                                <th>入库单号</th>
+                                <th>入库时间</th>
+                                <th>商品名称</th>
+                                <th>单位</th>
+                                <th>单价</th>
+                                <th>入库数量</th>
+                                <th>入库金额</th>
+                                <!-- <th>采购单号</th><th>明细</th> -->
+                                <th>备注</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -82,11 +87,16 @@
                                 <tr>
                                 <td><input type="checkbox" {if condition="isset($soset['checked']) && in_array($vo['supplier_id'].'_'.$vo['id'],$soset['checked'])"}checked="checked"{/if} name="cus_delivery[]" data-cus_id="{$vo.supplier_id}" value="{$vo.supplier_id}_{$vo.id}"/></td>
                                 <td>{$vo.supplier_short}</td>
-                                <td>{$vo.order_dn}</td>
-                                <td>{$vo.delivery_date}</td>
-                                <td>{$vo.po_sn}</td>
-                                <td>
-                                	<a href="javascript:;" onclick="viewlist({$vo.id})">查看</a>
+                                <td>{$vo.store_sn}</td>
+                                <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                                <td>{$vo.goods_name}</td>
+                                <td>{$vo.unit}</td>
+                                <td>{$vo.goods_price}</td>
+                                <td>{$vo.goods_number}</td>
+                                <td><?php echo _formatMoney($vo['goods_number']*$vo['goods_price']);?></td>
+              					<td>
+                                	<!-- <a href="javascript:;" onclick="viewlist({$vo.id})">查看</a> -->
+                                {$vo.remark}	
                                 </td>
                                 </tr>
                             {/volist}

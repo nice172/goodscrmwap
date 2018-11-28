@@ -52,7 +52,7 @@
                                <td>{$vo.user_nick}</td>
                                <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
                                 <td>{$vo.remark}</td>
-                                <td><a href="">查看</a></td>
+                                <td><a href="javascript:;">查看</a></td>
                                 </tr>
                             {/volist}
                             </tbody>

@@ -509,32 +509,33 @@ class Account extends Base {
     
     public function wait(){
         $supplier_name = $this->request->param('supplier_name');
-        $order_dn = $this->request->param('order_dn');
+        $store_sn = $this->request->param('store_sn');
         $po_sn = $this->request->param('po_sn');
         $start_time = $this->request->param('start_time');
         $end_time = $this->request->param('end_time');
-        $db = db('delivery_order do');
+        $db = db('input_store do');
         $db->where(['do.is_payment' => 0]);
         if ($supplier_name != '') {
             $db->where(['s.supplier_name|s.supplier_short','like',"%{$supplier_name}%"]);
         }
         if (strtotime($start_time) && strtotime($end_time)){
-            $db->where(['do.delivery_date' => ['>=', $start_time]]);
-            $db->where(['do.delivery_date' => ['<=', $end_time]]);
+            $db->where(['do.create_time' => ['>=', strtotime($start_time)]]);
+            $db->where(['do.create_time' => ['<=', strtotime($end_time)]]);
         }
         if ($po_sn != ''){
             $db->where(['p.po_sn' => $po_sn]);
         }
-        if ($order_dn != ''){
-            $db->where(['do.order_dn' => $order_dn]);
+        if ($store_sn != ''){
+            $db->where(['do.store_sn' => $store_sn]);
         }
-        $result = $db->join('__PURCHASE__ p','do.purchase_id=p.id')
+        $result = $db->join('__PURCHASE__ p','do.po_id=p.id')
         ->join('__SUPPLIER__ s','p.supplier_id=s.id')
-        ->field(['do.order_dn,do.id,do.delivery_date,p.supplier_id,p.po_sn,s.supplier_name,s.supplier_short'])
+        ->join('__INPUT_GOODS__ ig','do.id=ig.input_id')
+        ->field(['do.store_sn,do.id,do.create_time,ig.remark,ig.goods_name,ig.unit,ig.goods_price,ig.goods_number,p.supplier_id,p.po_sn,s.supplier_name,s.supplier_short'])
         ->order('do.create_time desc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
         $this->assign('page',$result->render());
         $this->assign('list',$result->all());
-        $this->assign('title','采购发票待处理');
+        $this->assign('title','入库单待处理');
         $this->assign('sub_class','viewFramework-product-col-1');
         //cookie('setsupplier',null);
         $this->assign('soset',cookie('setsupplier'));

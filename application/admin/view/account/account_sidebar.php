@@ -12,7 +12,7 @@
                             </li>
                             <li {if condition="ACTION_NAME=='wait' || ACTION_NAME=='create_payment'"}class="active"{/if}>
                                 <a href="{:url('wait')}">
-                                    <div class="nav-icon"></div><div class="nav-title">采购发票待处理</div>
+                                    <div class="nav-icon"></div><div class="nav-title">入库单待处理</div>
                                 </a>
                             </li>
                             
