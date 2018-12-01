@@ -21,7 +21,7 @@
 
 {block name="main"}
 <!-- <div class="block10"></div> -->
-<div class="main">
+<div class="main" style="padding-top:20px;">
 {foreach name="data" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
       <div class="weui-form-preview__bd">

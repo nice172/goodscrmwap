@@ -8,7 +8,7 @@
 {/block}
 {block name="main"}
 <form class="form-horizontal" method="get">
-    <div class="weui-cells weui-cells_form" style="margin-top: 0px;padding-top:10px;">
+    <div class="weui-cells weui-cells_form" style="margin-top: 0px;padding-top:25px;">
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">跟单员：</label></div>
         <div class="weui-cell__bd" style="position:relative;">

@@ -1,7 +1,7 @@
 {extend name="public/common" /}
 {block name="header"}
 <style type="text/css">
-.main{margin-top:90px;margin-bottom:60px;}
+.main{margin-top:55px;margin-bottom:60px;}
 .weui-form-preview:before{border:none;}
 .weui-form-preview__hd{padding:0px 10px;}
 .weui-form-preview__hd:after{left:0;}

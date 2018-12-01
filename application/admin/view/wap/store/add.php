@@ -41,7 +41,7 @@ body{background:#fff;}
 <form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('add');?>" id="saveOrder" method="post">
     <input type="hidden" name="po_id" id="po_id" />
     <input type="hidden" name="supplier_id" id="supplier_id" />
-	<div style="margin-bottom: 60px;">
+	<div style="margin-bottom: 60px;margin-top:65px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
     <div class="weui-cells weui-cells_form">
       <div class="weui-cell">
@@ -100,7 +100,7 @@ body{background:#fff;}
 </div>
 
 <div id="tab2" class="weui-tab__bd-item tab_hide">
-<div class="appendList" style="padding-top: 20px;"></div>
+<div class="appendList"></div>
 </div>
 </div>
 <div class="weui-btn-area bottom-block">

@@ -41,7 +41,7 @@ body{background:#fff;}
 <form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('edit_do');?>" id="saveOrder" method="post">
     <input type="hidden" name="id" value="{$data.id}"  id="id" />
     <input type="hidden" name="cus_id" value="{$data.cus_id}"  id="cus_id" />
-	<div style="margin-bottom: 60px;">
+	<div style="margin-bottom: 60px;margin-top: 65px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
     <div class="weui-cells weui-cells_form">
       <div class="weui-cell">
@@ -173,7 +173,7 @@ body{background:#fff;}
 
 <div id="tab2" class="weui-tab__bd-item tab_hide">
 <!-- <p style="padding:30px 0 5px 10px;"><a href="javascript:;" class="get_goods">添加商品</a></p> -->
-<div class="appendList" style="padding-top:25px;"></div>
+<div class="appendList" style="padding-top:15px;"></div>
 </div>
 </div>
 <div class="weui-btn-area bottom-block">

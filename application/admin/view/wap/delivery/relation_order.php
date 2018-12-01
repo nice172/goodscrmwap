@@ -4,13 +4,13 @@
 .weui-label,input,textarea{font-size:13px !important;}
 .weui-label {width:70px !important;text-align:right;}
 .weui-cells__title {color:#000;}
-.search{position:fixed;top:0;width:100%;z-index:99999;}
+.search{position:fixed;top:45px;width:100%;z-index:99999;}
 .search .weui-btn{line-height:2;border-color:#999;}
 .block10{margin-top:5px;}
 .weui-form-preview__value input {border:1px solid #e5e5e5;padding:5px;width:39%;outline: none;}
 .content{margin-top:90px;}
 .weui-form-preview:before{border-top:none;}
-.weui-loadmore_line{margin-top:110px;}
+.weui-loadmore_line{margin-top:130px;}
 </style>
 {/block}
 {block name="main"}

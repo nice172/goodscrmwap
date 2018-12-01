@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="/assets/plugins/layui/css/layui.css" />
 <link rel="stylesheet" href="__WAP__/css/demos.css">
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<style>.weui-navbar{top:45px !important;}</style>
 {block name="header"}{/block}
 <script type="text/javascript">
 function send_email(type,e,email){

@@ -2,7 +2,7 @@
 {block name="header"}
 <style type="text/css">
 body{background:#fff;}
-.main{margin-top:40px;}
+.main{margin-top:30px;}
 .goods_list .weui-form-preview__value{text-align:left;line-height:1.2;padding-top:8px;}
 .goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;}
 .fileList a{color:#06f;}
@@ -10,7 +10,7 @@ body{background:#fff;}
 {/block}
 
 {block name="main"}
-  <div class="weui-navbar" style="position:fixed;top:0;">
+  <div class="weui-navbar" style="position:fixed;top:45px;">
     <a class="weui-navbar__item weui-bar__item--on" href="javascript:;">
      基本信息
     </a>

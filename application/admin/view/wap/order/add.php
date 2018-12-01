@@ -29,7 +29,7 @@ body{background:#fff;}
 {/block}
 
 {block name="main"}
-  <div class="weui-navbar" style="position:fixed;top:0;">
+  <div class="weui-navbar" style="position:fixed;top:45px;">
     <a class="weui-navbar__item weui-bar__item--on" href="javascript:;">
      基本信息
     </a>
@@ -37,7 +37,7 @@ body{background:#fff;}
       商品
     </a>
   </div>
-<form class="form-horizontal" enctype="multipart/form-data" action="<?php echo url('add');?>" id="saveOrder" method="post">
+<form class="form-horizontal" style="margin-top:65px;" enctype="multipart/form-data" action="<?php echo url('add');?>" id="saveOrder" method="post">
 	<input type="hidden" name="cus_id" id="cus_id" />
 	<input type="hidden" name="con_id" id="con_id" />
 	<div style="margin-bottom: 60px;">
@@ -143,7 +143,7 @@ body{background:#fff;}
 </div>
 
 <div id="tab2" class="weui-tab__bd-item tab_hide">
-<p style="padding:30px 0 5px 10px;"><a href="javascript:;" class="get_goods">添加商品</a></p>
+<p style="padding:10px 0 5px 10px;"><a href="javascript:;" class="get_goods">添加商品</a></p>
 <div class="appendList"></div>
 </div>
 </div>

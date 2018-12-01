@@ -13,7 +13,7 @@
 {block name="main"}
 <form class="form-horizontal" method="get" action="?">
 <input type="hidden" name="cus_id" value="<?php echo isset($_GET['cus_id']) ? $_GET['cus_id'] : '';?>" />
-    <div class="weui-cells weui-cells_form" style="margin:0;position: fixed;z-index:99999;top:0;width:100%;">
+    <div class="weui-cells weui-cells_form" style="margin:0;position: fixed;z-index:99999;top:45px;width:100%;">
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">分类：</label></div>
         <div class="weui-cell__bd">
@@ -41,7 +41,7 @@
     </div>
 </form>
 
-<div style="margin-top: 90px;">
+<div style="margin-top: 65px;">
 {foreach name="data" item="vo" empty="$empty2"}
     <div class="weui-cells weui-cells_checkbox goods_list {if condition="$key==0"}top-list{/if}">
       <label class="weui-cell weui-check__label" for="s{$vo['goods_id']}">

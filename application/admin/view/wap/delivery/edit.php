@@ -43,7 +43,7 @@ body{background:#fff;}
 	<input type="hidden" name="cus_id" id="cus_id" value="{$delivery.cus_id}" />
     <input type="hidden" name="purchase_id" id="purchase_id" value="{$delivery.purchase_id}" />
     <input type="hidden" name="order_id" id="order_id" value="{$delivery.order_id}" />
-	<div style="margin-bottom: 60px;">
+	<div style="margin-bottom: 60px;margin-top: 65px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
     <div class="weui-cells weui-cells_form">
       <div class="weui-cell">
@@ -159,7 +159,7 @@ body{background:#fff;}
 </div>
 
 <div id="tab2" class="weui-tab__bd-item tab_hide">
-<div class="appendList" style="margin-top:20px;"></div>
+<div class="appendList" style="margin-top:10px;"></div>
 </div>
 </div>
 <div class="weui-btn-area bottom-block">
