@@ -81,7 +81,7 @@ class Store extends Base {
         }
         
         $db->where($where);
-        $db->field('p.*,p.id as purchase_id,pg.goods_number as store_number,pg.goods_id,pg.goods_name,pg.unit,pg.goods_number,pg.goods_price,s.supplier_name');
+        $db->field('p.*,p.id as purchase_id,pg.goods_number as store_number2,pg.goods_id,pg.goods_name,pg.unit,pg.goods_number,pg.goods_price,s.supplier_name');
         $db->join('__INPUT_STORE__ i','p.id=i.po_id');
         $db->join('__INPUT_GOODS__ pg','i.id=pg.input_id');
         if ($category_id > 0){
@@ -106,6 +106,7 @@ class Store extends Base {
             	$list[$key]['category_name'] = db('goods g')->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
             	->where(['g.goods_id' => $value['goods_id']])->value('category_name');
         	}
+        	$list[$key]['store_number'] = db('goods')->where(['goods_id' => $value['goods_id']])->value('store_number');
         }
         $this->assign('current_page', $result->getCurrentPage());
         $this->assign('total_page', $result->lastPage());
@@ -323,6 +324,17 @@ class Store extends Base {
                 }
                 $res = db('input_goods')->insertAll($temp);
                 if ($res){
+                	//库存数量=5采购入库数量  - 2出库数量  + 3盘点报溢数量  - 4盘点报损数量
+                	/*
+                	foreach ($temp as $key => $value) {
+                		$purchase_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 5])->sum('number');
+                		$out_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 2])->sum('number');
+                		$stocktaking_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 3])->sum('number');
+                		$inventory_loss_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 4])->sum('number');
+                		$store_number = $purchase_number-$out_number+$stocktaking_number-$inventory_loss_number;
+                		db('goods')->where(['goods_id' => $value['goods_id']])->setField('store_number',$store_number);
+                	}
+                	*/
                     db()->commit();
                     $this->success('新增成功');
                 }
@@ -346,9 +358,9 @@ class Store extends Base {
         foreach ($result as $key => $value){
             $result[$key]['create_date'] = date('Y-m-d',$value['create_time']);
             if (!$value['input_store']){
-                $result[$key]['input_store'] = $value['goods_number'];
+                $result[$key]['purchase_input_store'] = $value['goods_number'];
             }else{
-                $result[$key]['input_store'] = $value['goods_number']-$value['input_store'];
+                $result[$key]['purchase_input_store'] = $value['goods_number']-$value['input_store'];
             }
         }
         return $result;

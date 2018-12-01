@@ -74,9 +74,7 @@
 							
 							    <th>对账单号</th>
                                 <th>对账日期</th>
-                              
                                 <th>客户名称</th>
-                               
                                 <th>金额</th>
                                 <th>已付金额</th>
                                 <th>冲减金额</th>
@@ -93,9 +91,7 @@
 								
 								<td>{$vo.invoice_sn}</td>
                                 <td>{$vo.invoice_date}</td>
-                               
                                 <td>{$vo.cus_name}</td>
-                          
                                 <td>{$vo.total_money}</td>
                                 <td>{$vo.pay_money}</td>
                                 <td>{$vo.diff_money}</td>
@@ -112,6 +108,8 @@
 	                                		{if condition="!$vo['is_open']"}
 	                                		<span class="text-explode">|</span>
 	                                		<a href="javascript:;" onclick="_open({$vo['id']})">开发票</a>
+                                		<span class="text-explode">|</span>
+                                		<a href="javascript:;" onclick="is_open({$vo['id']})">已开票</a>
 	                                		{/if}
 	                                		{if condition="$vo['status']==1 && $vo['is_open']==1"}
 	                                    	<span class="text-explode">|</span>
@@ -121,7 +119,7 @@
 	                                    	<span class="text-explode">|</span>
 	                                    	<a href="javascript:;" onclick="_confirm({$vo['id']})">确认</a>
                                     	{/if}
-                                		{if condition="$vo['status']==1 || !$vo['is_open']"}
+                                		{if condition="$vo['status']==1 and $vo['is_confirm']==0"}
                                 		<span class="text-explode">|</span>
                                 		<a href="javascript:;" onclick="_close({$vo['id']})">关闭</a>
                                 		{/if}
@@ -205,6 +203,15 @@
         });
     });
     //单条订单操作
+    function is_open(e) {
+        if(confirm("确认操作？")){
+            if (!isNaN(e) && e !== null && e !== '') {
+                var data={name:'scrap',id:e};
+                $.sycToAjax("{:url('open')}", data);
+            }
+        };
+        return false;
+    }
     function _open(e) {
         //if(confirm("确认操作？")){
             if (!isNaN(e) && e !== null && e !== '') {

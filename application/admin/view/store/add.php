@@ -284,7 +284,7 @@ function goodsList(goods_info){
 		html += '<td class="goods_price" style="text-align:center;"><input type="text" data-goods_price="'+goods_info[j]['goods_price']+'" oninput="checkNum(this)" name="goods_price" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['goods_price']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['goods_price']+'</span></td>';
 		//html += '<td class="goods_number"><span class="span">'+goods_info[j]['goods_number']+'</span></td>';
 		html += '<td class="purchase_number" style="text-align:center;"><input type="text" data-purchase_number="'+goods_info[j]['goods_number']+'" oninput="checkNum2(this)" name="goods_number" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['goods_number']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['goods_number']+'</span></td>';
-		html += '<td class="store_number"><span class="span"><input type="text" oninput="checkNum2(this)" name="input_store['+goods_info[j]['goods_id']+']" value="'+goods_info[j]['input_store']+'"/></span></td>';
+		html += '<td class="store_number"><span class="span"><input type="text" oninput="checkNum2(this)" name="input_store['+goods_info[j]['goods_id']+']" value="'+goods_info[j]['purchase_input_store']+'"/></span></td>';
 		html += '<td><input type="text" name="remark['+goods_info[j]['goods_id']+']"/></td>';
 		html += '</tr>';
 	}

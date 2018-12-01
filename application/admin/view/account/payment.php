@@ -74,14 +74,13 @@
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <table class="table table-hover syc-table">
+                        <table class="table table-hover syc-table border">
                             <thead>
                             <tr>
                             	<th>ID</th>
 								<th>对账单号</th>
                             	<th>对账日期</th>
                             	<th>供应商</th>
-                            	
                             	<th>是否开票</th>
                                 <th>发票状态</th>
                                 <th>对账金额</th>
@@ -126,7 +125,9 @@
                                 			<a href="{:url('st_ticketrecrod',['id' => $vo['id']])}">发票记录</a>
 	                                		{if condition="!$vo['is_open']"}
 	                                		<span class="text-explode">|</span>
-	                                		<a href="javascript:;" onclick="_open({$vo['id']})">开发票</a>
+	                                		<a href="javascript:;" onclick="_open_ticket({$vo['id']})">开发票</a>
+											<span class="text-explode">|</span>
+	                                		<a href="javascript:;" onclick="_open({$vo['id']})">已开票</a>
 	                                		{/if}
 	                                		{if condition="$vo['status']==1 && $vo['is_open']==1"}
 	                                    	<span class="text-explode">|</span>
@@ -136,10 +137,10 @@
 	                                    	<span class="text-explode">|</span>
 	                                    	<a href="javascript:;" onclick="_confirm({$vo['id']})">确认</a>
                                     	{/if}
-                                		{if condition="$vo['status']==1 || !$vo['is_open']"}
-<!--                                 		<span class="text-explode">|</span> -->
-                                		<!--  <a href="javascript:;" onclick="_close({$vo['id']})">关闭</a>
-                                		-->{/if}
+                                		{if condition="$vo['status']==1 and $vo['is_confirm']==0"}
+										<span class="text-explode">|</span>
+                                		<a href="javascript:;" onclick="_close({$vo['id']})">关闭</a>
+                                		{/if}
                                 	{/if}
                                 	{if condition="!$vo['is_confirm']"}
                                 	<span class="text-explode">|</span>
@@ -219,6 +220,27 @@
             });
         });
     });
+    function _open_ticket(e) {
+        //if(confirm("确认操作？")){
+            if (!isNaN(e) && e !== null && e !== '') {
+                var data={name:'scrap',id:e};
+                //$.sycToAjax("{:url('open')}", data);
+            	var title = '新增发票记录';
+                bDialog.open({
+                    title : title,
+                    height: 450,
+                    width:410,
+                    url : '{:url(\'st_openticket\')}?id='+e,
+                    callback:function(data){
+                        if(data && data.results && data.results.length > 0 ) {
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+        //};
+        return false;
+    }
     //单条订单操作
     function _open(e) {
         if(confirm("确认操作？")){

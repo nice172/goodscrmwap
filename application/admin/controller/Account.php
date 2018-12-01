@@ -66,6 +66,41 @@ class Account extends Base {
     	return $this->fetch('open_ticket');
     }
     
+    public function st_openticket(){
+    	if ($this->request->isAjax()){
+    		$id = intval($this->request->param('id'));
+    		$ticket_date = $this->request->param('ticket_date');
+    		$ticket_sn = $this->request->param('ticket_sn');
+    		$money = _formatMoney($this->request->param('money',0));
+    		$remark = $this->request->param('remark');
+    		$res = db('payment_order')->where(['id' => $id,'is_delete' => 0])->find();
+    		if (empty($res)) $this->error('开票数据错误');
+    		if ($money <= 0){
+    			$this->error('开票金额不能为0');
+    		}
+    		$total_money = db('payment_ticket')->where(['rec_id' => $id])->sum('money');
+    		if($res['pay_money'] - $total_money < $money){
+    			$this->error('开票金额错误');
+    		}
+    		$data = [
+    				'admin_uid' => $this->userinfo['id'],
+    				'rec_id' => $id,
+    				'ticket_date' => $ticket_date,
+    				'ticket_sn' => $ticket_sn,
+    				'money' => _formatMoney($money),
+    				'remark' => $remark,
+    				'create_time' => time()
+    		];
+    		if (db('payment_ticket')->insert($data)){
+    			$this->success('新增发票成功');
+    		}else{
+    			$this->error('新增发票失败');
+    		}
+    		return;
+    	}
+    	return $this->fetch('st_openticket');
+    }
+    
     private function export_csv($info_data,$list){
         
         // 加输出头
@@ -140,7 +175,7 @@ class Account extends Base {
             $this->error('操作失败');
         }
     }
-    
+        
     public function open(){
         if ($this->request->isAjax()){
             $id = $this->request->param('id',0,'intval');
@@ -204,14 +239,19 @@ class Account extends Base {
             ->where(['g.goods_id' => $value['goods_id']])->value('gc.category_name');
             $result[$key]['category_name'] = $category_name;
         }
-        $export = $this->request->param('export');
-        if ($export == 1){
-            $this->export_csv($receivables,$result);
-            exit;
-        }
         $this->assign('page','');
         $this->assign('list',$result);
-        $this->assign('title','应收账款详情');
+        $title = '应收账款详情';
+        $this->assign('title',$title);
+        $export = $this->request->param('export');
+        if ($export == 1){
+            //$this->export_csv($receivables,$result);
+        	$file_name   = "$title-".date("Y-m-d H:i:s",time());
+        	$file_suffix = "xls";
+        	header("Content-Type: application/vnd.ms-excel");
+        	header("Content-Disposition: attachment; filename=$file_name.$file_suffix");
+            return $this->fetch('export');
+        }
         return $this->fetch();
     }
     
@@ -480,8 +520,17 @@ class Account extends Base {
         $this->assign('page','');
         $this->assign('info',$payment_order);
         $this->assign('list',$list);
-        $this->assign('title','应付账款');
+        $title = '应付账款';
+        $this->assign('title',$title);
         $this->assign('sub_class','viewFramework-product-col-1');
+        $export = $this->request->param('export');
+        if ($export == 1){
+        	$file_name   = "$title-".date("Y-m-d H:i:s",time());
+        	$file_suffix = "xls";
+        	header("Content-Type: application/vnd.ms-excel");
+        	header("Content-Disposition: attachment; filename=$file_name.$file_suffix");
+        	return $this->fetch('payment_export');
+        }
         return $this->fetch();
     }
     

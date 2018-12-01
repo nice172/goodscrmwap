@@ -18,6 +18,7 @@
                                 </a>
                             </div>
                             <div class="pull-right">
+                            	<a href="{:url('',['id' => $info['id'],'export'=> 1])}" class="btn btn-default">导出表格</a>
                                 <a href="javascript:window.location.reload();" class="btn btn-default">
                                     <span class="glyphicon glyphicon-refresh"></span>
                                     <span>刷新</span></a>
@@ -72,7 +73,7 @@
                                 <th>入库日期</th>
                                 <th>入库单号</th>
                                 <th>商品分类</th>
-                                <th>客户名称</th>
+                                <th>商品名称</th>
                                 <th>单位</th>
                                 <th>单价</th>
                                 <th>入库数量</th>

@@ -258,7 +258,14 @@ class Delivery extends Base {
 //                         'create_time' => time()
 //                     ]);
                     if ($value['add_number'] > 0){
-                    	db('goods')->where(['goods_id' => $value['goods_id']])->setInc('store_number',$value['add_number']);
+                    	//db('goods')->where(['goods_id' => $value['goods_id']])->setInc('store_number',$value['add_number']);
+                    	//库存数量=5采购入库数量  - 2出库数量  + 3盘点报溢数量  - 4盘点报损数量
+                    	$purchase_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 5])->sum('number');
+                    	$out_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 2])->sum('number');
+                    	$stocktaking_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 3])->sum('number');
+                    	$inventory_loss_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 4])->sum('number');
+                    	$store_number = $purchase_number-$out_number+$stocktaking_number-$inventory_loss_number;
+                    	db('goods')->where(['goods_id' => $value['goods_id']])->setField('store_number',$store_number);
                     }
                     $a = db('order_goods')->where(['order_id' => $delivery_order['order_id'],'goods_id' => $value['goods_id']])->setInc('send_num',$value['current_send_number']);
                     $b = db('purchase_goods')->where(['purchase_id' => $delivery_order['purchase_id'],'goods_id' => $value['goods_id']])->setInc('send_num',$value['current_send_number']);
