@@ -148,26 +148,36 @@ class Store extends Base {
             if ($goods['store_number'] == $store_number){
             	$this->success('更新成功');
             }
+            db()->startTrans();
+            //1入库，2出库，3报溢，4报损，5入库采购
+            $type = 0;
+            if ($goods['store_number'] > $store_number){
+                $diff_number = $goods['store_number'] - $store_number;
+                $type = 4;
+            }
+            if ($goods['store_number'] < $store_number){
+                $diff_number = $store_number - $goods['store_number'];
+                $type = 3;
+            }
+            db('store_log')->insert([
+                'goods_id' => $goods['goods_id'],
+                'goods_name' => $goods['goods_name'],
+                'type' => $type,
+                'number' => $diff_number,
+                'create_time' => time()
+            ]);
+            
+            $purchase_number = db('store_log')->where(['goods_id' => $goods['goods_id'],'type' => 5])->sum('number');
+            $out_number = db('store_log')->where(['goods_id' => $goods['goods_id'],'type' => 2])->sum('number');
+            $stocktaking_number = db('store_log')->where(['goods_id' => $goods['goods_id'],'type' => 3])->sum('number');
+            $inventory_loss_number = db('store_log')->where(['goods_id' => $goods['goods_id'],'type' => 4])->sum('number');
+            $store_number = $purchase_number-$out_number+$stocktaking_number-$inventory_loss_number;
+            
             if (db('goods')->where(['goods_id' => $goods_id])->update(['store_number' => $store_number,'update_time' => time()])){
-                //1入库，2出库，3报溢，4报损，5入库采购
-                $type = 0;
-                if ($goods['store_number'] > $store_number){
-                    $diff_number = $goods['store_number'] - $store_number;
-                    $type = 4;
-                }
-                if ($goods['store_number'] < $store_number){
-                    $diff_number = $store_number - $goods['store_number'];
-                    $type = 3;
-                }
-                db('store_log')->insert([
-                    'goods_id' => $goods['goods_id'],
-                    'goods_name' => $goods['goods_name'],
-                    'type' => $type,
-                    'number' => $diff_number,
-                    'create_time' => time()
-                ]);
+                db()->commit();
                 $this->success('更新成功');
             }
+            db()->rollback();
             $this->error('更新失败');
         }
     }
