@@ -99,11 +99,12 @@ nav .nav-right{width:15%;float:right;height:45px;line-height:45px;text-align:cen
 $(function() {
     FastClick.attach(document.body);
   });
+var layer_ = '';
 function send_email(type,e,email){
 	if(!type) type = '';
 	if(!e) e = '';
 	if(!email) email = '';
-    layer.open({
+	layer_ = layer.open({
     	 type: 2,
     	 title: false,
     	 closeBtn: true,
@@ -111,6 +112,9 @@ function send_email(type,e,email){
     	 area: ['90%', '80%'],
     	 content: "{:url('email')}?type="+type+"&id="+e+'&email='+email,
    });
+}
+function layer_close(){
+	layer.close(layer_);
 }
 function checkNum(obj){
 	obj.value = obj.value.replace(/[^\d.]/g,"");//清除"数字"和"."以外的字符

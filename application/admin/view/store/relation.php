@@ -73,7 +73,7 @@
                                 <th>关联订单</th>
                                 <th>关联采购单</th>
                                 <th>变动记录</th>
-                                <th>操作</th>
+<!--                                 <th>操作</th> -->
                             </tr>
                             </thead>
                             <tbody>
@@ -90,7 +90,7 @@
                                 </td>
                                 <td>{$vo.po_sn}</td>
                                 <td><a href="javascript:;" onclick="viewLog({$vo['goods_id']},{$vo.order_id})">查看</a></td>
-                                <td>
+                                <!-- <td>
                                 	{if condition="$vo['create_type']==1"}
                                 	--
                                 	{else}
@@ -100,7 +100,7 @@
                                 	<a href="javascript:cancel({$vo.purchase_id});" data-id="{$vo.purchase_id}">取消关联</a>
                                 	{/if}
                                 	{/if}
-                                </td>
+                                </td> -->
                                 </tr>
                             {/volist}
                             </tbody>

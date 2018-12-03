@@ -70,6 +70,9 @@ $(function() {
     				$.toptip(res.msg);
     				}else{
     				$.toptip(res.msg,'success');
+    				setTimeout(() => {
+						parent.window.layer_close();
+        				},2000);
     				}
     		},
     	     complete: function(XMLHttpRequest, textStatus) { 

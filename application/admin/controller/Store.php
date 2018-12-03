@@ -325,7 +325,7 @@ class Store extends Base {
                 $res = db('input_goods')->insertAll($temp);
                 if ($res){
                 	//库存数量=5采购入库数量  - 2出库数量  + 3盘点报溢数量  - 4盘点报损数量
-                	/*
+                	
                 	foreach ($temp as $key => $value) {
                 		$purchase_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 5])->sum('number');
                 		$out_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 2])->sum('number');
@@ -334,7 +334,7 @@ class Store extends Base {
                 		$store_number = $purchase_number-$out_number+$stocktaking_number-$inventory_loss_number;
                 		db('goods')->where(['goods_id' => $value['goods_id']])->setField('store_number',$store_number);
                 	}
-                	*/
+                	
                     db()->commit();
                     $this->success('新增成功');
                 }
