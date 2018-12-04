@@ -104,39 +104,6 @@ class Account extends Base {
     	return $this->fetch('st_openticket');
     }
     
-    private function export_csv($info_data,$list){
-        
-        // 加输出头
-        $title = "送货单号,送货日期,订单号,下单日期,客户名称,商品分类,商品名称,单位,单价,是否对账,交货数量\n";
-        
-        // 输出http header
-        $filename = '应收账款详情-' . date('Ymd') . '.csv';
-        header("Content-type:text/csv");
-        header("Content-Disposition:attachment;filename=" . $filename);
-        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
-        header('Expires:0');
-        header('Pragma:public');
-        echo @iconv('UTF-8', 'GB18030//IGNORE', $title);
-        foreach ($list as $val) {
-            if ($info_data['is_confirm']){
-                $status_text = '已对账';
-            }else{
-                $status_text = '未对账';
-            }
-            $data = sprintf(
-                "%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
-                $val['order_dn'],
-                $val['delivery_date'],
-                $val['order_sn'],
-                date('Y-m-d',$val['order_create_time']),
-                $val['cus_name'],$val['category_name'],
-                $val['goods_name'],$val['unit'],$val['goods_price'],
-                $status_text,$val['current_send_number']
-                );
-            echo @iconv('UTF-8', 'GB18030//IGNORE', $data);
-        }
-    }
-    
     public function ticketrecrod(){
     	$id = intval($this->request->param('id'));
     	$data = db('receivable_ticket r')->join('__USERS__ u','r.admin_uid=u.id')
@@ -350,6 +317,7 @@ class Account extends Base {
                 }
             }
             //导出execl
+            ob_end_clean();
             header('pragma:public');
             header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$xlsTitle.'.xls"');
             header("Content-Disposition:attachment;filename=$fileName.xls");
@@ -728,6 +696,7 @@ class Account extends Base {
                 }
             }
             //导出execl
+            ob_end_clean();
             header('pragma:public');
             header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$xlsTitle.'.xls"');
             header("Content-Disposition:attachment;filename=$fileName.xls");
