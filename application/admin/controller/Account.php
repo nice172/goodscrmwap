@@ -1,5 +1,8 @@
 <?php
 namespace app\admin\controller;
+
+use PHPExcel_Style_Alignment;
+
 class Account extends Base {
     
     public function index(){
@@ -245,12 +248,114 @@ class Account extends Base {
         $this->assign('title',$title);
         $export = $this->request->param('export');
         if ($export == 1){
-            //$this->export_csv($receivables,$result);
-        	$file_name   = "$title-".date("Y-m-d H:i:s",time());
-        	$file_suffix = "xls";
-        	header("Content-Type: application/vnd.ms-excel");
-        	header("Content-Disposition: attachment; filename=$file_name.$file_suffix");
-            return $this->fetch('export');
+            $objPHPExcel = new \PHPExcel();
+            $title = '应收对账单-'.date('Ymd');
+            $topNumber = 5;
+            $xlsTitle = iconv('utf-8', 'gb2312', $title);//文件名称
+            $fileName = $title;//文件名称
+            $cellKey = array(
+                'A','B','C','D','E','F','G','H','I','J','K','L','M',
+                'N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+                'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM',
+                'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ'
+            );
+            
+            $cellName=[
+                ['order_dn','送货单号',0,12,'CENTER'],
+                ['delivery_date','送货日期',0,12,'left'],
+                ['order_sn','订单号',0,12,'LEFT'],
+                ['order_create_time','下单日期',0,12,'LEFT'],
+                ['cus_name','客户名称',0,12,'LEFT'],
+                ['category_name','商品分类',0,12,'LEFT'],
+                ['goods_name','商品名称',0,12,'LEFT'],
+                ['unit','单位',0,12,'LEFT'],
+                ['goods_price','单价',0,12,'LEFT'],
+                ['is_confirm','是否对账',0,12,'LEFT'],
+                ['current_send_number','交货数量',0,12,'LEFT'],
+            ];
+            $data=[];
+            foreach ($result as $key => $value){
+                $data[] = [
+                    'order_dn' => $value['order_dn'],
+                    'delivery_date' => $value['delivery_date'],
+                    'order_sn' => $value['order_sn'],
+                    'order_create_time' => date('Y-m-d',$value['order_create_time']),
+                    'cus_name' => $value['cus_name'],
+                    'category_name' => $value['category_name'],
+                    'goods_name' => $value['goods_name'],
+                    'unit' => $value['unit'],
+                    'goods_price' => $value['goods_price'],
+                    'is_confirm' => $value['is_confirm']==1?'已对账':'未对账',
+                    'current_send_number' => $value['current_send_number'],
+                ];
+            }
+            
+            //处理表头标题
+            $objPHPExcel->getActiveSheet()->mergeCells('A1:'.$cellKey[count($cellName)-1].'1');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1',$title);
+            $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(18);
+            $objPHPExcel->getActiveSheet()->getRowDimension(1)->setRowHeight(30);
+            $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+            $objPHPExcel->getActiveSheet()->mergeCells('A2:'.$cellKey[count($cellName)-1].'2');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2','客户名称：'.$receivables['cus_name']);
+            $objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setSize(12);
+            $objPHPExcel->getActiveSheet()->getRowDimension(2)->setRowHeight(25);
+            $objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            
+            $objPHPExcel->getActiveSheet()->mergeCells('A3:'.$cellKey[count($cellName)-1].'3');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3','对账单号：'.$receivables['invoice_sn'].'    对账日期：'.$receivables['invoice_date']);
+            $objPHPExcel->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('A3')->getFont()->setSize(12);
+            $objPHPExcel->getActiveSheet()->getRowDimension(3)->setRowHeight(25);
+            $objPHPExcel->getActiveSheet()->getStyle('A3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objPHPExcel->getActiveSheet()->getStyle('A3')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+            $objPHPExcel->getActiveSheet()->mergeCells('A4:'.$cellKey[count($cellName)-1].'4');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4','金额总计：'.$receivables['total_money'].'    确认金额：'.$receivables['confirm_money']);
+            $objPHPExcel->getActiveSheet()->getStyle('A4')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('A4')->getFont()->setSize(12);
+            $objPHPExcel->getActiveSheet()->getRowDimension(4)->setRowHeight(25);
+            $objPHPExcel->getActiveSheet()->getStyle('A4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objPHPExcel->getActiveSheet()->getStyle('A4')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            
+            //处理表头
+            foreach ($cellName as $k=>$v){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellKey[$k].$topNumber, $v[1]);//设置表头数据
+                $objPHPExcel->getActiveSheet()->freezePane($cellKey[$k].($topNumber+1));//冻结窗口
+                $objPHPExcel->getActiveSheet()->getStyle($cellKey[$k].$topNumber)->getFont()->setBold(true);//设置是否加粗
+                $objPHPExcel->getActiveSheet()->getStyle($cellKey[$k].$topNumber)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);//垂直居中
+                if($v[3] > 0){//大于0表示需要设置宽度
+                    $objPHPExcel->getActiveSheet()->getColumnDimension($cellKey[$k])->setWidth($v[3]);//设置列宽度
+                }
+            }
+            //处理数据
+            foreach ($data as $k=>$v){
+                foreach ($cellName as $k1=>$v1){
+                    $objPHPExcel->getActiveSheet()->setCellValue($cellKey[$k1].($k+1+$topNumber), $v[$v1[0]]);
+                    if(isset($v['end']) > 0){
+                        if($v1[2] == 1){//这里表示合并单元格
+                            $objPHPExcel->getActiveSheet()->mergeCells($cellKey[$k1].$v['start'].':'.$cellKey[$k1].$v['end']);
+                            $objPHPExcel->getActiveSheet()->getStyle($cellKey[$k1].$v['start'])->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+                        }
+                    }
+                    if($v1[4] != "" && in_array($v1[4], array("LEFT","CENTER","RIGHT"))){
+                        $v1[4] = eval('return PHPExcel_Style_Alignment::HORIZONTAL_'.$v1[4].';');
+                        $objPHPExcel->getActiveSheet()->getStyle($cellKey[$k1].($k+1+$topNumber))->getAlignment()->setHorizontal($v1[4]);
+                    }
+                }
+            }
+            //导出execl
+            header('pragma:public');
+            header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$xlsTitle.'.xls"');
+            header("Content-Disposition:attachment;filename=$fileName.xls");
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            exit;
         }
         return $this->fetch();
     }
@@ -525,11 +630,110 @@ class Account extends Base {
         $this->assign('sub_class','viewFramework-product-col-1');
         $export = $this->request->param('export');
         if ($export == 1){
-        	$file_name   = "$title-".date("Y-m-d H:i:s",time());
-        	$file_suffix = "xls";
-        	header("Content-Type: application/vnd.ms-excel");
-        	header("Content-Disposition: attachment; filename=$file_name.$file_suffix");
-        	return $this->fetch('payment_export');
+            $objPHPExcel = new \PHPExcel();
+            $title = '应付对账单-'.date('Ymd');
+            $topNumber = 5;
+            $xlsTitle = iconv('utf-8', 'gb2312', $title);//文件名称
+            $fileName = $title;//文件名称
+            $cellKey = array(
+                'A','B','C','D','E','F','G','H','I','J','K','L','M',
+                'N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+                'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM',
+                'AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ'
+            );
+            
+            $cellName=[
+                ['po_sn','采购单号',0,12,'CENTER'],
+                ['delivery_date','入库日期',0,12,'left'],
+                ['delivery_dn','入库单号',0,12,'LEFT'],
+                ['category_name','商品分类',0,12,'LEFT'],
+                ['goods_name','商品名称',0,12,'LEFT'],
+                ['unit','单位',0,12,'LEFT'],
+                ['goods_price','单价',0,12,'LEFT'],
+                ['rec_number','入库数量',0,12,'LEFT'],
+                ['count_money','金额',0,12,'LEFT'],
+            ];
+            $data=[];
+            foreach ($list as $key => $value){
+                $data[] = [
+                    'po_sn' => $value['po_sn'],
+                    'delivery_date' => $value['delivery_date'],
+                    'delivery_dn' => $value['delivery_dn'],
+                    'category_name' => $value['category_name'],
+                    'goods_name' => $value['goods_name'],
+                    'unit' => $value['unit'],
+                    'goods_price' => $value['goods_price'],
+                    'rec_number' => $value['rec_number'],
+                    'count_money' => $value['count_money'],
+                ];
+            }
+            
+            //处理表头标题
+            $objPHPExcel->getActiveSheet()->mergeCells('A1:'.$cellKey[count($cellName)-1].'1');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1',$title);
+            $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('A1')->getFont()->setSize(18);
+            $objPHPExcel->getActiveSheet()->getRowDimension(1)->setRowHeight(30);
+            $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            $objPHPExcel->getActiveSheet()->getStyle('A1')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            
+            $objPHPExcel->getActiveSheet()->mergeCells('A2:'.$cellKey[count($cellName)-1].'2');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2','供应商：'.$payment_order['supplier_name'].'    金额总计：'.$payment_order['total_money']);
+            $objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('A2')->getFont()->setSize(12);
+            $objPHPExcel->getActiveSheet()->getRowDimension(2)->setRowHeight(25);
+            $objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objPHPExcel->getActiveSheet()->getStyle('A2')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            
+            $objPHPExcel->getActiveSheet()->mergeCells('A3:'.$cellKey[count($cellName)-1].'3');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A3','付款期：'.$payment_order['payment_date'].'    发票号码：'.$payment_order['invoice_sn']);
+            $objPHPExcel->getActiveSheet()->getStyle('A3')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('A3')->getFont()->setSize(12);
+            $objPHPExcel->getActiveSheet()->getRowDimension(3)->setRowHeight(25);
+            $objPHPExcel->getActiveSheet()->getStyle('A3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objPHPExcel->getActiveSheet()->getStyle('A3')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            
+            $objPHPExcel->getActiveSheet()->mergeCells('A4:'.$cellKey[count($cellName)-1].'4');
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A4','发票日期：'.$payment_order['invoice_date'].'    到期日期：'.$payment_order['last_date']);
+            $objPHPExcel->getActiveSheet()->getStyle('A4')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getStyle('A4')->getFont()->setSize(12);
+            $objPHPExcel->getActiveSheet()->getRowDimension(4)->setRowHeight(25);
+            $objPHPExcel->getActiveSheet()->getStyle('A4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            $objPHPExcel->getActiveSheet()->getStyle('A4')->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            
+            //处理表头
+            foreach ($cellName as $k=>$v){
+                $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellKey[$k].$topNumber, $v[1]);//设置表头数据
+                $objPHPExcel->getActiveSheet()->freezePane($cellKey[$k].($topNumber+1));//冻结窗口
+                $objPHPExcel->getActiveSheet()->getStyle($cellKey[$k].$topNumber)->getFont()->setBold(true);//设置是否加粗
+                $objPHPExcel->getActiveSheet()->getStyle($cellKey[$k].$topNumber)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);//垂直居中
+                if($v[3] > 0){//大于0表示需要设置宽度
+                    $objPHPExcel->getActiveSheet()->getColumnDimension($cellKey[$k])->setWidth($v[3]);//设置列宽度
+                }
+            }
+            //处理数据
+            foreach ($data as $k=>$v){
+                foreach ($cellName as $k1=>$v1){
+                    $objPHPExcel->getActiveSheet()->setCellValue($cellKey[$k1].($k+1+$topNumber), $v[$v1[0]]);
+                    if(isset($v['end']) > 0){
+                        if($v1[2] == 1){//这里表示合并单元格
+                            $objPHPExcel->getActiveSheet()->mergeCells($cellKey[$k1].$v['start'].':'.$cellKey[$k1].$v['end']);
+                            $objPHPExcel->getActiveSheet()->getStyle($cellKey[$k1].$v['start'])->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+                        }
+                    }
+                    if($v1[4] != "" && in_array($v1[4], array("LEFT","CENTER","RIGHT"))){
+                        $v1[4] = eval('return PHPExcel_Style_Alignment::HORIZONTAL_'.$v1[4].';');
+                        $objPHPExcel->getActiveSheet()->getStyle($cellKey[$k1].($k+1+$topNumber))->getAlignment()->setHorizontal($v1[4]);
+                    }
+                }
+            }
+            //导出execl
+            header('pragma:public');
+            header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$xlsTitle.'.xls"');
+            header("Content-Disposition:attachment;filename=$fileName.xls");
+            $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+            $objWriter->save('php://output');
+            exit;
         }
         return $this->fetch();
     }
