@@ -717,7 +717,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         $end_time = $this->request->param('end_date');
         $db = db('order o');
         $db->field('o.*,o.id as orderid,og.*');
-        $where = ['o.is_create' => 1,'o.status' => ['>=',1]];
+        //$where = ['o.is_create' => 1,'o.status' => ['>=',1]];
+        $where = "o.status=1 OR o.status=5 OR o.status=6";
         if ($supplier_name != ''){
             $db->where('o.company_short|s.compnay_name','like',"%{$supplier_name}%");
         }
