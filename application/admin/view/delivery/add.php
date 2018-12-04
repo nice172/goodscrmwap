@@ -361,6 +361,8 @@ function relation_order(data){
 	relation_type = 0;
 	goods_info = [];
 	goodsList(goods_info);
+	$('#po_sn,#input_sn,#delivery_way,#purchase_id,#input_id').val('');
+		
 	$('#purchase_date').val(data.purchase_date);
 	$('#order_sn').val(data.order_sn);
 	$('#order_id').val(data.orderid);
