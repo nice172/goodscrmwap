@@ -407,16 +407,17 @@ class Store extends Base {
 	            $db->where(['p.create_time' => ['elt',strtotime($end_time.' 23:59:59')]]);
 	        }
 	        if ($delivery_company != ''){
-	            $db->where(['d.cus_name' => ['like',"%{$delivery_company}%"]]);
+	            $db->where(['p.delivery_company' => ['like',"%{$delivery_company}%"]]);
 	        }
 	        if ($goods_name != ''){
 	            $db->where(['g.goods_name' => ['like',"%{$goods_name}%"]]);
 	        }
 	        $db->where("(g.goods_number-g.input_store) > 0");
 	        $result = $db->join('__SUPPLIER__ s','p.supplier_id=s.id')->join('__PURCHASE_GOODS__ g','p.id=g.purchase_id')
-	        ->join('__CUSTOMERS__ c','p.cus_id=c.cus_id')
-	        ->field('p.id,g.purchase_id,p.order_id,p.create_time,p.po_sn,s.supplier_name,s.id as supplier_id,c.cus_name,g.goods_name,g.unit,g.goods_price,g.goods_id,g.goods_number,g.input_store')
+	        //->join('__CUSTOMERS__ c','p.cus_id=c.cus_id')
+	        ->field('p.id,g.purchase_id,p.order_id,p.create_time,p.po_sn,s.supplier_name,s.id as supplier_id,p.delivery_company as cus_name,g.goods_name,g.unit,g.goods_price,g.goods_id,g.goods_number,g.input_store')
 	        ->paginate(config('page_size'),false,['query' => $this->request->param()]);
+	        //echo db()->getLastSql();exit;
 	        $list = $result->all();
 	        $order_goods = db('order_goods');
 	        foreach ($list as $key => $value){
