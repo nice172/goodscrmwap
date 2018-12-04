@@ -360,6 +360,7 @@ function client_info(data){
 function relation_order(data){
 	relation_type = 0;
 	goods_info = [];
+	goodsList(goods_info);
 	$('#purchase_date').val(data.purchase_date);
 	$('#order_sn').val(data.order_sn);
 	$('#order_id').val(data.orderid);
