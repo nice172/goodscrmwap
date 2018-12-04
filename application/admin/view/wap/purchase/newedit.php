@@ -307,7 +307,7 @@ function _update(index){
 		if(shop_price == ''){
 			shop_price = $('.goods_'+index+' input[name=shop_price]').attr('data-shop_price');
 		}
-		if(parseFloat(shop_price) > goods_info[index]['shop_price']){
+		if(parseFloat(shop_price) > goods_info[index]['goods_price']){
 			if(!confirm('采购单价高于关联订单商品单价')){
 				return;
 			}

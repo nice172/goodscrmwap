@@ -209,7 +209,7 @@ class Store extends Base {
         }
         $result = $db->join('__INPUT_GOODS__ g','i.id=g.input_id')
         ->join('__SUPPLIER__ s','s.id=i.supplier_id')->field('i.*,s.supplier_name,g.goods_id,g.goods_name,g.unit,g.goods_price,g.goods_number,g.remark as goods_remark')
-        ->paginate(config('page_size'),false,['query' => $this->request->param()]);
+        ->order('i.create_time desc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
         $list = $result->all();
         foreach ($list as $key => $value){
         	$list[$key]['category_name'] = db('goods g')->join('__GOODS_CATEGORY__ c','g.category_id=c.category_id')->value('c.category_name');
