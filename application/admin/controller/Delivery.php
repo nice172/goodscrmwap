@@ -162,7 +162,7 @@ class Delivery extends Base {
     	}
     	$db->where(['i.is_cancel' => 0]);
     	$db->field('i.*,p.order_id,p.delivery_type,p.cus_order_sn,g.category_id,ig.goods_id,ig.goods_name,ig.goods_price,ig.unit,ig.goods_number,ig.remark,s.supplier_name,s.supplier_short');
-    	$result = $db->paginate(config('page_size'),false,['query' => $this->request->param()]);
+    	$result = $db->order('i.create_time asc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
     	$data = $result->all();
     	$categoryModel = db('goods_category');
     	$purchaseGoods = db('purchase_goods');
