@@ -773,7 +773,9 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             $order_goods[$key]['current_send_number'] = $value['goods_number'] - $value['send_num'];
             foreach ($input_goods as $k => $val) {
                 if ($value['goods_id'] == $val['goods_id']) {
-                    if (!isset($order_goods[$key]['out_number'])) $order_goods[$key]['out_number'] = 0;
+                    if (!isset($order_goods[$key]['out_number'])) {
+                    	$order_goods[$key]['out_number'] = 0;
+                    }
                     $order_goods[$key]['out_number'] += $val['goods_number'];
                 }
             }
