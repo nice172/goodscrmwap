@@ -768,8 +768,6 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         $order_goods = db('order_goods')->where(['order_id' => $order_id])->select();
         $input_goods = db('input_goods')->where(['input_id' => ['in',$input_id]])->select();
 		
-        p($order_goods);
-        p($input_goods);
         $goods_list = [];
         foreach ($order_goods as $key => $value){
             foreach ($input_goods as $k => $val) {
