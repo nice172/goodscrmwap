@@ -770,27 +770,28 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 		
         p($order_goods);
         p($input_goods);
-        
+        $goods_list = [];
         foreach ($order_goods as $key => $value){
-            $order_goods[$key]['diff_number'] = $value['goods_number'] - $value['send_num'];
-            $order_goods[$key]['current_send_number'] = $value['goods_number'] - $value['send_num'];
             foreach ($input_goods as $k => $val) {
                 if ($value['goods_id'] == $val['goods_id']) {
-                    if (!isset($order_goods[$key]['out_number'])) {
-                    	$order_goods[$key]['out_number'] = 0;
+                	$value['diff_number'] = $value['goods_number'] - $value['send_num'];
+                	$value['current_send_number'] = $value['goods_number'] - $value['send_num'];
+                    if (!isset($value['out_number'])) {
+                    	$value['out_number'] = 0;
                     }
-                    $order_goods[$key]['out_number'] += $val['goods_number'];
+                    $value['out_number'] += $val['goods_number'];
+                    $goods_list[] = $value;
                 }
             }
         }
         $category = db('goods g');
-        foreach ($order_goods as $key => $value) {
-            $order_goods[$key]['category_name'] = $category->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
+        foreach ($goods_list as $key => $value) {
+        	$goods_list[$key]['category_name'] = $category->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
             ->where(['g.goods_id' => $value['goods_id']])->value('category_name');
-            $order_goods[$key]['show_input'] = true;
+            $goods_list[$key]['show_input'] = true;
         }
         
-        $this->ajaxReturn($order_goods);
+        $this->ajaxReturn($goods_list);
     }
     
     public function rel_order(){

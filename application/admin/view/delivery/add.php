@@ -362,7 +362,6 @@ function relation_order(data){
 	goods_info = [];
 	goodsList(goods_info);
 	$('#po_sn,#input_sn,#delivery_way,#purchase_id,#input_id,#order_id').val('');
-	
 	$('#purchase_date').val(data.purchase_date);
 	$('#order_sn').val(data.order_sn);
 	$('#order_id').val(data.orderid);
@@ -430,6 +429,9 @@ function goods_merge(data){
 	}
 	var order_id = $('#order_id').val();
 	$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:order_id,po_id:data.po_id},function(res){
+		if(res.length <= 0){
+			toastr.error("订单和入库单没有相同商品数据");
+		}
 		goods_info = res;
 		goodsList(res);
 	});

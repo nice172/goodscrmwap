@@ -238,6 +238,8 @@ function relation_order(data){
 	//console.log(data);
 	relation_type = 0;
 	goods_info = [];
+	goodsList(goods_info);
+	$('#po_sn,#input_sn,#delivery_way,#purchase_id,#input_id,#order_id').val('');
 	$('#purchase_date').val(data.purchase_date);
 	$('#order_sn').val(data.order_sn);
 	$('#order_id').val(data.orderid);
@@ -286,7 +288,11 @@ function goods_merge(data){
 		$('#input_sn').val($('#input_sn').val()+','+data.store_sn);
 		var input_id = $('#input_id').val();
 	}
-	$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:data.order_id,po_id:data.po_id},function(res){
+	var order_id = $('#order_id').val();
+	$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:order_id,po_id:data.po_id},function(res){
+		if(res.length <= 0){
+			$.toptip("订单和入库单没有相同商品数据");
+		}
 		goods_info = res;
 		goodsList(res);
 	});
