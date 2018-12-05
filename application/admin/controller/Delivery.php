@@ -767,7 +767,10 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         $po_id = $this->request->param('po_id');
         $order_goods = db('order_goods')->where(['order_id' => $order_id])->select();
         $input_goods = db('input_goods')->where(['input_id' => ['in',$input_id]])->select();
-
+		
+        p($order_goods);
+        p($input_goods);
+        
         foreach ($order_goods as $key => $value){
             $order_goods[$key]['diff_number'] = $value['goods_number'] - $value['send_num'];
             $order_goods[$key]['current_send_number'] = $value['goods_number'] - $value['send_num'];
