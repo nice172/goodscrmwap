@@ -27,6 +27,7 @@
                     </div>
                 </div>
 <form class="ajaxForm" action="" method="post">
+<input type="hidden" name="id" value="{$info.id}"/>
                 <div class="row">
                     <div class="form-inline marginTop10">
                         <div class="col-lg-12">
@@ -43,22 +44,40 @@
                                 	<label class="control-label" for="total_money">付款期 :</label>
                                 	<input name="total_money" id="total_money" disabled="disabled" value="{$info.payment_date}" class="ipt form-control" />
                                 </div>
-
+								<div class="form-group">
+                                	<label class="control-label" for="confirm_money">确认金额 :</label>
+                                	<input name="pay_money" {if condition="$info['is_confirm']"}disabled="disabled" value="{$info.pay_money}"{else}{/if}id="pay_money" style="width: 110px;" class="ipt form-control" />
+                                </div>
                                  
                         </div>
                         <div class="col-lg-12">
                               <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">发票号码 :</label>
-                                	<input name="invoice_sn" id="invoice_sn" value="{$info.invoice_sn}" class="ipt form-control" style="width: 188px;"  data-toggle="tooltip" data-placement="top" title="发票号码">
+                                	<input name="invoice_sn" id="invoice_sn" disabled="disabled" value="{$info.invoice_sn}" class="ipt form-control" style="width: 188px;"  data-toggle="tooltip" data-placement="top" title="发票号码">
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="invoice_date">发票日期 :</label>
-                                    <input name="invoice_date" id="invoice_date" value="{$info.invoice_date}" class="ipt form-control">
+                                    <input name="invoice_date" id="invoice_date" disabled="disabled" value="{$info.invoice_date}" class="ipt form-control">
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label" for="last_date">到期日期 :</label>
-                                    <input name="last_date" id="last_date" value="{$info.last_date}" class="ipt form-control" style="width: 145px;">
+                                    <input name="last_date" id="last_date" disabled="disabled" value="{$info.last_date}" class="ipt form-control" style="width: 145px;">
                                 </div>
+                                {if condition="!$info['is_confirm']"}
+								<div class="form-group">
+                                	<label class="control-label" for="account_file">附件 :</label>
+                                	<input type="file" name="file" id="account_file" class="ipt form-control"/>
+                                </div>
+                                {else}
+                                <div class="form-group">
+                                <label class="control-label" for="files">附件 :</label>
+                                <?php if (!empty($info['files'])){?>
+                                <a href="<?php echo $info['files']['path'];?>" target="_blank">
+                                <?php echo $info['files']['name'];?>
+                                </a>
+                                <?php }?>
+                                </div>
+                                {/if}
                         </div>
                         
                     </div>
@@ -109,7 +128,12 @@
                             </tr>
                             </tfoot>
                         </table>
-                        
+                        {if condition="!$info['is_confirm']"} 
+    			<div class="modal-footer" style="border-top:none;">
+        			<div class="col-md-offset-5 col-md-12 left">
+					<button type="submit" class="btn btn-primary confirm">确认</button>
+					</div></div>
+                    {/if}
                     </div>
                     
                    

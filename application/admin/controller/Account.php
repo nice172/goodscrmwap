@@ -602,12 +602,31 @@ class Account extends Base {
         if (!$id) $this->error('参数错误');
         $payment_order = db('payment_order')->where(['id' => $id])->find();
         if (empty($payment_order)) $this->error('应付账款信息不存在');
+        if ($this->request->isAjax() && $this->request->isPost()){
+            $confirm_money = $this->request->post('pay_money');
+            if (empty($confirm_money)) $this->error('确认金额不能为空');
+            if (!is_numeric($confirm_money) || $confirm_money < 0) $this->error('确认金额不正确');
+            $file = $this->upload_file('',false);
+            $data = [
+                'pay_money' => _formatMoney($confirm_money),
+                'status' => 2,'is_confirm' => 1,
+                'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
+                'update_time' => time()
+            ];
+            if (db('payment_order')->where(['id' => $id])->update($data)){
+                $this->success('确认成功');
+            }else{
+                $this->error('确认失败');
+            }
+        }
+        
         $list = db('payment_goods pg')->where(['pg.payment_order_id' => $id])
         ->join('__GOODS__ g','pg.goods_id=g.goods_id')
         ->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
         ->field('pg.*,gc.category_name')->select();
         $this->assign('total_money',$payment_order['total_money']);
         $this->assign('page','');
+        $payment_order['files'] = json_decode($payment_order['files'],true);
         $this->assign('info',$payment_order);
         $this->assign('list',$list);
         $title = '应付账款';
@@ -869,7 +888,8 @@ class Account extends Base {
                 'invoice_sn' => $invoice_sn,
                 'invoice_date' => $invoice_date,
                 'total_money' => _formatMoney($totalMoney),
-                'pay_money' => _formatMoney($totalMoney),'diff_money' => 0,
+                //'pay_money' => _formatMoney($totalMoney),
+                'diff_money' => 0,
                 'is_open' => 0,'status' => 1,
                 'payment_date' => $supplier['supplier_payment'],
                 'last_date' => $last_date,

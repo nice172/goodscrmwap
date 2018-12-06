@@ -112,8 +112,8 @@
                                     		<a href="javascript:;" onclick="is_open({$vo['id']})">已开票</a>
 	                                		{/if}
 	                                		{if condition="$vo['status']==1"}
-	                                    	<span class="text-explode">|</span>
-	                                    	<a href="javascript:;" onclick="_status({$vo['id']})">已核销</a>
+	                                    	<!--<span class="text-explode">|</span>
+	                                    	<a href="javascript:;" onclick="_status({$vo['id']})">已核销</a>-->
 	                                    	{/if}
                                     	{else}
 	                                    	<!--<span class="text-explode">|</span>
