@@ -772,21 +772,37 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         foreach ($order_goods as $key => $value){
             foreach ($input_goods as $k => $val) {
                 if ($value['goods_id'] == $val['goods_id']) {
-                	$value['diff_number'] = $value['goods_number'] - $value['send_num'];
-                	$value['current_send_number'] = $value['goods_number'] - $value['send_num'];
-                    if (!isset($value['out_number'])) {
-                    	$value['out_number'] = 0;
+                    if (!isset($value['diff_number'])){
+                        $value['diff_number'] = 0;
                     }
-                    $value['out_number'] += $val['goods_number'];
+                	$value['diff_number'] += $value['goods_number'] - $value['send_num'];
+                	if (!isset($value['current_send_number'])){
+                	    $value['current_send_number'] = 0;
+                	}
+                	$value['current_send_number'] += $value['goods_number'] - $value['send_num'];
+                	if (!isset($value['out_number'])) {
+                	    $value['out_number'] = 0;
+                	}
+                	$value['out_number'] += $val['goods_number'];
                     $goods_list[] = $value;
                 }
             }
         }
         $category = db('goods g');
+        $goods_db = db('goods');
         foreach ($goods_list as $key => $value) {
         	$goods_list[$key]['category_name'] = $category->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
             ->where(['g.goods_id' => $value['goods_id']])->value('category_name');
             $goods_list[$key]['show_input'] = true;
+            
+            $store_number = $goods_db->where(['goods_id' => $value['goods_id']])->value('store_number');
+            
+            if ($store_number >= $value['diff_number']){
+                $goods_list[$key]['out_number'] = $value['diff_number'];
+            }else{
+                $goods_list[$key]['out_number'] = $store_number;
+            }
+            
         }
         
         $this->ajaxReturn($goods_list);
