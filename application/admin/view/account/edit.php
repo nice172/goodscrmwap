@@ -45,14 +45,14 @@
                                     <label class="control-label" for="invoice_date">对账日期 :</label>
                                     <input name="invoice_date" id="invoice_date" value="{$receivables.invoice_date}" style="width: 100px;" class="ipt form-control">
                                 </div>
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                 	<label class="control-label" for="confirm_money">确认金额 :</label>
                                 	<input name="confirm_money" value="{$receivables.confirm_money}" id="confirm_money" style="width: 110px;" class="ipt form-control" />
                                 </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="account_file">附件 :</label>
                                 	<input type="file" name="file" id="account_file" class="ipt form-control"/>
-                                </div>
+                                </div>-->
                         </div>
                     </div>
                 </div>

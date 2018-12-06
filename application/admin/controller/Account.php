@@ -202,7 +202,7 @@ class Account extends Base {
             $file = $this->upload_file('',false);
             $data = [
                 'confirm_money' => _formatMoney($confirm_money),
-                'status' => 1,'is_confirm' => 1,
+                'status' => 2,'is_confirm' => 1,
                 'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
                 'update_time' => time()
             ];
@@ -353,22 +353,22 @@ class Account extends Base {
         if ($this->request->isAjax()){
             $invoice_sn = $this->request->post('invoice_sn');
             $invoice_date = $this->request->post('invoice_date');
-            $confirm_money = $this->request->post('confirm_money');
+            //$confirm_money = $this->request->post('confirm_money');
             $id = $this->request->post('id');
             if (empty($invoice_sn)) $this->error('发票号码不能为空');
             if (empty($invoice_date)) $this->error('开票日期不能为空');
-            if (empty($confirm_money)) $this->error('确认金额不能为空');
-            $file = $this->upload_file('',false);
+            //if (empty($confirm_money)) $this->error('确认金额不能为空');
+            //$file = $this->upload_file('',false);
             $data = [
                 'id' => intval($id),
                 'invoice_sn' => $invoice_sn,
                 'invoice_date' => $invoice_date,
-            	'confirm_money' => $confirm_money,
+            	//'confirm_money' => $confirm_money,
                 'update_time' => time()
             ];
-            if (is_array($file) && !empty($file)){
-            	$data['files'] = json_encode(['path' => $file['path'],'name' => $file['oldfilename']]);
-            }
+            //if (is_array($file) && !empty($file)){
+            	//$data['files'] = json_encode(['path' => $file['path'],'name' => $file['oldfilename']]);
+            //}
             if (db('receivables')->where(['id' => ['neq',$data['id']],'invoice_sn' => $invoice_sn])->find()){
                 $this->error('发票号码已存在');
             }
