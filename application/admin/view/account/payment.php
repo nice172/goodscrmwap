@@ -82,7 +82,7 @@
                             	<th>对账日期</th>
                             	<th>供应商</th>
                             	<th>是否开票</th>
-                                <th>发票状态</th>
+                                <th>对账状态</th>
                                 <th>对账金额</th>
                                 <th>已付金额</th>
                                 <th>冲减金额</th>
@@ -96,7 +96,6 @@
 								<td>{$vo.invoice_sn}</td>
                                 <td>{$vo.invoice_date}</td>
                                 <td>{$vo.supplier_name}</td>
-                                
                                 <td>{if condition="$vo['status']==1"}未对账{elseif condition="$vo['status']==2"}已对账{else}已关闭{/if}</td>
                                 <td>{if condition="$vo['is_open']"}已开票{else}未开票{/if}</td>
                                 <td>{$vo.total_money}</td>
