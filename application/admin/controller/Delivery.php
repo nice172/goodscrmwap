@@ -784,7 +784,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
                 	    $value['out_number'] = 0;
                 	}
                 	$value['out_number'] += $val['goods_number'];
-                    $goods_list[] = $value;
+                    $goods_list[$value['goods_id']] = $value;
                 }
             }
         }
