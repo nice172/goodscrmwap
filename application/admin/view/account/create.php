@@ -30,11 +30,11 @@
                         
                             <div class="form-group">
                                 <label class="control-label" for="cus_name">客户名称 :</label>
-                                <input name="cus_name" id="cus_name" disabled="disabled" value="{$company_name}" class="ipt form-control" style="width: 200px;" />
+                                <input name="cus_name" id="cus_name" readonly="readonly" value="{$company_name}" class="ipt form-control" style="width: 200px;" />
                             </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="total_money">金额总计 :</label>
-                                	<input name="total_money" id="total_money" disabled="disabled" value="{$total_money}" style="width: 110px;" class="ipt form-control" />
+                                	<input name="total_money" id="total_money" readonly="readonly" value="{$total_money}" style="width: 110px;" class="ipt form-control" />
                                 </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">对账单号 :</label>
@@ -42,16 +42,16 @@
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="invoice_date">对账日期 :</label>
-                                    <input name="invoice_date" id="invoice_date" value="<?php echo date('Y-m-d');?>" style="width: 100px;" class="ipt form-control">
+                                    <input name="invoice_date" readonly="readonly" id="invoice_date" value="<?php echo date('Y-m-d');?>" style="width: 100px;" class="ipt form-control">
                                 </div>
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                 	<label class="control-label" for="confirm_money">确认金额 :</label>
                                 	<input name="confirm_money" id="confirm_money" style="width: 110px;" class="ipt form-control" />
                                 </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="account_file">附件 :</label>
                                 	<input type="file" name="file" id="account_file" class="ipt form-control"/>
-                                </div>
+                                </div>-->
                         </div>
                     </div>
                 </div>

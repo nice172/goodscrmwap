@@ -48,14 +48,18 @@
                                 	<label class="control-label" for="confirm_money">确认金额 :</label>
                                 	<input name="confirm_money" value="{$receivables.confirm_money}" id="confirm_money" style="width: 110px;" class="ipt form-control" />
                                 </div>
-                                <div class="form-group">
+								<div class="form-group">
+                                	<label class="control-label" for="account_file">附件 :</label>
+                                	<input type="file" name="file" id="account_file" class="ipt form-control"/>
+                                </div>
+                                <!-- <div class="form-group">
                                 <label class="control-label" for="files">附件 :</label>
                                 <?php if (!empty($receivables['files'])){?>
                                 <a href="<?php echo $receivables['files']['path'];?>" target="_blank">
                                 <?php echo $receivables['files']['name'];?>
                                 </a>
                                 <?php }?>
-                                </div>
+                                </div> -->
                         </div>
                     </div>
                 </div>
