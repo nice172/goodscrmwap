@@ -4,6 +4,8 @@
 {/block}
 
 {block name="main"}
+<form class="ajaxForm" action="" method="post" enctype="multipart/form-data">
+<input type="hidden" name="id" value="{$receivables.id}"/>
             <div class="container-fluid">
                 <!--内容开始-->
                 <div class="row">
@@ -25,6 +27,7 @@
                     </div>
                 </div>
                 <div class="row">
+                	
                     <div class="form-inline marginTop10">
                         <div class="col-lg-12">
                         
@@ -38,30 +41,34 @@
                                 </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">对账单号 :</label>
-                                	<input name="invoice_sn" id="invoice_sn" value="{$receivables.invoice_sn}" class="ipt form-control" data-toggle="tooltip" data-placement="top" title="发票号码">
+                                	<input name="invoice_sn" id="invoice_sn" disabled="disabled" value="{$receivables.invoice_sn}" class="ipt form-control" data-toggle="tooltip" data-placement="top" title="发票号码">
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="invoice_date">对账日期 :</label>
-                                    <input name="invoice_date" id="invoice_date" value="{$receivables.invoice_date}" style="width: 100px;" class="ipt form-control">
+                                    <input name="invoice_date" id="invoice_date" disabled="disabled" value="{$receivables.invoice_date}" style="width: 100px;" class="ipt form-control">
                                 </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="confirm_money">确认金额 :</label>
-                                	<input name="confirm_money" value="{$receivables.confirm_money}" id="confirm_money" style="width: 110px;" class="ipt form-control" />
+                                	<input name="confirm_money" {if condition="$receivables['is_confirm']"}disabled="disabled" value="{$receivables.confirm_money}"{else}{/if}id="confirm_money" style="width: 110px;" class="ipt form-control" />
                                 </div>
+                                {if condition="!$receivables['is_confirm']"}
 								<div class="form-group">
                                 	<label class="control-label" for="account_file">附件 :</label>
                                 	<input type="file" name="file" id="account_file" class="ipt form-control"/>
                                 </div>
-                                <!-- <div class="form-group">
+                                {else}
+                                <div class="form-group">
                                 <label class="control-label" for="files">附件 :</label>
                                 <?php if (!empty($receivables['files'])){?>
                                 <a href="<?php echo $receivables['files']['path'];?>" target="_blank">
                                 <?php echo $receivables['files']['name'];?>
                                 </a>
                                 <?php }?>
-                                </div> -->
+                                </div>
+                                {/if}
                         </div>
                     </div>
+                    
                 </div>
 
                 <div class="row">
@@ -113,16 +120,21 @@
                             </tr>
                             </tfoot>
                         </table>
-                        
-
-                        
+                       
+                    {if condition="!$receivables['is_confirm']"} 
+    			<div class="modal-footer" style="border-top:none;">
+        			<div class="col-md-offset-5 col-md-12 left">
+					<button type="submit" class="btn btn-primary confirm">确认</button>
+					</div></div>
+                    {/if}
                     </div>
                     
                    
                 </div>
-
+				
                 <!--内容结束-->
             </div>
+            </form>
 {/block}
 {block name="footer"}
 <script type="text/javascript">

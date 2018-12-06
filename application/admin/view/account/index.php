@@ -108,16 +108,16 @@
 	                                		{if condition="!$vo['is_open']"}
 	                                		<span class="text-explode">|</span>
 	                                		<a href="javascript:;" onclick="_open({$vo['id']})">开发票</a>
-                                		<span class="text-explode">|</span>
-                                		<a href="javascript:;" onclick="is_open({$vo['id']})">已开票</a>
+                                    		<span class="text-explode">|</span>
+                                    		<a href="javascript:;" onclick="is_open({$vo['id']})">已开票</a>
 	                                		{/if}
-	                                		{if condition="$vo['status']==1 && $vo['is_open']==1"}
+	                                		{if condition="$vo['status']==1"}
 	                                    	<span class="text-explode">|</span>
 	                                    	<a href="javascript:;" onclick="_status({$vo['id']})">已核销</a>
 	                                    	{/if}
                                     	{else}
-	                                    	<span class="text-explode">|</span>
-	                                    	<a href="javascript:;" onclick="_confirm({$vo['id']})">确认</a>
+	                                    	<!--<span class="text-explode">|</span>
+	                                    	<a href="javascript:;" onclick="_confirm({$vo['id']})">确认</a>-->
                                     	{/if}
                                 		{if condition="$vo['status']==1 and $vo['is_confirm']==0"}
                                 		<span class="text-explode">|</span>

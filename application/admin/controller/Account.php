@@ -195,6 +195,23 @@ class Account extends Base {
         if (empty($id)) $this->error('参数错误');
         $receivables = db('receivables')->where(['id' => $id,'is_delete' => 0])->find();
         if (empty($receivables)) $this->error('数据信息不存在');
+        if ($this->request->isAjax() && $this->request->isPost()){
+            $confirm_money = $this->request->post('confirm_money');
+            if (empty($confirm_money)) $this->error('确认金额不能为空');
+            if (!is_numeric($confirm_money) || $confirm_money < 0) $this->error('确认金额不正确');
+            $file = $this->upload_file('',false);
+            $data = [
+                'confirm_money' => _formatMoney($confirm_money),
+                'status' => 1,'is_confirm' => 1,
+                'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
+                'update_time' => time()
+            ];
+            if (db('receivables')->where(['id' => $id])->update($data)){
+                $this->success('确认成功');
+            }else{
+                $this->error('确认失败');
+            }
+        }
         $receivables['files'] = json_decode($receivables['files'],true);
         $this->assign('receivables',$receivables);
         $ids = $receivables['delivery_ids'];
@@ -504,20 +521,20 @@ class Account extends Base {
     		if ($this->request->isAjax()){
     			$invoice_sn = $this->request->post('invoice_sn');
     			$invoice_date = $this->request->post('invoice_date');
-    			$confirm_money = $this->request->post('confirm_money');
+    			//$confirm_money = $this->request->post('confirm_money');
     			//$delivery_ids = $this->request->post('delivery_ids');
     			if (empty($invoice_sn)) $this->error('发票号码不能为空');
     			if (empty($invoice_date)) $this->error('开票日期不能为空');
     			if (db('receivables')->where(['invoice_sn' => $invoice_sn])->find()){
     			    $this->error('发票号码已存在');
     			}
-    			if (empty($confirm_money)) $this->error('确认金额不能为空');
+    			//if (empty($confirm_money)) $this->error('确认金额不能为空');
     			$delivery_ids = [];
     			foreach ($result as $key => $value){
     				$delivery_ids[] = $value['id'];
     			}
     			$delivery_ids = array_unique($delivery_ids);
-    			$file = $this->upload_file('',false);
+    			//$file = $this->upload_file('',false);
     			$data = [
     				'admin_uid' => $this->userinfo['id'],
     				'cus_id' => $cus_id,
@@ -526,10 +543,10 @@ class Account extends Base {
     				'invoice_sn' => $invoice_sn,
     				'invoice_date' => $invoice_date,
     				'total_money' => _formatMoney($total_money),
-    				'confirm_money' => $confirm_money,
+    				//'confirm_money' => $confirm_money,
     				'pay_money' => 0,'diff_money' => 0,
     				'is_open' => 0,'status' => 1,
-    				'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
+    				//'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
     				'update_time' => time(),'create_time' => time()
     			];
     			if (db('receivables')->insert($data)){
