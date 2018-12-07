@@ -147,7 +147,7 @@
                                     	{/if}
                                 		{if condition="$vo['status']==1 and $vo['is_confirm']==0"}
 										<span class="text-explode">|</span>
-                                		<a href="javascript:;" onclick="_close({$vo['id']})">取消</a>
+                                		<a href="javascript:;" onclick="deleteOrdersOne({$vo['id']})">取消</a>
                                 		{/if}
                                 	{/if}
                                 	{if condition="!$vo['is_confirm'] && $vo['status']"}

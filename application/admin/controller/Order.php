@@ -574,10 +574,10 @@ class Order extends Base {
     	if (!empty($goodsInfo)){
     		foreach ($goodsInfo as $key => $value){
     			$cus_id = $order['cus_id'];
-    			$last_order = db('order o')->join('__ORDER_GOODS__ og','o.id=og.order_id')
+    			$last_order_price = db('order o')->join('__ORDER_GOODS__ og','o.id=og.order_id')
     			->where(['o.cus_id' => $cus_id,'og.goods_id' => $value['goods_id']])
     			->where("o.status=2 OR o.status=3 OR o.status=6")->value('goods_price');
-    			$value['shop_price'] = _formatMoney($last_order['goods_price']);
+    			$value['shop_price'] = _formatMoney($last_order_price);
     			//$value['shop_price'] = $value['goods_price']; //实际价格
     			//$value['purchase_number'] = 0;
     			$value['purchase_number'] = $value['goods_number'];
