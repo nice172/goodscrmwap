@@ -27,7 +27,7 @@ class Account extends Base {
     		$db->where(['status' => $invoice_status]);
     	}
     	if ($invoice_status == 9){
-    	    $db->where(['is_confirm' => 1]);
+    	    $db->where(['is_confirm' => 1,'status' => ['NEQ',2]]);
     	}
         $result = $db->order('create_time desc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
         $this->assign('page',$result->render());
@@ -612,7 +612,7 @@ class Account extends Base {
             $db->where(['status' => $status]);
         }
         if ($status == 9) {
-            $db->where(['is_confirm' => 1]);
+            $db->where(['is_confirm' => 1,'status' => ['NEQ',2]]);
         }
         $result = $db->order('id desc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
         $this->assign('page',$result->render());
