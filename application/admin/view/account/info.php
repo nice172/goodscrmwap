@@ -78,8 +78,6 @@
                             <tr>
                                 <th>送货单号</th>
                                 <th>送货日期</th>
-                                <th>订单号</th>
-                                <th>下单日期</th>
                                 <th>客户名称</th>
                                 <th>商品分类</th>
                                 <th>商品名称</th>
@@ -87,6 +85,8 @@
                                 <th>单价</th>
                                 <th>是否对账</th>
                                 <th>交货数量</th>
+                                <th>金额</th>
+                                <th>客户单号</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -94,8 +94,6 @@
                                 <tr>
                                 <td>{$vo.order_dn}</td>
                                 <td>{$vo.delivery_date}</td>
-                                <td>{$vo.order_sn}</td>
-                                <td>{$vo.order_create_time|date='Y-m-d',###}</td>
                                 <td>{$vo.cus_name}</td>
                                 <td>{$vo.category_name}</td>
                                 <td style="text-align:left;" >{$vo.goods_name}</td>
@@ -107,6 +105,8 @@
                                 {else}未对账{/if}
                                 </td>
                                 <td>{$vo.current_send_number}</td>
+                                <td>{$vo.count_money}</td>
+                                <td>{$vo.cus_order_sn}</td>
                                 </tr>
                             {/volist}
                             </tbody>

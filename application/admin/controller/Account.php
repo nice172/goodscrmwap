@@ -23,12 +23,20 @@ class Account extends Base {
     	if ($open_status != ''){
     		$db->where(['is_open' => $open_status]);
     	}
-    	if ($invoice_status != ''){
+    	if ($invoice_status != '' && $invoice_status != 9){
     		$db->where(['status' => $invoice_status]);
+    	}
+    	if ($invoice_status == 9){
+    	    $db->where(['is_confirm' => 1]);
     	}
         $result = $db->order('create_time desc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
         $this->assign('page',$result->render());
-        $this->assign('list',$result->all());
+        $list = $result->all();
+        $receivable_ticket_db = db('receivable_ticket');
+        foreach ($list as $key => $value) {
+            $list[$key]['pay_money'] = _formatMoney($receivable_ticket_db->where(['rec_id' => $value['id']])->sum('money'));
+        }
+        $this->assign('list',$list);
         $this->assign('title','应收账款');
         cookie('soset',null);
         return $this->fetch();
@@ -60,6 +68,9 @@ class Account extends Base {
     			'create_time' => time()
     		];
     		if (db('receivable_ticket')->insert($data)){
+    		    if (!$res['is_open']){
+    		        db('receivables')->where(['id' => $id])->setField('is_open',1);
+    		    }
     			$this->success('新增发票成功');
     		}else{
     			$this->error('新增发票失败');
@@ -95,6 +106,9 @@ class Account extends Base {
     				'create_time' => time()
     		];
     		if (db('payment_ticket')->insert($data)){
+    		    if (!$res['is_open']){
+    		      db('payment_order')->where(['id' => $id])->setField('is_open',1);
+    		    }
     			$this->success('新增发票成功');
     		}else{
     			$this->error('新增发票失败');
@@ -225,6 +239,7 @@ class Account extends Base {
             $category_name = db('goods g')->join('__GOODS_CATEGORY__ gc','gc.category_id=g.category_id')
             ->where(['g.goods_id' => $value['goods_id']])->value('gc.category_name');
             $result[$key]['category_name'] = $category_name;
+            $result[$key]['count_money'] = _formatMoney($value['goods_price']*$value['current_send_number']);
         }
         $this->assign('page','');
         $this->assign('list',$result);
@@ -247,8 +262,6 @@ class Account extends Base {
             $cellName=[
                 ['order_dn','送货单号',0,12,'CENTER'],
                 ['delivery_date','送货日期',0,12,'left'],
-                ['order_sn','订单号',0,12,'LEFT'],
-                ['order_create_time','下单日期',0,12,'LEFT'],
                 ['cus_name','客户名称',0,12,'LEFT'],
                 ['category_name','商品分类',0,12,'LEFT'],
                 ['goods_name','商品名称',0,12,'LEFT'],
@@ -256,14 +269,14 @@ class Account extends Base {
                 ['goods_price','单价',0,12,'LEFT'],
                 ['is_confirm','是否对账',0,12,'LEFT'],
                 ['current_send_number','交货数量',0,12,'LEFT'],
+                ['count_money','金额',0,12,'LEFT'],
+                ['cus_order_sn','客户单号',0,12,'LEFT'],
             ];
             $data=[];
             foreach ($result as $key => $value){
                 $data[] = [
                     'order_dn' => $value['order_dn'],
                     'delivery_date' => $value['delivery_date'],
-                    'order_sn' => $value['order_sn'],
-                    'order_create_time' => date('Y-m-d',$value['order_create_time']),
                     'cus_name' => $value['cus_name'],
                     'category_name' => $value['category_name'],
                     'goods_name' => $value['goods_name'],
@@ -271,6 +284,8 @@ class Account extends Base {
                     'goods_price' => $value['goods_price'],
                     'is_confirm' => $value['is_confirm']==1?'已对账':'未对账',
                     'current_send_number' => $value['current_send_number'],
+                    'count_money' => $value['count_money'],
+                    'cus_order_sn' => $value['cus_order_sn'],
                 ];
             }
             
@@ -590,7 +605,11 @@ class Account extends Base {
         }
         $result = $db->order('id desc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
         $this->assign('page',$result->render());
-        $this->assign('list',$result->all());
+        $list = $result->all();
+        foreach ($list as $key => $value){
+            $list[$key]['count_money'] = _formatMoney(db('payment_ticket')->where(['rec_id' => $value['id']])->sum('money'));
+        }
+        $this->assign('list',$list);
         $this->assign('title','应付账款');
         cookie('setsupplier',null);
         $this->assign('sub_class','viewFramework-product-col-1');
@@ -624,6 +643,13 @@ class Account extends Base {
         ->join('__GOODS__ g','pg.goods_id=g.goods_id')
         ->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
         ->field('pg.*,gc.category_name')->select();
+        foreach ($list as $key => $value) {
+            $input_id = db('input_store')->where(['store_sn' => $value['delivery_dn'],'po_id' => $value['purchase_id']])->value('id');
+            $list[$key]['delivery_sn'] = db('delivery_order')->where(['purchase_id' => $value['purchase_id'],
+                'order_id' => $value['order_id'],
+                'relation_input_id' => ['LIKE',"%{$input_id}%"]])->value('order_dn');
+        }
+        
         $this->assign('total_money',$payment_order['total_money']);
         $this->assign('page','');
         $payment_order['files'] = json_decode($payment_order['files'],true);
@@ -648,6 +674,7 @@ class Account extends Base {
             
             $cellName=[
                 ['po_sn','采购单号',0,12,'CENTER'],
+                ['delivery_sn','送货单号',0,12,'LEFT'],
                 ['delivery_date','入库日期',0,12,'left'],
                 ['delivery_dn','入库单号',0,12,'LEFT'],
                 ['category_name','商品分类',0,12,'LEFT'],
@@ -661,6 +688,7 @@ class Account extends Base {
             foreach ($list as $key => $value){
                 $data[] = [
                     'po_sn' => $value['po_sn'],
+                    'delivery_sn' => $value['delivery_sn'],
                     'delivery_date' => $value['delivery_date'],
                     'delivery_dn' => $value['delivery_dn'],
                     'category_name' => $value['category_name'],

@@ -25,7 +25,7 @@
     <div class="form-group">
     <label for="ticket_sn" class="col-sm-2 control-label">发票号码：</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" value="{:StrOrderOne()}" id="ticket_sn" name="ticket_sn" />
+      <input type="text" class="form-control" id="ticket_sn" name="ticket_sn" />
     </div>
   </div>
       <div class="form-group">

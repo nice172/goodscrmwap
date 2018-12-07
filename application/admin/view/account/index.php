@@ -52,12 +52,13 @@
                                 	</select>
                                 </div>
                                 <div class="form-group">
-                                	<label class="control-label" for="invoice_status">发票状态 :</label>
+                                	<label class="control-label" for="invoice_status">对账状态 :</label>
                                 	<select name="invoice_status" id="invoice_status" class="form-control">
                                 		<option value="">全部</option>
-                                		<option value="0">待核销</option>
-                                		<option value="1">已核销</option>
-                                		<option value="2">已关闭</option>
+                                		<option value="1">已创建</option>
+                                		<option value="9">已确认</option>
+                                		<option value="2">已核销</option>
+                                		<option value="0">已取消</option>
                                 	</select>
                                 </div>
                                 <button type="submit" class="btn btn-primary">查找</button>
@@ -76,7 +77,7 @@
                                 <th>对账日期</th>
                                 <th>客户名称</th>
                                 <th>金额</th>
-                                <th>已付金额</th>
+                                <th>开票金额</th>
                                 <th>冲减金额</th>
                                 <th>是否开票</th>
                                 <!--<th>出货单号</th>
@@ -97,7 +98,7 @@
                                 <td>{$vo.diff_money}</td>
                                 <td>{if condition="$vo['is_open']"}已开票{else}未开票{/if}</td>
 								<td>
-                                {if condition="$vo['status']==1"}待核销{elseif condition="$vo['status']==2"}已核销{else}已关闭{/if}
+                                {if condition="$vo['status']==1"}已创建{elseif condition="$vo['status']==2"}已核销{else}已取消{/if}
                                 </td>
                                 <td>
                                 	<a href="{:url('info',['id' => $vo['id']])}">详情</a>
@@ -105,12 +106,14 @@
                                 		{if condition="$vo['is_confirm']"}
                                 			<span class="text-explode">|</span>
                                 			<a href="{:url('ticketrecrod',['id' => $vo['id']])}">发票记录</a>
-	                                		{if condition="!$vo['is_open']"}
+	                                		
 	                                		<span class="text-explode">|</span>
 	                                		<a href="javascript:;" onclick="_open({$vo['id']})">开发票</a>
+<!-- 
                                     		<span class="text-explode">|</span>
                                     		<a href="javascript:;" onclick="is_open({$vo['id']})">已开票</a>
-	                                		{/if}
+-->
+	                                		
 	                                		{if condition="$vo['status']==1"}
 	                                    	<!--<span class="text-explode">|</span>
 	                                    	<a href="javascript:;" onclick="_status({$vo['id']})">已核销</a>-->
@@ -121,15 +124,17 @@
                                     	{/if}
                                 		{if condition="$vo['status']==1 and $vo['is_confirm']==0"}
                                 		<span class="text-explode">|</span>
-                                		<a href="javascript:;" onclick="_close({$vo['id']})">关闭</a>
+                                		<a href="javascript:;" onclick="_close({$vo['id']})">取消</a>
                                 		{/if}
                                 	{/if}
                                 	{if condition="!$vo['is_confirm']"}
                                 	<span class="text-explode">|</span>
                                 	<a href="{:url('edit',['id' => $vo['id']])}">编辑</a>
                                 	{/if}
+                                	<!-- 
                                 	<span class="text-explode">|</span>
                                 	<a href="javascript:;" onclick="deleteOrdersOne({$vo['id']})">删除</a>
+                                	-->
                                 </td>
                                 </tr>
                             {/volist}

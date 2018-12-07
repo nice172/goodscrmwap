@@ -65,7 +65,7 @@
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <table class="table table-hover syc-table">
+                        <table class="table table-hover border syc-table">
                             <thead>
                             <tr>
                                 <th>采购订单</th>

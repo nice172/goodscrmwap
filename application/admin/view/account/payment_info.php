@@ -89,6 +89,7 @@
                             <thead>
                             <tr>
                                 <th>采购订单</th>
+                                <th>送货单号</th>
                                 <th>入库日期</th>
                                 <th>入库单号</th>
                                 <th>商品分类</th>
@@ -105,6 +106,7 @@
                             {volist name="list" id="vo" empty="$empty"}
                                 <tr>
                                 <td>{$vo.po_sn}</td>
+                                <td>{$vo.delivery_sn}</td>
                                 <td>{$vo.delivery_date}</td>
                                 <td>{$vo.delivery_dn}</td>
                                 <td>{$vo.category_name}</td>

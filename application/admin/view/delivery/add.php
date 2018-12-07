@@ -48,7 +48,7 @@
 									
 									<td width="15%" class="right-color"><span class="text-danger">*</span><span>客户订单号:</span></td>
 									<td width="35%">
-										<input type="text" class="form-control w300" readonly="readonly" id="cus_order_sn">
+										<input type="text" class="form-control w300" name="cus_order_sn" readonly="readonly" id="cus_order_sn">
 									</td>
 	
                                 </tr>
