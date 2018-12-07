@@ -51,8 +51,8 @@
                                 	<label class="control-label" for="is_open">是否开票 :</label>
                                 	<select name="is_open" id="is_open" class="form-control">
                                 		<option value="">全部</option>
-                                		<option value="0">未开票</option>
-                                		<option value="1">已开票</option>
+                                		<option value="0" <?php if (isset($_GET['is_open']) && $_GET['is_open'] != '' && $_GET['is_open'] == 0){echo 'selected="selected"';}?>>未开票</option>
+                                		<option value="1" <?php if (isset($_GET['is_open']) && $_GET['is_open'] == 1){echo 'selected="selected"';}?>>已开票</option>
                                 	</select>
                                 </div>
 								
@@ -60,10 +60,10 @@
                                 	<label class="control-label" for="status">对账状态 :</label>
                                 	<select name="status" id="status" class="form-control">
                                 		<option value="">全部</option>
-                                		<option value="1">已创建</option>
-                                		<option value="9">已确认</option>
-                                		<option value="2">已核销</option>
-                                		<option value="0">已取消</option>
+                                		<option value="1" <?php if (isset($_GET['status']) && $_GET['status'] == 1){echo 'selected="selected"';}?>>已创建</option>
+                                		<option value="9" <?php if (isset($_GET['status']) && $_GET['status'] == 9){echo 'selected="selected"';}?>>已确认</option>
+                                		<option value="2" <?php if (isset($_GET['status']) && $_GET['status'] == 2){echo 'selected="selected"';}?>>已核销</option>
+                                		<option value="0" <?php if (isset($_GET['status']) && $_GET['status'] != '' && $_GET['status'] == 0){echo 'selected="selected"';}?>>已取消</option>
                                 	</select>
                                 </div>
 								
@@ -99,7 +99,13 @@
                                 <td>{$vo.invoice_date}</td>
                                 <td>{$vo.supplier_name}</td>
                                 <td>{if condition="$vo['is_open']"}已开票{else}未开票{/if}</td>
-                                <td>{if condition="$vo['status']==1"}已创建{elseif condition="$vo['status']==2"}已核销{else}已取消{/if}</td>
+                                <td>
+                                {if condition="$vo['is_confirm']"}
+                                	{if condition="$vo['status']==2"}已核销{else}已确认{/if}
+                                {else}
+                                	{if condition="$vo['status']==1"}已创建{elseif condition="$vo['status']==2"}已核销{else}已取消{/if}
+                                {/if}
+                                </td>
                                 <td>{$vo.total_money}</td>
                                 <td>{$vo.count_money}</td>
                                 <td>{$vo.diff_money}</td>
@@ -144,7 +150,7 @@
                                 		<a href="javascript:;" onclick="_close({$vo['id']})">取消</a>
                                 		{/if}
                                 	{/if}
-                                	{if condition="!$vo['is_confirm']"}
+                                	{if condition="!$vo['is_confirm'] && $vo['status']"}
                                 	<span class="text-explode">|</span>
                                 	<a href="{:url('payment_edit',['id' => $vo['id']])}">编辑</a>
                                 	{/if}

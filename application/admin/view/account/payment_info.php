@@ -130,12 +130,13 @@
                             </tr>
                             </tfoot>
                         </table>
+                        {if condition="$info['status']"}
                         {if condition="!$info['is_confirm']"} 
     			<div class="modal-footer" style="border-top:none;">
         			<div class="col-md-offset-5 col-md-12 left">
 					<button type="submit" class="btn btn-primary confirm">确认</button>
 					</div></div>
-                    {/if}
+                    {/if}{/if}
                     </div>
                     
                    

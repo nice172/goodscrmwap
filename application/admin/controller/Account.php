@@ -71,6 +71,10 @@ class Account extends Base {
     		    if (!$res['is_open']){
     		        db('receivables')->where(['id' => $id])->setField('is_open',1);
     		    }
+    		    $total_money = db('receivable_ticket')->where(['rec_id' => $id])->sum('money');
+    		    if ($total_money == $res['confirm_money']){
+    		        db('receivables')->where(['id' => $id])->setField('status',2);
+    		    }
     			$this->success('新增发票成功');
     		}else{
     			$this->error('新增发票失败');
@@ -108,6 +112,10 @@ class Account extends Base {
     		if (db('payment_ticket')->insert($data)){
     		    if (!$res['is_open']){
     		      db('payment_order')->where(['id' => $id])->setField('is_open',1);
+    		    }
+    		    $total_money = db('payment_ticket')->where(['rec_id' => $id])->sum('money');
+    		    if ($total_money == $res['pay_money']){
+    		        db('payment_order')->where(['id' => $id])->setField('status',2);
     		    }
     			$this->success('新增发票成功');
     		}else{
