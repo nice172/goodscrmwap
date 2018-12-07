@@ -284,7 +284,7 @@ class Account extends Base {
                     'goods_price' => $value['goods_price'],
                     'is_confirm' => $value['is_confirm']==1?'已对账':'未对账',
                     'current_send_number' => $value['current_send_number'],
-                    'count_money' => $value['count_money'],
+                    'count_money' => _formatMoney($value['count_money']),
                     'cus_order_sn' => $value['cus_order_sn'],
                 ];
             }
@@ -699,7 +699,7 @@ class Account extends Base {
                     'unit' => $value['unit'],
                     'goods_price' => $value['goods_price'],
                     'rec_number' => $value['rec_number'],
-                    'count_money' => $value['count_money'],
+                    'count_money' => _formatMoney($value['count_money']),
                 ];
             }
             
