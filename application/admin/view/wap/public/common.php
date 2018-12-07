@@ -60,7 +60,7 @@ nav .nav-center{width:70%;float:left;height:45px;line-height:45px;text-align:cen
 nav .nav-right{width:15%;float:right;height:45px;line-height:45px;text-align:center;}
 .modal{background:rgba(0,0,0,0.1);position:fixed;top:0;z-index:9999999;display:none;}
 .modal ul{text-align:center;width:150px;position:fixed;top:0;right:-150px;background:#fff;box-shadow:0 0 30px #888888;}
-.modal ul li a{color:#000;}
+.modal ul li a{color:#000;display: block;}
 .modal ul li {height:40px;border-bottom:1px solid #eee;line-height:40px;}
 .menu-head h3 strong{color:#333;}
 </style>
