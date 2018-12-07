@@ -600,8 +600,11 @@ class Account extends Base {
         if ($is_open != ''){
             $db->where(['is_open' => $is_open]);
         }
-        if ($status != ''){
+        if ($status != '' && $status != 9){
             $db->where(['status' => $status]);
+        }
+        if ($status == 9) {
+            $db->where(['is_confirm' => 1]);
         }
         $result = $db->order('id desc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
         $this->assign('page',$result->render());
