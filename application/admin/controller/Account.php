@@ -24,7 +24,12 @@ class Account extends Base {
     		$db->where(['is_open' => $open_status]);
     	}
     	if ($invoice_status != '' && $invoice_status != 9){
-    		$db->where(['status' => $invoice_status]);
+    	    if ($invoice_status == 1){
+    	        $db->where(['status' => $invoice_status,'is_confirm' => 0]);
+    	    }else{
+    	        $db->where(['status' => $invoice_status]);
+    	    }
+    		
     	}
     	if ($invoice_status == 9){
     	    $db->where(['is_confirm' => 1,'status' => ['NEQ',2]]);
@@ -609,7 +614,11 @@ class Account extends Base {
             $db->where(['is_open' => $is_open]);
         }
         if ($status != '' && $status != 9){
-            $db->where(['status' => $status]);
+            if ($status == 1){
+                $db->where(['status' => $status,'is_confirm' => 0]);
+            }else{
+                $db->where(['status' => $status]);
+            }
         }
         if ($status == 9) {
             $db->where(['is_confirm' => 1,'status' => ['NEQ',2]]);
