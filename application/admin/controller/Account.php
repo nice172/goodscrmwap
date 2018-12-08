@@ -1026,9 +1026,9 @@ class Account extends Base {
             $id = $this->request->param('id',0,'intval');
             if ($id <= 0) $this->error('参数错误');
             if (db('payment_order')->where(['id' => $id])->setField('status',0)){
-                //db('payment_goods')->where(['payment_order_id' => $id])->setField('is_delete',1);
+                db('payment_goods')->where(['payment_order_id' => $id])->setField('is_delete',1);
                 $delivery_ids = db('payment_order')->where(['id' => $id])->value('delivery_ids');
-                db('delivery_order')->where(['id' => ['in',$delivery_ids]])->setField('is_invoice',0);
+                db('input_store')->where(['id' => ['in',$delivery_ids]])->setField('is_payment',0);
                 $this->success('操作成功');
             }
             $this->error('操作失败');
