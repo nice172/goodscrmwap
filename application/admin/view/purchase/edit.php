@@ -133,7 +133,7 @@
                                     	 <select class="form-control" name="delivery_address" id="delivery_address">
                                 	<option value="">请选择送货地址</option>
                                   		{foreach name="$contacts" item="v"}
-                                		 <option value="{$v.con_address}" conid="{$v.con_id}" >{$v.con_address}</option>
+                                		 <option value="{$v.con_address}" conid="{$v.con_id}" {if condition="$v['con_address'] eq $data['delivery_address']"}selected="selected"{/if}>{$v.con_address}</option>
                                 		{/foreach}
                                         </select>
                                     </td>
@@ -141,10 +141,10 @@
 								
 								<tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>收货联系人:</span></td>
-                                    <td width="35%"><input type="text" class="form-control w300" name="receiver" id="receiver"></td>
+                                    <td width="35%"><input type="text" class="form-control w300" value="{$data.receiver}" name="receiver" id="receiver"></td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>收货人电话:</span></td>
                                     <td width="35%">
-                                        <input type="text" class="form-control w300" name="receivernum" id="receivernum">
+                                        <input type="text" class="form-control w300" value="{$data.receivernum}" name="receivernum" id="receivernum">
                                     </td>
                                 </tr>
 								

@@ -88,13 +88,13 @@
                                 		{foreach name="data['attachment']" item="v"}
                                 			{if condition="in_array($v['ext'],['jpg','jpeg','png','gif'])"}
                                 				<div class="fileList">
-                              <input type="hidden" name="old_ext[]" value="{$v['ext']}" />';
-			<input type="hidden" name="old_filename[]" value="{$v['oldfilename']}" />';
+					                            <input type="hidden" name="old_ext[]" value="{$v['ext']}" />
+												<input type="hidden" name="old_filename[]" value="{$v['oldfilename']}" />
                                 				<input type="hidden" name="oldfile[]" value="{$v['path']}"/><a href="{$v['path']}" target="_blank"><img src="{$v['path']}" alt="" width="50" height="50" style="margin-bottom:5px;"/></a><a href="javascript:;" style="margin-left:15px;" class="deleteOldFile">删除</a></div>
                                 			{else}
                                 				<div class="fileList" style="margin-bottom:5px;">
-            <input type="hidden" name="old_ext[]" value="{$v['ext']}" />';
-			<input type="hidden" name="old_filename[]" value="{$v['oldfilename']}" />';
+									            <input type="hidden" name="old_ext[]" value="{$v['ext']}" />
+												<input type="hidden" name="old_filename[]" value="{$v['oldfilename']}" />
                                 				<input type="hidden" name="oldfile[]" value="{$v['path']}"/><a href="{$v['path']}" target="_blank">{$v.oldfilename}查看文件</a><a href="javascript:;" style="margin-left:15px;" class="deleteOldFile">删除</a></div>
                                 			{/if}
                                 		{/foreach}
@@ -123,7 +123,8 @@
                                     <th width="10%">标准单价</th>
                                     <th width="10%">实际单价</th>
                                     <th width="5%">下单数量</th>
-                                    <th width="5%">已送数量</th>																		<th width="8%">下单金额</th>
+                                    <th width="5%">已送数量</th>
+                                    <th width="8%">下单金额</th>
                                     <th width="20%">备注</th>
                                     <th width="15%">操作</th>
                                 </tr>

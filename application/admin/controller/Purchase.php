@@ -52,7 +52,7 @@ class Purchase extends Base {
 		$this->assign('page',$page);
 		$this->assign('list',$data);
 		if ($this->request->isMobile()) {
-		    $this->assign('title','订单管理');
+		    $this->assign('title','采购管理');
 		    if ($this->request->isAjax()) {
 		        if (empty($data)) $this->success('ok','');
 		        return $this->fetch('load');
@@ -223,6 +223,7 @@ class Purchase extends Base {
 	            }
 	            $data['total_money'] = _formatMoney($totalMoney);
 	            if (db('purchase')->update($data)){
+	            	$old_goodsList = db('purchase_goods')->where(['purchase_id' => $data['id']])->select();
 	                $purchase_id = $data['id'];
 	                foreach ($purchseGoods as $value){
 	                    $value['purchase_id'] = $purchase_id;
@@ -230,10 +231,20 @@ class Purchase extends Base {
 	                        unset($value['id']);
 	                        db('purchase_goods')->insert($value);
 	                    }else{
-	                        $pogoods_id = $value['id'];
-	                        unset($value['create_time'],$value['id'],$value['purchase_id']);
-	                        db('purchase_goods')->where(['id' => $pogoods_id,'purchase_id' => $purchase_id])->update($value);
+	                    	$pogoods_id = $value['id'];
+	                        foreach ($old_goodsList as $k => $v){
+	                        	if ($v['id'] == $pogoods_id){
+	                        		unset($value['create_time'],$value['id'],$value['purchase_id']);
+	                        		db('purchase_goods')->where(['id' => $pogoods_id,'purchase_id' => $purchase_id])->update($value);
+	                        		unset($old_goodsList[$k]);
+	                        	}
+	                        }
 	                    }
+	                }
+	                if (count($old_goodsList) > 0){
+	                	foreach ($old_goodsList as $val){
+	                		db('purchase_goods')->where(['id' => $val['id']])->delete();
+	                	}
 	                }
 	                $this->success('保存采购单成功',url('purchase/info',['id' => $purchase_id]));
 	            }else{

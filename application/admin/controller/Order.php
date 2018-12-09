@@ -506,6 +506,7 @@ class Order extends Base {
     				'create_time' => time(),
     				'update_time' => time()
     		];
+    		
     		$validate = new Validate($this->create_rule,$this->create_message);
     		$validate->extend('checkPosn',function($value,$rule,$data){
     			$find = db('purchase')->where(['po_sn' => $value])->find();
@@ -690,7 +691,7 @@ class Order extends Base {
             //新文件
             $ext = $this->request->param('ext/a');
             $oldfilename = $this->request->param('oldfilename/a');
-       
+            $oldfile = $this->request->param('oldfile/a');
             //$attachment = $this->upload_file();
             $attachment = isset($_POST['files']) ? $_POST['files'] : [];
             foreach ($attachment as $key => $name){
@@ -787,7 +788,6 @@ class Order extends Base {
         if (!empty($order_ren)){
             $order_ren= $order_ren['params_value'];
         }
-        
         $Customers = new Customers();
         $request = Request::instance();
         $query = $request->param(); // 分页查询传参数

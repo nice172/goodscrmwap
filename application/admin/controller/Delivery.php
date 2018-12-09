@@ -73,7 +73,7 @@ class Delivery extends Base {
         $this->assign('total_page', $result->lastPage());
         $this->assign('params', $this->request->query());
         if ($this->request->isMobile()){
-        	$this->assign('title','送货单管理');
+        	$this->assign('title','送货管理');
         }else{
         	$this->assign('title','送货单');
         }
@@ -243,6 +243,7 @@ class Delivery extends Base {
                         'goods_id' => $value['goods_id'],
                         'goods_name' => $value['goods_name'],
                         'delivery_id' => $id,
+                    	'purchase_id' => $delivery_order['purchase_id'],
                         'order_id' => $delivery_order['order_id'],
                         'type' => 2,
                         'number' => $value['current_send_number'],
@@ -767,7 +768,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         $po_id = $this->request->param('po_id');
         $order_goods = db('order_goods')->where(['order_id' => $order_id])->select();
         $input_goods = db('input_goods')->where(['input_id' => ['in',$input_id]])->select();
-		
+
         $goods_list = [];
         foreach ($order_goods as $key => $value){
             foreach ($input_goods as $k => $val) {
@@ -775,32 +776,38 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
                     if (!isset($value['diff_number'])){
                         $value['diff_number'] = 0;
                     }
-                	$value['diff_number'] += $value['goods_number'] - $value['send_num'];
+                	$value['diff_number'] += $value['goods_number'] - $value['send_num']; //剩下未送货
                 	if (!isset($value['current_send_number'])){
                 	    $value['current_send_number'] = 0;
                 	}
-                	$value['current_send_number'] += $value['goods_number'] - $value['send_num'];
+                	$value['current_send_number'] += $value['goods_number'] - $value['send_num']; //本次送货
+                	/*
                 	if (!isset($value['out_number'])) {
                 	    $value['out_number'] = 0;
                 	}
                 	$value['out_number'] += $val['goods_number'];
+                    */
                     $goods_list[$value['goods_id']] = $value;
                 }
             }
         }
-        $category = db('goods g');
-        $goods_db = db('goods');
+        
+        $goods_db = db('goods g');
         foreach ($goods_list as $key => $value) {
-        	$goods_list[$key]['category_name'] = $category->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
-            ->where(['g.goods_id' => $value['goods_id']])->value('category_name');
+        	$goodsInfo = $goods_db->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
+            ->where(['g.goods_id' => $value['goods_id']])->field('g.store_number,gc.category_name')->find();
             $goods_list[$key]['show_input'] = true;
+            $goods_list[$key]['category_name'] = $goodsInfo['category_name'];
+            $store_number = $goodsInfo['store_number'];
             
-            $store_number = $goods_db->where(['goods_id' => $value['goods_id']])->value('store_number');
-            
+            //库存大于未交数量，本次送货数量和出库数量就是未交数量
             if ($store_number >= $value['diff_number']){
                 $goods_list[$key]['out_number'] = $value['diff_number'];
+                $goods_list[$key]['current_send_number'] = $value['diff_number'];
             }else{
+            	//库存小于未交数量，本次送货数量和出库数量就是实际库存的数量
                 $goods_list[$key]['out_number'] = $store_number;
+                $goods_list[$key]['current_send_number'] = $store_number;
             }
             
         }

@@ -231,7 +231,7 @@ class Account extends Base {
             $file = $this->upload_file('',false);
             $data = [
                 'confirm_money' => _formatMoney($confirm_money),
-                'status' => 2,'is_confirm' => 1,
+                'is_confirm' => 1,
                 'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
                 'update_time' => time()
             ];
@@ -650,7 +650,7 @@ class Account extends Base {
             $file = $this->upload_file('',false);
             $data = [
                 'pay_money' => _formatMoney($confirm_money),
-                'status' => 2,'is_confirm' => 1,
+                'is_confirm' => 1,
                 'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
                 'update_time' => time()
             ];

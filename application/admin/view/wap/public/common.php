@@ -55,7 +55,7 @@ function checkNum2(obj){
 <style>
 .search{top:45px !important;}
 nav{height:45px;background:#1aad19;color:#fff;position:fixed;top:0;width:100%;z-index:99999;}
-nav .nav-left{width:15%;float:left;height:45px;}
+nav .nav-left{width:15%;float:left;height:45px;line-height:45px;text-align:center;}
 nav .nav-center{width:70%;float:left;height:45px;line-height:45px;text-align:center;}
 nav .nav-right{width:15%;float:right;height:45px;line-height:45px;text-align:center;}
 .modal{background:rgba(0,0,0,0.1);position:fixed;top:0;z-index:9999999;display:none;}
@@ -68,7 +68,7 @@ nav .nav-right{width:15%;float:right;height:45px;line-height:45px;text-align:cen
 <body ontouchstart>
 <?php if (ACTION_NAME != 'email'){?>
 <nav>
-<div class="nav-left"></div>
+<div class="nav-left"><a style="color: #fff;" href="{:url('index/index')}"><i class="fa fa-home fa-fw" style="font-size:18px;"></i></a></div>
 <div class="nav-center">{$title}</div>
 <div class="nav-right"><i class="fa fa-list-ul" aria-hidden="true" style="font-size:18px;"></i></div>
 </nav>

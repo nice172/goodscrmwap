@@ -86,20 +86,12 @@
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">单位：</label>
           <span class="weui-form-preview__value" style="text-align: left;">{$v.unit}
-          	<span style="float: right;">单价：{$v.store_number}元</span>
+          	<span style="float: right;">库存数量：{$v.store_number}</span>
           </span>
-        </div>
-        <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">关联订单：</label>
-          <span class="weui-form-preview__value">{$v.order_sn}</span>
-        </div>
-        <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">采购单号：</label>
-          <span class="weui-form-preview__value">{$v.po_sn}</span>
         </div>
       </div>
         <div class="button-block">
-        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('log',['goods_id' => $v['goods_id'],'order_id' => $v['order_id']])}'">变动记录</button>
+        	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('log',['goods_id' => $v['goods_id']])}'">变动记录</button>
         </div>
 </div>
 {/foreach}

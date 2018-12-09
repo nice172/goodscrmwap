@@ -70,8 +70,6 @@
                                 <th>商品名称</th>
                                 <th>单位</th>
                                 <th>库存数量</th>
-                                <th>关联订单</th>
-                                <th>关联采购单</th>
                                 <th>变动记录</th>
 <!--                                 <th>操作</th> -->
                             </tr>
@@ -85,22 +83,7 @@
                                 <td style="text-align:left;">{$vo.goods_name}</td>
                                 <td>{$vo.unit}</td>
                                 <td>{$vo.store_number}</td>
-                                <td>
-                                {if condition="$vo['order_sn']"}{$vo.order_sn}{else}--{/if}
-                                </td>
-                                <td>{$vo.po_sn}</td>
-                                <td><a href="javascript:;" onclick="viewLog({$vo['goods_id']},{$vo.order_id})">查看</a></td>
-                                <!-- <td>
-                                	{if condition="$vo['create_type']==1"}
-                                	--
-                                	{else}
-                                	{if condition="$vo['is_cancel']==1"}
-                                	<span>已取消关联</span>
-                                	{else}
-                                	<a href="javascript:cancel({$vo.purchase_id});" data-id="{$vo.purchase_id}">取消关联</a>
-                                	{/if}
-                                	{/if}
-                                </td> -->
+                                <td><a href="javascript:;" onclick="viewLog({$vo['goods_id']})">查看</a></td>
                                 </tr>
                             {/volist}
                             </tbody>
@@ -124,13 +107,13 @@
 {block name="footer"}
 <script type="text/javascript">
 
-function viewLog(goods_id,order_id){
+function viewLog(goods_id){
     var title = '变动记录';
     bDialog.open({
         title : title,
         height: 630,
         width:'85%',
-        url : '{:url(\'log\')}?goods_id='+goods_id+'&order_id='+order_id,
+        url : '{:url(\'log\')}?goods_id='+goods_id,
         callback:function(data){
             if(data && data.results && data.results.length > 0 ) {
                 window.location.reload();

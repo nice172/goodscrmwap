@@ -1,5 +1,7 @@
 <?php
 namespace app\admin\controller;
+use think\db\Query;
+
 class Store extends Base {
  
     public function index(){
@@ -42,9 +44,11 @@ class Store extends Base {
         //1入库，2出库，3报溢，4报损，5采购入库
         $goods_id = $this->request->param('goods_id',0,'intval');
         $order_id = $this->request->param('order_id',0,'intval');
-        $delivery_order = db('delivery_order')->where(['order_id' => $order_id])->find();
+        $purchase_id = $this->request->param('purchase_id',0,'intval');
+        //$delivery_order = db('delivery_order')->where(['order_id' => $order_id])->find();
         //['l.order_id' => $order_id,'l.goods_id' => $goods_id]
-        $result = db('store_log l')->where("(l.order_id={$order_id} OR type=3 OR type=4 OR type=5) and l.goods_id=".$goods_id)
+        //(l.order_id={$order_id} OR l.purchase_id={$purchase_id}) AND 
+        $result = db('store_log l')->where("l.goods_id=".$goods_id)
         ->join('__GOODS__ g','l.goods_id=g.goods_id')
         ->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
         ->field('l.*,gc.category_name,g.unit')->order('l.create_time desc')->paginate(config('page_size'), false, ['query' => $this->request->param()]);
@@ -70,6 +74,7 @@ class Store extends Base {
         $category_id = $this->request->param('category_id',0,'intval');
         $goods_name = $this->request->param('goods_name');
         
+        /*
         $db = db('purchase p');
         $where = ['p.status' => ['neq','-1']];
         if ($supplier_name != ''){
@@ -79,9 +84,8 @@ class Store extends Base {
             //$db->where('g.goods_name|pg.goods_name','like',"%{$goods_name}%");
             $db->where('pg.goods_name','like',"%{$goods_name}%");
         }
-        
         $db->where($where);
-        $db->field('p.*,p.id as purchase_id,pg.goods_number as store_number2,pg.goods_id,pg.goods_name,pg.unit,pg.goods_number,pg.goods_price,s.supplier_name');
+        //$db->field('p.*,p.id as purchase_id,pg.goods_number as store_number2,pg.goods_id,pg.goods_name,pg.unit,pg.goods_number,pg.goods_price,s.supplier_name');
         $db->join('__INPUT_STORE__ i','p.id=i.po_id');
         $db->join('__INPUT_GOODS__ pg','i.id=pg.input_id');
         if ($category_id > 0){
@@ -95,7 +99,25 @@ class Store extends Base {
         
         $result = $db->order('p.create_time desc')->paginate(config('PAGE_SIZE'),false, ['query' => $this->request->param()]);
         $list = $result->all();
+        */
+        $db = db('goods g');
+        $db->join('__SUPPLIER__ s','g.supplier_id=s.id');
+        $db->join('__GOODS_CATEGORY__ c','g.category_id=c.category_id');
+        $db->where("g.goods_id in(select pg.goods_id from syc_purchase_goods pg inner join syc_purchase p on pg.purchase_id=p.id where p.status!='-1' group by goods_id)");
+        if ($supplier_name != ''){
+        	$db->where('s.supplier_name|s.supplier_short','like',"%{$supplier_name}%");
+        }
+        if ($goods_name != ''){
+        	$db->where('g.goods_name','like',"%{$goods_name}%");
+        }
+        if ($category_id > 0){
+        	$db->where(['g.category_id' => $category_id]);
+        }
+        $result = $db->field("g.goods_id,g.store_number,g.goods_name,g.unit,s.supplier_name,c.category_name")
+        ->paginate(config('PAGE_SIZE'),false, ['query' => $this->request->param()]);
+        $list = $result->all();
         //库存数量=采购入库数量  - 出库数量  + 盘点报溢数量  - 盘点报损数量
+        /*
         foreach ($list as $key => $value){
         	if ($value['create_type'] == 1){
         		$list[$key]['order_id'] = db('delivery_order')->where(['purchase_id' => $value['id']])->value('order_id');
@@ -108,19 +130,20 @@ class Store extends Base {
         	}
         	$list[$key]['store_number'] = db('goods')->where(['goods_id' => $value['goods_id']])->value('store_number');
         }
+        */
         $this->assign('current_page', $result->getCurrentPage());
         $this->assign('total_page', $result->lastPage());
         $this->assign('params', $this->request->query());
         $this->assign('page',$result->render());
         $this->assign('list',$list);
         if ($this->request->isMobile()){
-        	$this->assign('title','订单管理');
+        	$this->assign('title','库存管理');
         	if ($this->request->isAjax()) {
         		if (empty($list)) $this->success('ok','');
         		return $this->fetch('load');
         	}
         }else{
-        	$this->assign('title','关联库存');
+        	$this->assign('title','商品库存');
         }
         return $this->fetch();
     }
