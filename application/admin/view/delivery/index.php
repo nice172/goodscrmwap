@@ -95,9 +95,9 @@
                                 	{if condition="!$vo['is_confirm']"}
                                 	<span class="text-explode">|</span>
                                 	<a href="{:url('edit',['id' => $vo['id']])}">编辑</a>
-                                	{/if}
                                 	<span class="text-explode">|</span>
                                 	<a href="javascript:;" onclick="deleteOrdersOne({$vo['id']})">删除</a>
+                                	{/if}
                                 </td>
                                 </tr>
                             {/volist}

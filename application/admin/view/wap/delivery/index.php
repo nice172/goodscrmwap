@@ -74,8 +74,8 @@
         	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['id' => $v['id']])}'">查看</button>
         	{if condition="!$v['is_confirm']"}
             <button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['id' => $v['id']])}'">编辑</button>
-          	{/if}
           	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="deleteOrder(this,{$v.id})">删除</button>
+        	{/if}
         </div>
 </div>
 {/foreach}

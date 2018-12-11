@@ -15,9 +15,11 @@
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">单位：</label>
-          <span class="weui-form-preview__value">{$v.unit}
-          	<span style="float: right;">库存数量：{$v.store_number}</span>
-          </span>
+          <span class="weui-form-preview__value">{$v.unit}</span>
+        </div>
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">库存数量：</label>
+          <span class="weui-form-preview__value">{$v.store_number}</span>
         </div>
       </div>
         <div class="button-block">

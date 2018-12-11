@@ -64,6 +64,7 @@
                                     <th>单位</th>
                                     <th>采购数量</th>
                                     <th>入库数量</th>
+                                    <th>出库数量</th>
                                     <th>状态</th>
                                     <th>入库时间</th>
                                 </tr>
@@ -80,6 +81,7 @@
                                     <td>{$vo.unit}</td>
                                     <td>{$vo.purchase_number}</td>
                                     <td>{$vo.goods_number}</td>
+                                    <td>{$vo.out_number}</td>
                                     <td>正常</td>
                                     <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
                                 </tr>

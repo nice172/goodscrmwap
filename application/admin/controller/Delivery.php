@@ -161,7 +161,8 @@ class Delivery extends Base {
     	    $db->where(['g.category_id' => $category_id]);
     	}
     	$db->where(['i.is_cancel' => 0]);
-    	$db->field('i.*,p.order_id,p.delivery_type,p.cus_order_sn,g.category_id,ig.goods_id,ig.goods_name,ig.goods_price,ig.unit,ig.goods_number,ig.remark,s.supplier_name,s.supplier_short');
+    	$db->where('ig.goods_number-ig.out_number>0');
+    	$db->field('i.*,p.order_id,p.delivery_type,p.cus_order_sn,g.category_id,ig.goods_id,ig.goods_name,ig.goods_price,ig.unit,ig.goods_number,ig.out_number,ig.remark,s.supplier_name,s.supplier_short');
     	$result = $db->order('i.create_time asc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
     	$data = $result->all();
     	$categoryModel = db('goods_category');
@@ -249,16 +250,7 @@ class Delivery extends Base {
                         'number' => $value['current_send_number'],
                         'create_time' => time()
                     ]);
-//                     db('store_log')->insert([
-//                         'goods_id' => $value['goods_id'],
-//                         'goods_name' => $value['goods_name'],
-//                         'delivery_id' => $id,
-//                         'order_id' => $delivery_order['order_id'],
-//                         'type' => 1,
-//                         'number' => $value['add_number'],
-//                         'create_time' => time()
-//                     ]);
-                    if ($value['add_number'] > 0){
+                    if ($value['current_send_number'] > 0){
                     	//db('goods')->where(['goods_id' => $value['goods_id']])->setInc('store_number',$value['add_number']);
                     	//库存数量=5采购入库数量  - 2出库数量  + 3盘点报溢数量  - 4盘点报损数量
                     	$purchase_number = db('store_log')->where(['goods_id' => $value['goods_id'],'type' => 5])->sum('number');
@@ -292,6 +284,8 @@ class Delivery extends Base {
                     //strtotime($delivery_order['delivery_date'])
                 	$d = db('order')->where(['id' => $delivery_order['order_id']])->setField('deliver_time',strtotime($delivery_order['delivery_date']));
                 }
+                $relation_input_arr = explode(',', $delivery_order['relation_input_id']);
+                   
                 if ($failed_row == 0 && $c && $d){
                     db()->commit();
                     $this->success('确认成功');
@@ -776,7 +770,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
                     if (!isset($value['diff_number'])){
                         $value['diff_number'] = 0;
                     }
-                	$value['diff_number'] += $value['goods_number'] - $value['send_num']; //剩下未送货
+                	$value['diff_number'] += $val['goods_number'] - $val['out_number']; //剩下未送货
+                    //$value['diff_number'] += $value['goods_number'] - $value['send_num'];
                 	if (!isset($value['current_send_number'])){
                 	    $value['current_send_number'] = 0;
                 	}
