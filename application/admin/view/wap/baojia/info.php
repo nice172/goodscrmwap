@@ -2,7 +2,7 @@
 {block name="header"}
 <style type="text/css">
 body{background:#fff;}
-.main{margin-top:10px;}
+.main{margin-top:30px;}
 .goods_list .weui-form-preview__value{text-align:left;line-height:1.2;padding-top:8px;}
 .goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;}
 </style>
@@ -78,9 +78,11 @@ body{background:#fff;}
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">单位：</label>
-          <span class="weui-form-preview__value">{$vo.unit}
-          	<span style="float: right;">单价：{$vo.goods_price}元</span>
-          </span>
+          <span class="weui-form-preview__value">{$vo.unit}</span>
+        </div>
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">单价：</label>
+          <span class="weui-form-preview__value">{$vo.goods_price}元</span>
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">备注：</label>

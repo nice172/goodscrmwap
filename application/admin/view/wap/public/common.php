@@ -66,11 +66,21 @@ nav .nav-right{width:15%;float:right;height:45px;line-height:45px;text-align:cen
 </style>
 </head>
 <body ontouchstart>
-<?php if (ACTION_NAME != 'email'){?>
+<?php 
+$method_name = ['get_goods','search_company','relation_order','input_order'];
+if (ACTION_NAME != 'email'){?>
 <nav>
-<div class="nav-left"><a style="color: #fff;" href="{:url('index/index')}"><i class="fa fa-home fa-fw" style="font-size:18px;"></i></a></div>
+<div class="nav-left">
+<?php if (!in_array(ACTION_NAME, $method_name)){?>
+<a style="color: #fff;" href="{:url('index/index')}"><i class="fa fa-home fa-fw" style="font-size:18px;"></i></a>
+<?php }?>
+</div>
 <div class="nav-center">{$title}</div>
-<div class="nav-right"><i class="fa fa-list-ul" aria-hidden="true" style="font-size:18px;"></i></div>
+<div class="nav-right">
+<?php if (!in_array(ACTION_NAME, $method_name)){?>
+<i class="fa fa-list-ul" aria-hidden="true" style="font-size:18px;"></i>
+<?php }?>
+</div>
 </nav>
 <div class="main" style="padding-top:25px;">
 <?php }else{?>

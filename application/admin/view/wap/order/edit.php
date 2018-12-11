@@ -253,9 +253,13 @@ function goodsList(data){
 	html +='<label class="weui-form-preview__label">名称：</label>';
 	html +='<span class="weui-form-preview__value">'+data[i]['goods_name']+'</span>';
 	html +='</div>';
-	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">单位：</label>';
-	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;" class="shop_price">单价：<input type="text" class="price_input '+input_css+'" data-shop_price="'+data[i]['shop_price']+'" oninput="checkNum(this)" value="'+data[i]['shop_price']+'" name="shop_price"/><span class="'+span_css+'">'+data[i]['shop_price']+'</span>元</span></span>';
+	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'</span>';
+	html +='</div>';
+	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+	html +='<label class="weui-form-preview__label">单价：</label>';
+	html +='<span class="weui-form-preview__value"><span class="shop_price"><input type="text" class="price_input '+input_css+'" data-shop_price="'+data[i]['shop_price']+'" oninput="checkNum(this)" value="'+data[i]['shop_price']+'" name="shop_price"/><span class="'+span_css+'">'+data[i]['shop_price']+'</span>&nbsp;元</span></span>';
 	html +='</div>';
 	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 	html +='<label class="weui-form-preview__label">数量：</label>';

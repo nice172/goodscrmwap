@@ -1,6 +1,7 @@
 {extend name="public/common" /}
 {block name="header"}
 <style>
+body{background:#fff;}
 .weui-label,input,textarea{font-size:13px !important;}
 .weui-label ,.weui-cells__title {width:70px !important;text-align:right;}
 .weui-cells__title {color:#000;padding-left:11px;}
@@ -32,7 +33,7 @@
   </div>
 <form class="form-horizontal" id="saveOrder" method="post">
 <input type="hidden" name="cus_id" id="cus_id" />
-	<div style="margin-bottom: 60px;">
+	<div style="margin-bottom: 60px;margin-top:65px;">
 	<div id="tab1" class="weui-tab__bd-item" style="display: block;">
     <div class="weui-cells weui-cells_form">
       <div class="weui-cell">
@@ -102,7 +103,7 @@
 </div>
 
 <div id="tab2" class="weui-tab__bd-item tab_hide">
-<p style="padding:30px 0 5px 10px;"><a href="javascript:;" class="get_goods">添加商品</a></p>
+<p style="padding:10px 0 5px 10px;"><a href="javascript:;" class="get_goods">添加商品</a></p>
 <div class="appendList"></div>
 </div>
 </div>
@@ -183,9 +184,13 @@ function goodsList(data){
 	html +='<label class="weui-form-preview__label">名称：</label>';
 	html +='<span class="weui-form-preview__value">'+data[i]['goods_name']+'</span>';
 	html +='</div>';
-	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">单位：</label>';
-	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;" class="market_price">单价：<input type="text" class="price_input '+input_css+'" data-market_price="'+data[i]['market_price']+'" oninput="checkNum(this)" value="'+data[i]['market_price']+'" name="market_price"/><span class="'+span_css+'">'+data[i]['market_price']+'</span>元</span></span>';
+	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'</span>';
+	html +='</div>';
+	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+	html +='<label class="weui-form-preview__label">单价：</label>';
+	html +='<span class="weui-form-preview__value"><span class="market_price"><input type="text" class="price_input '+input_css+'" data-market_price="'+data[i]['market_price']+'" oninput="checkNum(this)" value="'+data[i]['market_price']+'" name="market_price"/><span class="'+span_css+'">'+data[i]['market_price']+'</span>&nbsp;元</span></span>';
 	html +='</div>';
 	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">备注：</label>';

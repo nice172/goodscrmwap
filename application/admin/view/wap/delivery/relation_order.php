@@ -1,6 +1,7 @@
 {extend name="public/common" /}
 {block name="header"}
 <style>
+.main{padding-top:40px !important;}
 .weui-label,input,textarea{font-size:13px !important;}
 .weui-label {width:70px !important;text-align:right;}
 .weui-cells__title {color:#000;}

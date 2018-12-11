@@ -102,15 +102,19 @@ body{background:#fff;}
 	        </div>
 	        <div class="weui-form-preview__item">
 	          <label class="weui-form-preview__label">单位：</label>
-	          <span class="weui-form-preview__value">{$vo.unit}
-	          	<span style="float: right;">未交数量：{$vo.diff_number}</span>
-	          </span>
+	          <span class="weui-form-preview__value">{$vo.unit}</span>
+	        </div>
+	        <div class="weui-form-preview__item">
+	          <label class="weui-form-preview__label">未交数量：</label>
+	          <span class="weui-form-preview__value">{$vo.diff_number}</span>
 	        </div>
 	        <div class="weui-form-preview__item">
 	          <label class="weui-form-preview__label">本次送货数量：</label>
-	          <span class="weui-form-preview__value">{$vo.current_send_number}
-	          	<span style="float: right;">入库数量：{$vo.add_number}</span>
-	          </span>
+	          <span class="weui-form-preview__value">{$vo.current_send_number}</span>
+	        </div>
+	        <div class="weui-form-preview__item">
+	          <label class="weui-form-preview__label">入库数量：</label>
+	          <span class="weui-form-preview__value">{$vo.add_number}</span>
 	        </div>
 	        <div class="weui-form-preview__item">
 	          <label class="weui-form-preview__label">备注：</label>

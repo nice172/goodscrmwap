@@ -1,11 +1,12 @@
 {extend name="public/common" /}
 {block name="header"}
 <style>
+body{background:#fff;}
 .weui-label,input,textarea{font-size:13px !important;}
 .weui-label ,.weui-cells__title {width:70px !important;text-align:right;}
 .weui-cells__title {color:#000;padding-left:11px;}
 .weui-cell{padding:10px;}
-.main{padding-top:25px;margin-bottom:60px;}
+.main{padding-top:70px !important;margin-bottom:60px;}
 .list .weui-form-preview__value{text-align:left;}
 .list .remark input{border:1px solid #e5e5e5;width:80% !important;padding:5px;}
 .list .price_input {border:1px solid #e5e5e5;width:80px !important;padding:5px;}
@@ -190,9 +191,13 @@ function goodsList(data){
 	html +='<label class="weui-form-preview__label">名称：</label>';
 	html +='<span class="weui-form-preview__value">'+data[i]['goods_name']+'</span>';
 	html +='</div>';
-	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">单位：</label>';
-	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;" class="market_price">单价：<input type="text" class="price_input '+input_css+'" data-market_price="'+data[i]['market_price']+'" oninput="checkNum(this)" value="'+data[i]['market_price']+'" name="market_price"/><span class="'+span_css+'">'+data[i]['market_price']+'</span>元</span></span>';
+	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'</span>';
+	html +='</div>';
+	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+	html +='<label class="weui-form-preview__label">单价：</label>';
+	html +='<span class="weui-form-preview__value"><span class="market_price"><input type="text" class="price_input '+input_css+'" data-market_price="'+data[i]['market_price']+'" oninput="checkNum(this)" value="'+data[i]['market_price']+'" name="market_price"/><span class="'+span_css+'">'+data[i]['market_price']+'</span>&nbsp;元</span></span>';
 	html +='</div>';
 	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">备注：</label>';

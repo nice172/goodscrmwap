@@ -1,6 +1,7 @@
 {extend name="public/common" /}
 {block name="header"}
 <style>
+.main{padding-top:70px !important;}
 .weui-label,input,textarea{font-size:13px !important;}
 .weui-label {width:50px !important;text-align:right;}
 .weui-cells__title {color:#000;}
@@ -113,7 +114,10 @@ $(function() {
 			    		html += '<div class="weui-cell__bd">';
 			    		html += '<p>名称：'+data[i]['goods_name']+'</p>';
 			    		html += '<p>单位：'+data[i]['unit']+'&nbsp;&nbsp;&nbsp;&nbsp;单价：'+data[i]['market_price']+'元</p>';
-			    		html += '<p>最近成交价：'+data[i]['last_price']+'&nbsp;&nbsp;&nbsp;&nbsp;最近时间：'+data[i]['last_time']+'</p>';
+						var last_price = '';
+						if(data[i]['last_price']) {
+							last_price = data[i]['last_price'];}
+			    		html += '<p>最近成交价：'+last_price+'&nbsp;&nbsp;&nbsp;&nbsp;最近时间：'+data[i]['last_time']+'</p>';
 				        html += '<p><a href="javascript:alert(\'先不做\');"></a></p></div></label></div>';
 				        goodslist.push(data[i]);
 					}

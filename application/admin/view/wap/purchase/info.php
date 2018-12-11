@@ -127,15 +127,19 @@ body{background:#fff;}
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">单位：</label>
-          <span class="weui-form-preview__value">{$vo.unit}
-          	<span style="float: right;">单价：{$vo.goods_price}元</span>
-          </span>
+          <span class="weui-form-preview__value">{$vo.unit}</span>
+        </div>
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">单价：</label>
+          <span class="weui-form-preview__value">{$vo.goods_price}元</span>
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">订单数量：</label>
-          <span class="weui-form-preview__value">{$vo.goods_number}
-          <span style="float: right;">采购数量：{$vo.purchase_number}</span>
-          </span>
+          <span class="weui-form-preview__value">{$vo.goods_number}</span>
+        </div>
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">采购数量：</label>
+          <span class="weui-form-preview__value">{$vo.purchase_number}</span>
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">金额：</label>

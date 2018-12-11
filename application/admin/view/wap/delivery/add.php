@@ -302,32 +302,40 @@ function goodsList(data){
 	console.log(data);
 	var html = '';
 	for(var i in data){
-		var input_css = data[i]['is_show']==true ? 'input-show' : 'input-hide';
-		var span_css = data[i]['is_show']==true ? 'inputspan' : 'inputspan-block';
+		var input_css = data[i]['show_input']==true ? 'input-show' : 'input-hide';
+		var span_css = data[i]['show_input']==true ? 'inputspan' : 'inputspan-block';
 	html +='<div class="weui-form-preview list goods_'+i+'" data-index="'+i+'" data-goods_id="'+data[i]['goods_id']+'">';
 	html +='<div class="weui-form-preview__bd">';
 	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">名称：</label>';
 	html +='<span class="weui-form-preview__value">'+data[i]['goods_name']+'</span>';
 	html +='</div>';
-	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">单位：</label>';
-	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;float:right;" class="shop_price">未交数量：'+data[i]['diff_number']+'</span></span>';
+	html +='<span class="weui-form-preview__value">'+data[i]['unit']+'</span>';
 	html +='</div>';
-	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+	html +='<div class="weui-form-preview__item">';
+	html +='<label class="weui-form-preview__label">未交数量：</label>';
+	html +='<span class="weui-form-preview__value">'+data[i]['diff_number']+'</span>';
+	html +='</div>';
+	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">本次送货数量：</label>';
-	html +='<span class="weui-form-preview__value goods_number"><input type="text" class="'+input_css+'" value="'+data[i]['current_send_number']+'" data-current_send_number="'+goods_info[i]['goods_number']+'" oninput="checkNum2(this)" name="current_send_number"/><span class="'+span_css+'">'+data[i]['current_send_number']+'</span><span style="float:right;">出库数量：'+data[i]['out_number']+'<span></span>';
+	html +='<span class="weui-form-preview__value goods_number"><input type="text" class="'+input_css+'" value="'+data[i]['current_send_number']+'" data-current_send_number="'+goods_info[i]['goods_number']+'" oninput="checkNum2(this)" name="current_send_number"/><span class="'+span_css+'">'+data[i]['current_send_number']+'</span></span>';
 	html +='</div>';
-	html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+	html +='<div class="weui-form-preview__item">';
+	html +='<label class="weui-form-preview__label">出库数量：</label>';
+	html +='<span class="weui-form-preview__value">'+data[i]['out_number']+'</span>';
+	html +='</div>';
+	html +='<div class="weui-form-preview__item">';
 	html +='<label class="weui-form-preview__label">备注：</label>';
 	html +='<span class="weui-form-preview__value remark"><input type="text" class="'+input_css+'" value="'+data[i]['remark']+'" name="remark"/><span class="'+span_css+'">'+data[i]['remark']+'</span></span>';
 	html +='</div>';
 	html +='</div>';
 	html +='<div class="button-block">';
-	if(data[i]['is_show']){
-	html +='<button type="button" class="weui-btn weui-btn_mini weui-btn_plain-primary update" onclick="_update('+i+')">保存</button>';
-	}else{
+	if(!data[i]['show_input']){
 		html +='<button type="button" class="weui-btn weui-btn_mini weui-btn_plain-primary update" onclick="_update('+i+')">编辑</button>';
+	}else{
+		html +='<button type="button" class="weui-btn weui-btn_mini weui-btn_plain-primary update" onclick="_update('+i+')">保存</button>';
 		}
 	html +='<button type="button" class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="_delete('+data[i]['goods_id']+')">删除</button>';
 	html +='</div></div>';
@@ -340,7 +348,7 @@ function get_goods(){
 }
 
 function _update(index){
-	if(goods_info[index]['is_show'] == true){
+	if(goods_info[index]['show_input'] == true){
 		var current_send_number = $('.goods_'+index+' input[name=current_send_number]').val();
 		if(current_send_number == ''){
 			current_send_number = $('.goods_'+index+' input[name=current_send_number]').attr('data-current_send_number');
@@ -353,7 +361,7 @@ function _update(index){
 		//goods_info[index]['shop_price'] = _formatMoney(parseFloat(shop_price));
 		goods_info[index]['current_send_number'] = current_send_number;
 		goods_info[index]['remark'] = $('.goods_'+index+' input[name=remark]').val();
-		goods_info[index]['is_show'] = false;
+		goods_info[index]['show_input'] = false;
 		$('.list').each(function(idx){
 			var eIndex = $('.list').eq(idx).attr('data-index');
 			if(eIndex != index){
@@ -364,7 +372,7 @@ function _update(index){
 		$('.goods_'+index+' .update').text('编辑');
 		return;
 	}
-	goods_info[index]['is_show'] = true;
+	goods_info[index]['show_input'] = true;
 	$('.goods_'+index+' .update').text('保存');
 	$('.goods_'+index+' span.inputspan-block').removeClass('.inputspan-block').addClass('inputspan');
 	$('.goods_'+index+' input').show().css('display','inline');
@@ -385,10 +393,10 @@ function saveOther(eIndex,is_show){
 		return;
 	}
 	goods_info[eIndex]['remark'] = $('.goods_'+eIndex+' input[name=remark]').val();
-	if(!goods_info[eIndex]['is_show']){
-		goods_info[eIndex]['is_show'] = false;
+	if(!goods_info[eIndex]['show_input']){
+		goods_info[eIndex]['show_input'] = false;
 	}else{
-		goods_info[eIndex]['is_show'] = is_show;
+		goods_info[eIndex]['show_input'] = is_show;
 	}
 }
 
@@ -447,8 +455,10 @@ $(function() {
     			if(res.code == 0){
     				$.toptip(res.msg);
     				}else{
+    					$.toptip(res.msg,'success');
+    					$('#saveOrder').resetForm();
     				setTimeout(() => {
-    					$.toptip(res.msg,'success');},2000);
+    					},2000);
     				}
     		},
     	     complete: function(XMLHttpRequest, textStatus) { 

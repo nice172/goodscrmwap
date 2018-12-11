@@ -119,9 +119,11 @@ body{background:#fff;}
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">单位：</label>
-          <span class="weui-form-preview__value">{$vo.unit}
-          	<span style="float: right;">单价：{$vo.goods_price}元</span>
-          </span>
+          <span class="weui-form-preview__value">{$vo.unit}</span>
+        </div>
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">单价：</label>
+          <span class="weui-form-preview__value">{$vo.goods_price}元</span>
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">数量：</label>

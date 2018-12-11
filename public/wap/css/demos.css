@@ -107,3 +107,8 @@ footer a {
 		overflow-y:inherit !important;
 	}	
 }
+.weui-form-preview__value {
+	overflow: hidden !important;
+	text-overflow:ellipsis !important;
+	white-space: nowrap !important;
+}
