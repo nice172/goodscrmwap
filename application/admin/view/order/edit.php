@@ -123,8 +123,10 @@
                                     <th width="10%">标准单价</th>
                                     <th width="10%">实际单价</th>
                                     <th width="5%">下单数量</th>
+									
+									<th width="8%">下单金额</th>
+									
                                     <th width="5%">已送数量</th>
-                                    <th width="8%">下单金额</th>
                                     <th width="20%">备注</th>
                                     <th width="15%">操作</th>
                                 </tr>
@@ -132,8 +134,11 @@
                             <tbody class="goodsList"></tbody>
                             <tfoot>
                             	<tr>
-                            	<td colspan="20">
+                            	<td colspan="6">
                             	<a href="javascript:;" class="get_goods">请选择商品</a>
+                            	</td>
+                            	<td class="total_money">总计：0.00</td>
+                            	<td colspan="4">
                             	<div class="pull-right page-box"><button type="button" class="btn btn-primary saveAll">全部保存</button></div>
                             	</td>
                             	</tr>
@@ -306,6 +311,7 @@ function goods(data){
 
 function goodsList(goods_info){
 	var html = '';
+	var total_money = 0;
 	for(var j in goods_info){
 		var num = parseInt(j)+1;
 		var show_input = goods_info[j]['show_input']==true?'inline':'none';
@@ -318,12 +324,15 @@ function goodsList(goods_info){
 		html += '<td class="market_price">'+goods_info[j]['market_price']+'</td>';
 		html += '<td class="shop_price"><input type="text" data-shop_price="'+goods_info[j]['shop_price']+'" oninput="checkNum(this)" name="shop_price" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['shop_price']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['shop_price']+'</span></td>';
 		html += '<td class="goods_number"><input type="text" data-goods_number="'+goods_info[j]['goods_number']+'" oninput="checkNum2(this)" name="goods_number" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['goods_number']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['goods_number']+'</span></td>';
-		html += '<td class="send_num">'+goods_info[j]['send_num']+'</td>';				//added by wei on 2018-10-09 beign		html += '<td class="shop_amount">'+ _formatMoney(parseFloat(goods_info[j]['shop_price'])*parseInt(goods_info[j]['goods_number']))+'</td>';        //end		
+		html += '<td width="8%" class="send_num">'+_formatMoney(parseFloat(goods_info[j]['shop_price'])*parseInt(goods_info[j]['goods_number']))+'</td>';
+		html += '<td class="send_num">'+goods_info[j]['send_num']+'</td>';	
 		html += '<td class="remark"><input type="text" name="remark" style="width:80%;display:'+show_input+';" value="'+goods_info[j]['remark']+'" /><span class="inputspan" style="display:'+show_span+';">'+goods_info[j]['remark']+'</span></td>';
 		html += '<td><a href="javascript:;" onclick="update('+j+')" class="update">'+text_update+'</a><span class="text-explode">|</span><a href="javascript:;" onclick="_delete('+j+')" class="delete">删除</a></td>';
 		html += '</tr>';
+		total_money += parseFloat(goods_info[j]['shop_price'])*parseInt(goods_info[j]['goods_number']);
 	}
 	$('.goodsList').html(html);
+	$('.total_money').text('总计：'+_formatMoney(total_money));
 }
 
 function update(index){
