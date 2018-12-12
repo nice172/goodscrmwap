@@ -138,14 +138,14 @@ class Delivery extends Base {
     }
     
     public function input_order(){
-    	$order_id = $this->request->param('order_id',0,'intval');
-    	if ($order_id <= 0) $this->error('参数错误');
+    	//$order_id = $this->request->param('order_id',0,'intval');
+    	//if ($order_id <= 0) $this->error('参数错误');
     	$cus_order_sn = $this->request->param('cus_order_sn');
     	$supplier_name = $this->request->param('supplier_name');
     	$goods_name = $this->request->param('goods_name');
     	$category_id = $this->request->param('category_id',0,'intval');
-    	$db = db('input_store i');
-    	$db->join('__INPUT_GOODS__ ig','i.id=ig.input_id');
+    	$db = db('input_goods ig');
+    	$db->join('__INPUT_STORE__ i','i.id=ig.input_id');
     	$db->join('__SUPPLIER__ s','i.supplier_id=s.id');
     	$db->join('__GOODS__ g','ig.goods_id=g.goods_id');
     	$db->join('__PURCHASE__ p','i.po_id=p.id');
@@ -161,8 +161,8 @@ class Delivery extends Base {
     	if ($category_id > 0) {
     	    $db->where(['g.category_id' => $category_id]);
     	}
-    	$db->where(['i.is_cancel' => 0]);
-    	$db->where('ig.goods_number-ig.out_number>0');
+    	//$db->where(['i.is_cancel' => 0]);
+    	$db->where('i.is_cancel=0');
     	$db->field('i.*,p.order_id,p.delivery_type,p.cus_order_sn,g.category_id,ig.goods_id,ig.goods_name,ig.goods_price,ig.unit,ig.goods_number,ig.out_number,ig.remark,s.supplier_name,s.supplier_short');
     	$result = $db->order('i.create_time asc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
     	$data = $result->all();
