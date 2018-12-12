@@ -779,13 +779,14 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 
         $goods_list = [];
         foreach ($order_goods as $key => $value){
+        	$value['diff_number'] = $value['goods_number'] - $value['send_num'];
             foreach ($input_goods as $k => $val) {
                 if ($value['goods_id'] == $val['goods_id']) {
                     if (!isset($value['diff_number'])){
-                        $value['diff_number'] = 0;
+                        //$value['diff_number'] = 0;
                     }
                 	//$value['diff_number'] += $val['goods_number'] - $val['out_number']; //剩下未送货
-                    $value['diff_number'] += $value['goods_number'] - $value['send_num'];
+                    //$value['diff_number'] += $value['goods_number'] - $value['send_num'];
                 	if (!isset($value['current_send_number'])){
                 	    $value['current_send_number'] = 0;
                 	}
@@ -809,12 +810,12 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             $goods_list[$key]['category_name'] = $goodsInfo['category_name'];
             $store_number = $goodsInfo['store_number'];
             
-            //库存大于未交数量，本次送货数量和出库数量就是未交数量
+            //库存数量大于未交货数量，本次送货数量和出库数量就是未交货数量
             if ($store_number >= $value['diff_number']){
                 $goods_list[$key]['out_number'] = $value['diff_number'];
                 $goods_list[$key]['current_send_number'] = $value['diff_number'];
             }else{
-            	//库存小于未交数量，本次送货数量和出库数量就是实际库存的数量
+            	//库存数量小于未交货数量，本次送货数量和出库数量就是实际库存数量
                 $goods_list[$key]['out_number'] = $store_number;
                 $goods_list[$key]['current_send_number'] = $store_number;
             }
