@@ -790,8 +790,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
                     if (!isset($value['diff_number'])){
                         $value['diff_number'] = 0;
                     }
-                	$value['diff_number'] += $val['goods_number'] - $val['out_number']; //剩下未送货
-                    //$value['diff_number'] += $value['goods_number'] - $value['send_num'];
+                	//$value['diff_number'] += $val['goods_number'] - $val['out_number']; //剩下未送货
+                    $value['diff_number'] += $value['goods_number'] - $value['send_num'];
                 	if (!isset($value['current_send_number'])){
                 	    $value['current_send_number'] = 0;
                 	}
