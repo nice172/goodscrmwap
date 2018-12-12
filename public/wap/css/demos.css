@@ -112,3 +112,6 @@ footer a {
 	text-overflow:ellipsis !important;
 	white-space: nowrap !important;
 }
+.info .weui-form-preview__bd {
+	text-align:left;
+}

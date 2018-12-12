@@ -52,8 +52,10 @@
         </div>
         <div class="weui-cell__bd">
           <p>名称：{$vo['goods_name']}</p>
-          <p>单位：{$vo['unit']}&nbsp;&nbsp;&nbsp;&nbsp;单价：{$vo['market_price']}元</p>
-          <p>最近成交价：{$vo['last_price']}&nbsp;&nbsp;&nbsp;&nbsp;最近时间：{$vo['last_time']}</p>
+          <p>单位：{$vo['unit']}</p>
+          <p>单价：{$vo['market_price']}元</p>
+          <p>最近成交价：{$vo['last_price']}</p>
+          <p>最近时间：{$vo['last_time']}</p>
           <p><a href="javascript:alert('先不做');"></a></p>
         </div>
       </label>
@@ -113,11 +115,13 @@ $(function() {
 			    		html += '<i class="weui-icon-checked"></i></div>';
 			    		html += '<div class="weui-cell__bd">';
 			    		html += '<p>名称：'+data[i]['goods_name']+'</p>';
-			    		html += '<p>单位：'+data[i]['unit']+'&nbsp;&nbsp;&nbsp;&nbsp;单价：'+data[i]['market_price']+'元</p>';
+			    		html += '<p>单位：'+data[i]['unit']+'</p>';
+			    		html += '<p>单价：'+data[i]['market_price']+'元</p>';
 						var last_price = '';
 						if(data[i]['last_price']) {
 							last_price = data[i]['last_price'];}
-			    		html += '<p>最近成交价：'+last_price+'&nbsp;&nbsp;&nbsp;&nbsp;最近时间：'+data[i]['last_time']+'</p>';
+			    		html += '<p>最近成交价：'+last_price+'</p>';
+			    		html += '<p>最近时间：'+data[i]['last_time']+'</p>';
 				        html += '<p><a href="javascript:alert(\'先不做\');"></a></p></div></label></div>';
 				        goodslist.push(data[i]);
 					}

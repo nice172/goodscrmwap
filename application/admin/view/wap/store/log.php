@@ -16,6 +16,7 @@
 .weui-form-preview__value{text-align:left;}
 .bottom{position:fixed;bottom:0px;width:100%;height:50px;background:#1aad19;color:#fff;text-align:center;line-height:50px;}
 #category_id{outline: none;background-color: #ffffff; background-image: none !important; filter: none !important; border: 1px solid #e5e5e5; outline: none; height: 28px !important; line-height: 28px;}
+.weui-form-preview__label{line-height:1.2;padding-top:8px;width: 63px;text-align: right;text-align-last:right;}
 </style>
 {/block}
 
@@ -34,12 +35,12 @@
           <span class="weui-form-preview__value">{$v.goods_name}</span>
         </div>
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单位：</label>
+          <label class="weui-form-preview__label">单位：</label>
           <span class="weui-form-preview__value">{$v.unit}</span>
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">变动类型：</label>
-          <span class="weui-form-preview__value" style="text-align: left;">
+          <span class="weui-form-preview__value">
               {if condition="$v['type']==1"}
                  		入库
               {elseif condition="$v['type']==2"}
@@ -51,8 +52,11 @@
                                     {elseif condition="$v['type']==5"}
                                     	采购入库
                                     {/if}
-              <span style="float: right;">数量：{$v.number}</span>
           </span>
+        </div>
+		<div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">数量：</label>
+          <span class="weui-form-preview__value">{$v.number}</span>
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">创建时间：</label>

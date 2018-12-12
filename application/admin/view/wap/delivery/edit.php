@@ -455,8 +455,10 @@ $(function() {
     			if(res.code == 0){
     				$.toptip(res.msg);
     				}else{
-    				setTimeout(() => {
-    					$.toptip(res.msg,'success');},2000);
+    					$.toptip(res.msg,'success');
+    					setTimeout(function(){
+            				window.location.href="{:url('index')}";},1500);
+    				
     				}
     		},
     	     complete: function(XMLHttpRequest, textStatus) { 

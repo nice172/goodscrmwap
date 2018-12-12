@@ -79,7 +79,7 @@
                                         <td width="35%"><span>{$data.goods_weight}</span></td>
                                     </tr>
                                     <tr>
-                                        <td width="15%" class="right-color"><span>商品存在:</span></td>
+                                        <td width="15%" class="right-color"><span>商品库存:</span></td>
                                         <td width="35%"><span>{$data.store_number}</span></td>
                                         <td width="15%" class="right-color"><span>库存属性:</span></td>
                                         <td width="35%"><span>{$data.store_attr}</span></td>

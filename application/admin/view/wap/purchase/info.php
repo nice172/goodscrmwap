@@ -4,8 +4,8 @@
 body{background:#fff;}
 .main{margin-top:30px;}
 .goods_list .weui-form-preview__value{text-align:left;line-height:1.2;padding-top:8px;}
-.goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;}
-.fileList a{color:#06f;}
+.goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;width: 63px;text-align: right;text-align-last:right;}
+#tab1 .weui-form-preview__label{line-height:1.2;padding-top:8px;width: 65px;text-align: right;text-align-last:right;}
 </style>
 {/block}
 
@@ -18,7 +18,7 @@ body{background:#fff;}
       商品
     </a>
   </div>
-<div class="main" style="margin-bottom: 50px;">
+<div class="main info" style="margin-bottom: 50px;">
 <!-- 容器 -->
 <div class="weui-tab">
   <div class="weui-tab__bd">
@@ -81,11 +81,11 @@ body{background:#fff;}
           <span class="weui-form-preview__value">{$data.delivery_address}</span>
         </div>
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">收货联系人：</label>
+          <label class="weui-form-preview__label">收货人：</label>
           <span class="weui-form-preview__value">{$data.receiver}</span>
         </div>
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">收货人电话：</label>
+          <label class="weui-form-preview__label">收货电话：</label>
           <span class="weui-form-preview__value">{$data.receivernum}</span>
         </div>
         <div class="weui-form-preview__item">
@@ -111,7 +111,7 @@ body{background:#fff;}
 
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">备注信息：</label>
-          <span class="weui-form-preview__value" style="text-align: left;">{$data.remark}</span>
+          <span class="weui-form-preview__value" style="text-align: left;overflow: auto !important;text-overflow: inherit !important;white-space: normal !important;">{$data.remark}</span>
         </div>
       </div>
 </div>

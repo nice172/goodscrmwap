@@ -265,6 +265,8 @@ class Store extends Base {
                            'goods_id' => $value['goods_id'],
                            'purchase_id' => $info['po_id']
                        ])->setDec('input_store',$value['goods_number']);
+                       db('goods')->where(['goods_id' => $value['goods_id']])->setDec('store_number',$value['goods_number']);
+                       db('store_log')->where(['input_id' => $info['id'],'goods_id' => $value['goods_id'],'type' => 5])->delete();
                     }
                 }
                 $this->success('取消成功');

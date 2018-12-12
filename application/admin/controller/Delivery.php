@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 use think\Validate;
 use mpdf\mPDF;
+use think\db\Query;
 
 class Delivery extends Base {
     
@@ -239,6 +240,8 @@ class Delivery extends Base {
             if (db('delivery_order')->where(['id' => $id])->setField('is_confirm',1)){
                 //1入库，2出库，3报溢，4报损
                 $failed_row = 0;
+                $tempInput = [];
+                $tempInputNumber = [];
                 foreach ($delivery_goods as $key => $value){
                     db('store_log')->insert([
                         'goods_id' => $value['goods_id'],
@@ -265,6 +268,20 @@ class Delivery extends Base {
                     if (!$a || !$b){
                         $failed_row++;
                     }
+                    $relation_input_arr = explode(',', $delivery_order['relation_input_id']);
+                    //一个送货单商品多个入库单商品
+                    foreach ($relation_input_arr as $k => $val){
+                        //10 8
+                        $that_goods = db('input_goods')->where(['input_id' => $val,'goods_id' => $value['goods_id']])->find();
+                        if (!empty($that_goods)){
+                            $tempInputNumber[$value['goods_id']] = $value['current_send_number'];
+                            $tempInput[$value['goods_id']][] = [
+                                'input_id' => $val,
+                                'child_id' => $that_goods['id']
+                            ];
+                        }
+                    }
+                    
                 }
                 $order_goods = db('order_goods')->where(['order_id' => $delivery_order['order_id']])->select();
                 $count = 0;
@@ -281,11 +298,14 @@ class Delivery extends Base {
                 
                 $d = true;
                 if (empty($order['deliver_time'])){
-                    //strtotime($delivery_order['delivery_date'])
                 	$d = db('order')->where(['id' => $delivery_order['order_id']])->setField('deliver_time',strtotime($delivery_order['delivery_date']));
                 }
-                $relation_input_arr = explode(',', $delivery_order['relation_input_id']);
-                   
+                
+                //db()->rollback();
+                
+//              p($tempInput);
+//              p($tempInputNumber);
+                
                 if ($failed_row == 0 && $c && $d){
                     db()->commit();
                     $this->success('确认成功');

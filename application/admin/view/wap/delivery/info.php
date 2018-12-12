@@ -4,7 +4,8 @@
 body{background:#fff;}
 .main{margin-top:30px;}
 .goods_list .weui-form-preview__value{text-align:left;line-height:1.2;padding-top:8px;}
-.goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;}
+.goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;width: 89px;text-align: right;text-align-last:right;}
+#tab1 .weui-form-preview__label{line-height:1.2;padding-top:8px;width: 76px;text-align: right;text-align-last:right;}
 </style>
 {/block}
 
@@ -17,7 +18,7 @@ body{background:#fff;}
       商品
     </a>
   </div>
-<div class="main">
+<div class="main info">
 <!-- 容器 -->
 <div class="weui-tab">
   <div class="weui-tab__bd">

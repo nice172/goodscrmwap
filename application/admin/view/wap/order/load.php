@@ -1,7 +1,7 @@
 {foreach name="list" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
-  <div class="weui-form-preview__hd">
-    <label class="weui-form-preview__label">送货日期：{$v.require_time|date='Y-m-d',###}</label>
+<div class="weui-form-preview__hd">
+    <label class="weui-form-preview__label">创建日期：{$v.create_time|date="Y-m-d H:i:s",###}</label>
     <em class="weui-form-preview__value" style="font-size: 13px;color:#999;">
 	{if condition="$v['status'] eq -1"}
 	已删除
@@ -48,8 +48,16 @@
         </div>
         
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">创建日期：</label>
-          <span class="weui-form-preview__value">{$v.create_time|date="Y-m-d H:i:s",###}</span>
+          <label class="weui-form-preview__label">客户单号：</label>
+          <span class="weui-form-preview__value">{$v.cus_order_sn}</span>
+        </div>
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">要求送货日期：</label>
+          <span class="weui-form-preview__value">{$v.require_time|date='Y-m-d',###}</span>
+        </div>
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">备注：</label>
+          <span class="weui-form-preview__value">{$v.remark}</span>
         </div>
         
       </div>

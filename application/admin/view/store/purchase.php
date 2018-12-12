@@ -96,7 +96,7 @@
                                 <td>
                                 	{if condition="$vo['is_cancel']"}
                                 	<!-- <a href="javascript:_delete({$vo['id']});">删除</a> -->
-                                	--
+                                	已取消
                                 	{else}
                                 	<a href="{:url('edit',['id' => $vo['id']])}">编辑</a>
                                 	<span class="text-explode">|</span>

@@ -4,7 +4,8 @@
 body{background:#fff;}
 .main{margin-top:30px;}
 .goods_list .weui-form-preview__value{text-align:left;line-height:1.2;padding-top:8px;}
-.goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;}
+.goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;width: 35px;text-align: right;text-align-last:right;}
+#tab1 .weui-form-preview__label{line-height:1.2;padding-top:8px;width: 89px;text-align: right;text-align-last:right;}
 .fileList a{color:#06f;}
 </style>
 {/block}
@@ -18,7 +19,7 @@ body{background:#fff;}
       商品
     </a>
   </div>
-<div class="main">
+<div class="main info">
 <!-- 容器 -->
 <div class="weui-tab">
   <div class="weui-tab__bd">
@@ -66,7 +67,7 @@ body{background:#fff;}
     		<!-- <button style="margin-left:20px;" onclick="window.location.href='<?php echo url('create',['id' => $data['id']]);?>'" type="button" class="weui-btn weui-btn_mini weui-btn_primary">创建采购单</button> -->
     		{elseif condition="$data['status'] eq 2"}
     		已送货
-    		<button style="margin-left:20px;" type="button" class="setfinish weui-btn weui-btn_mini weui-btn_primary" order-id="{$data['id']}">完成送货</button>
+    		<button style="margin-left:20px;float:right;" type="button" class="setfinish weui-btn weui-btn_mini weui-btn_primary" order-id="{$data['id']}">完成送货</button>
     		{elseif condition="$data['status'] eq 3"}
     		已完成
     		{elseif condition="$data['status'] eq 4"}
@@ -104,7 +105,7 @@ body{background:#fff;}
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">备注信息：</label>
-          <span class="weui-form-preview__value" style="text-align: left;">{$data.order_remark}</span>
+          <span class="weui-form-preview__value" style="text-align: left;overflow: auto !important;text-overflow: inherit !important;white-space: normal !important;">{$data.order_remark}</span>
         </div>
       </div>
 </div>

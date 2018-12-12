@@ -4,7 +4,8 @@
 body{background:#fff;}
 .main{margin-top:30px;}
 .goods_list .weui-form-preview__value{text-align:left;line-height:1.2;padding-top:8px;}
-.goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;}
+.goods_list .weui-form-preview__label{line-height:1.2;padding-top:8px;width: 35px;text-align: right;text-align-last:right;}
+#tab1 .weui-form-preview__label{line-height:1.2;padding-top:8px;width: 65px;text-align: right;text-align-last:right;}
 </style>
 {/block}
 
@@ -17,7 +18,7 @@ body{background:#fff;}
       商品
     </a>
   </div>
-<div class="main">
+<div class="main info">
 <!-- 容器 -->
 <div class="weui-tab">
   <div class="weui-tab__bd">
@@ -54,7 +55,7 @@ body{background:#fff;}
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">状态：</label>
           <span class="weui-form-preview__value">
-          {if condition="$data.status==1"}已发送{else}未发送&nbsp;&nbsp;<button type="button" onclick="send(this,{$data.id})" class="weui-btn weui-btn_mini weui-btn_primary">发送邮件</button>{/if}
+          {if condition="$data.status==1"}已发送{else}未发送&nbsp;&nbsp;<button type="button" onclick="send(this,{$data.id})" style="float: right;" class="weui-btn weui-btn_mini weui-btn_primary">发送邮件</button>{/if}
           </span>
         </div>
         <div class="weui-form-preview__item">
@@ -63,7 +64,7 @@ body{background:#fff;}
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">备注信息：</label>
-          <span class="weui-form-preview__value" style="text-align: left;">{$data.order_remark}</span>
+          <span class="weui-form-preview__value" style="text-align: left;overflow: auto !important;text-overflow: inherit !important;white-space: normal !important;">{$data.order_remark}</span>
         </div>
       </div>
 </div>

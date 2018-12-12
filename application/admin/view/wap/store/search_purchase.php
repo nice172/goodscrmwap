@@ -52,7 +52,7 @@
     </div>
 </form>
 
-<div style="margin-top: 205px;">
+<div style="margin-top: 180px;">
 {foreach name="list" item="vo" empty="$empty2"}
     <div style="padding:10px;" class="weui-cells weui-cells_checkbox goods_list">
         <div class="weui-cell__bd">

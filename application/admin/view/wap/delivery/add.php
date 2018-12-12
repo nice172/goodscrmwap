@@ -457,8 +457,8 @@ $(function() {
     				}else{
     					$.toptip(res.msg,'success');
     					$('#saveOrder').resetForm();
-    				setTimeout(() => {
-    					},2000);
+    					setTimeout(function(){
+            				window.location.href="{:url('index')}";},1500);
     				}
     		},
     	     complete: function(XMLHttpRequest, textStatus) { 

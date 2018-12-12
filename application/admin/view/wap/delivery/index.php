@@ -4,6 +4,8 @@
 .main{margin-top:55px;margin-bottom:60px;}
 .weui-form-preview:before{border:none;}
 .weui-form-preview{margin-bottom:5px;}
+.weui-form-preview__hd{padding:0px 10px;}
+.weui-form-preview__hd:after{left:0;}
 .button-block{border-top:1px solid #f6f6f6;text-align:right;padding:7px 7px 7px 0;margin:0;}
 .list .weui-btn{border-radius:50px;}
 .weui-btn+.weui-btn{margin-top:0;}
@@ -43,6 +45,16 @@
 <div class="main">
 {foreach name="list" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
+<div class="weui-form-preview__hd">
+    <label class="weui-form-preview__label">&nbsp;状态：</label>
+    <em class="weui-form-preview__value" style="font-size: 13px;color:#999;">
+	{if condition="$v['is_print'] eq 1"}
+	已打印
+	{else}
+	未打印
+	{/if}&nbsp;
+    </em>
+  </div>
       <div class="weui-form-preview__bd">
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">送货单号：</label>

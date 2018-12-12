@@ -152,6 +152,7 @@ if(goods_info.length > 0){
 	goodsList(goods_info);
 }
 function put(data){
+	layer.close(index_layer);
 	$('#po_id').val(data.id);
 	$('#po_sn').val(data.po_sn);
 	$('#cus_name').val(data.cus_name);
@@ -175,9 +176,13 @@ function goodsList(data){
 		html +='<label class="weui-form-preview__label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名&nbsp;称：</label>';
 		html +='<span class="weui-form-preview__value">'+data[i]['goods_name']+'</span>';
 		html +='</div>';
-		html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
+		html +='<div class="weui-form-preview__item">';
 		html +='<label class="weui-form-preview__label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;单&nbsp;位：</label>';
-		html +='<span class="weui-form-preview__value">'+data[i]['unit']+'<span style="padding-left:30px;" class="goods_number">采购数量：'+data[i]['goods_number']+'</span>';
+		html +='<span class="weui-form-preview__value">'+data[i]['unit']+'</span>';
+		html +='</div>';
+		html +='<div class="weui-form-preview__item">';
+		html +='<label class="weui-form-preview__label">采购数量：</label>';
+		html +='<span class="weui-form-preview__value">'+data[i]['goods_number']+'</span>';
 		html +='</div>';
 		html +='<div class="weui-form-preview__item" style="margin-bottom:10px;">';
 		html +='<label class="weui-form-preview__label">入库数量：</label>';
@@ -264,6 +269,8 @@ $(function() {
     				$.toptip(res.msg);
     				}else{
     				$.toptip(res.msg,'success');
+    				setTimeout(function(){
+        				window.location.href="{:url('purchase')}";},1500);
     				}
     		},
     	     complete: function(XMLHttpRequest, textStatus) { 
