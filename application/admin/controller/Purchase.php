@@ -325,7 +325,7 @@ class Purchase extends Base {
 		
 		$order = db('order')->where(['id' => $purchase['order_id']])->find();
 		
-		$mpdf = new mPDF('zh-CN/utf-8','A4', 0, '宋体', 0, 0);
+		$mpdf = new mPDF('zh-CN/utf-8','A4', 0, '宋体', 15, 15);
 		$mpdf->SetWatermarkText(getTextParams(14),0.1);
 		$logo = getFileParams(12);
 		if (empty($logo)) {
@@ -388,13 +388,13 @@ class Purchase extends Base {
 		$strContent .= '<table class="table">
         <tbody>
             <tr>
-            <td width="5%">序号</td>
-            <td width="30%">产品名称</td>
-			<td width="30%">产品规格</td>
-            <td width="5%">单位</td>
-			<td width="5%">数量</td>
+            <td width="8%">序号</td>
+            <td width="24%">产品名称</td>
+			<td width="25%">产品规格</td>
+            <td width="8%">单位</td>
+			<td width="8%">数量</td>
             <td width="10%">单价</td>
-			<td width="5%">税率</td>
+			<td width="8%">税率</td>
 			<td width="10%" style="border-right:none;">总金额</td>
             </tr>
         ';
@@ -464,7 +464,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
     border: 1px solid #000;
 }
 .table tbody tr td{
-    padding: 12px 8px;
+    padding: 5px 8px;
     border-top: 0px;
     border-bottom: 1px solid #000;
     border-right: 1px solid #000;

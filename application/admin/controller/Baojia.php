@@ -282,7 +282,7 @@ class Baojia extends Base {
 	    $this->assign('page_l','');
 	    $this->assign('title','报价单详情');
 	    
-	    $mpdf = new mPDF('zh-CN/utf-8','A4', 0, '宋体', 0, 0);
+	    $mpdf = new mPDF('zh-CN/utf-8','A4', 0, '宋体', 15, 15);
 	    $mpdf->SetWatermarkText(getTextParams(14),0.1);
 	    $logo = getFileParams(12);
 	    if (empty($logo)) {
@@ -350,8 +350,7 @@ class Baojia extends Base {
 	    $mpdf->SetTitle("报价单");
 	    // 	   $mpdf->SetHTMLHeader( '头部' );
 	    $mpdf->SetHTMLFooter( $strContentFooter );
-	    $stylesheet='
-body{padding:0;margin:0;}
+	    $stylesheet='body{padding:0;margin:0;}
 h1,h2,h3,p,div,span{padding:0;margin:0;}
 .entitle{text-align:center;}
 .noborder{font-size: 13px;background: #FFF;width:95%;margin: 0 auto;border-spacing: 0;border-collapse: collapse;}
@@ -370,7 +369,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
     border: 1px solid #000;
 }
 .table tbody tr td{
-    padding: 12px 8px;
+    padding: 5px 8px;
     border-top: 0px;
     border-bottom: 1px solid #000;
     border-right: 1px solid #000;
