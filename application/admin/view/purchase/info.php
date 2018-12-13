@@ -147,6 +147,14 @@
                                 </tr>
                             </thead>
                             <tbody class="goodsList"></tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="8">
+                                    <div class="pull-right page-box"></div>
+                                </td>
+                                 <td align="center" class="totalMoney">总金额：0.00</td>
+                            </tr>
+                            </tfoot>
                         </table>
 
                 <!--内容结束-->
@@ -351,9 +359,11 @@ function goods(data){
 
 function goodsList(goods_info){
 	var html = '';
+	var totalMoney = 0;
 	for(var j in goods_info){
 		var num = parseInt(j)+1;
 		goods_info[j]['totalMoney'] = _formatMoney(goods_info[j]['purchase_number']*goods_info[j]['shop_price']);
+		totalMoney += goods_info[j]['totalMoney'];
 		html += '<tr data-index="'+j+'" data-goods_id="'+goods_info[j]['goods_id']+'" class="goods_'+j+'">';
 		html += '<td>'+num+'</td>';
 		html += '<td style="text-align:left;">'+goods_info[j]['goods_name']+'</td>';
@@ -373,6 +383,7 @@ function goodsList(goods_info){
 		//html += '<td><a href="javascript:;" onclick="update('+j+')" class="update">修改</a><span class="text-explode">|</span><a href="javascript:;" onclick="_delete('+j+')" class="delete">删除</a></td>';
 		html += '</tr>';
 	}
+	$('.totalMoney').text('总金额：'+_formatMoney(totalMoney));
 	$('.goodsList').html(html);
 }
 

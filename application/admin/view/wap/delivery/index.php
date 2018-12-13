@@ -6,6 +6,7 @@
 .weui-form-preview{margin-bottom:5px;}
 .weui-form-preview__hd{padding:0px 10px;}
 .weui-form-preview__hd:after{left:0;}
+.weui-form-preview__bd{text-align:left;}
 .button-block{border-top:1px solid #f6f6f6;text-align:right;padding:7px 7px 7px 0;margin:0;}
 .list .weui-btn{border-radius:50px;}
 .weui-btn+.weui-btn{margin-top:0;}
@@ -13,7 +14,7 @@
 .search .weui-btn{line-height:2;border-color:#999;}
 .block10{margin-top:5px;}
 .weui-form-preview__value input{border:1px solid #e5e5e5;padding:5px;width:39%;outline: none;}
-.weui-loadmore_line{margin-top:110px;}
+.weui-loadmore_line{margin-top:80px;}
 </style>
 {/block}
 
@@ -45,16 +46,6 @@
 <div class="main">
 {foreach name="list" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
-<div class="weui-form-preview__hd">
-    <label class="weui-form-preview__label">&nbsp;状态：</label>
-    <em class="weui-form-preview__value" style="font-size: 13px;color:#999;">
-	{if condition="$v['is_print'] eq 1"}
-	已打印
-	{else}
-	未打印
-	{/if}&nbsp;
-    </em>
-  </div>
       <div class="weui-form-preview__bd">
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">送货单号：</label>
@@ -79,6 +70,16 @@
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">创建日期：</label>
           <span class="weui-form-preview__value">{$v.create_time|date="Y-m-d H:i:s",###}</span>
+        </div>
+        
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">　　状态：</label>
+          <span class="weui-form-preview__value">
+          	{if condition="$v['is_print'] eq 1"}
+	已打印
+	{else}
+	未打印
+	{/if}</span>
         </div>
         
       </div>

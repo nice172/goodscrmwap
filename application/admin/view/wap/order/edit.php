@@ -388,8 +388,9 @@ $(function() {
     				$.toptip(res.msg,'success');
     				setTimeout(function(){
         				window.location.href="{:url('index')}";},1500);
+    				
     				}
-    				}
+    		
     		},
     	     complete: function(XMLHttpRequest, textStatus) { 
     				//toastr.success('ok');

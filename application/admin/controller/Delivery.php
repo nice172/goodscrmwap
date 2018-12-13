@@ -75,6 +75,10 @@ class Delivery extends Base {
         $this->assign('params', $this->request->query());
         if ($this->request->isMobile()){
         	$this->assign('title','送货管理');
+        	if ($this->request->isAjax()) {
+        	    if (empty($result)) $this->success('ok','');
+        	    return $this->fetch('load');
+        	}
         }else{
         	$this->assign('title','送货单');
         }

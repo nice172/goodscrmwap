@@ -12,6 +12,7 @@
 .goods_name{overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
 .weui-cell__bd p{padding:2px 0;}
 .input{width:85% !important;}
+.weui-loadmore_line{margin-top:14.5em;}
 </style>
 {/block}
 {block name="main"}

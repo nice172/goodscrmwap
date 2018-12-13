@@ -8,6 +8,7 @@
 .bottom .left-box a{border-right:1px solid #fff;}
 .weui-form-preview__hd{padding:0px 10px;}
 .weui-form-preview__hd:after{left:0;}
+.weui-form-preview__bd{text-align:left;}
 .weui-form-preview{margin-bottom:5px;}
 .button-block{border-top:1px solid #f6f6f6;text-align:right;padding:7px 7px 7px 0;margin:0;}
 .list .weui-btn{border-radius:50px;}
@@ -96,7 +97,7 @@
           <span class="weui-form-preview__value">{$v.po_sn}</span>
         </div>
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">供应商：</label>
+          <label class="weui-form-preview__label">　供应商：</label>
           <span class="weui-form-preview__value">{$v.supplier_name}</span>
         </div>
         <div class="weui-form-preview__item">
@@ -108,7 +109,7 @@
           <span class="weui-form-preview__value">{$v.category_name}</span>
         </div>
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">单位：</label>
+          <label class="weui-form-preview__label">　　单位：</label>
           <span class="weui-form-preview__value">{$v.unit}</span>
         </div>
         <div class="weui-form-preview__item">
@@ -116,7 +117,7 @@
           <span class="weui-form-preview__value" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">{$v.goods_name}</span>
         </div>
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">单价：</label>
+          <label class="weui-form-preview__label">　　单价：</label>
           <span class="weui-form-preview__value">{$v.goods_price}</span>
         </div>
         <div class="weui-form-preview__item">
@@ -124,7 +125,7 @@
           <span class="weui-form-preview__value">{$v.goods_number}</span>
         </div>
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">备注：</label>
+          <label class="weui-form-preview__label">　　备注：</label>
           <span class="weui-form-preview__value">{$v.remark}</span>
         </div>
       </div>

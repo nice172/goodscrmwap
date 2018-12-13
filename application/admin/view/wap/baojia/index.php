@@ -43,16 +43,6 @@
 <div class="main">
 {foreach name="list" item="v" empty="$empty2"}
 <div class="weui-form-preview list">
-    <div class="weui-form-preview__hd">
-        <label class="weui-form-preview__label">状态：</label>
-        <em class="weui-form-preview__value" style="font-size: 13px;color:#999;">
-    	{if condition="$v['status']==1"}
-        	已发送
-        	{else}
-        	未发送
-        	{/if}
-        </em>
-      </div>
       <div class="weui-form-preview__bd">
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">报价单号：</label>
@@ -77,6 +67,15 @@
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">创建日期：</label>
           <span class="weui-form-preview__value">{$v.create_time|date="Y-m-d H:i:s",###}</span>
+        </div>
+        
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">状态：</label>
+          <span class="weui-form-preview__value">{if condition="$v['status']==1"}
+        	已发送
+        	{else}
+        	未发送
+        	{/if}</span>
         </div>
         
       </div>

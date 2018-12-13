@@ -57,7 +57,7 @@
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">备注：</label>
-          <span class="weui-form-preview__value">{$v.remark}</span>
+          <span class="weui-form-preview__value">{$v.order_remark}</span>
         </div>
         
       </div>

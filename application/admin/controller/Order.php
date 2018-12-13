@@ -45,8 +45,7 @@ class Order extends Base {
         $end_time = $this->request->param('end_time');
         $status = $this->request->param('status');
         $categroy_id = $this->request->param('categroy_id');
-        $db = db('order o');        
-        $db->field('o.*,g.*,o.id as oid,g.id as gid');
+        $db = db('order o');
         if ($status == ''){
             $where = ['o.status' => ['neq','-1']];
         }else{
@@ -66,58 +65,62 @@ class Order extends Base {
                 $db->where("o.create_time",'<=',$end_time);
             }
         }
-        $db->join('__ORDER_GOODS__ g','o.id=g.order_id');
-        $flag = true;
-        if (!empty($categroy_id)){
-            $db->join('__GOODS__ gd','gd.goods_id=g.goods_id');
-            $db->where(['gd.category_id' => $categroy_id]);
-            $flag = false;
-        }
-
-        if (!empty($attr_val)){
-            $attr_sql_or = '';
-            foreach ($attr_val as $val){
-                $valArr = explode(',', $val);
-                foreach ($valArr as $str){
-                    $attr_sql_or .= "t.attr_value='{$str}' OR ";
+        if (!$this->request->isMobile()){
+            $db->field('o.*,g.*,o.id as oid,g.id as gid');
+            $db->join('__ORDER_GOODS__ g','o.id=g.order_id');
+            $flag = true;
+            if (!empty($categroy_id)){
+                $db->join('__GOODS__ gd','gd.goods_id=g.goods_id');
+                $db->where(['gd.category_id' => $categroy_id]);
+                $flag = false;
+            }
+    
+            if (!empty($attr_val)){
+                $attr_sql_or = '';
+                foreach ($attr_val as $val){
+                    $valArr = explode(',', $val);
+                    foreach ($valArr as $str){
+                        $attr_sql_or .= "t.attr_value='{$str}' OR ";
+                    }
+                }
+                $attr_sql_or = mb_substr($attr_sql_or, 0,-4);
+                if (!empty($attr_sql_or)){
+                    if ($flag){
+                        $flag = false;
+                        $db->join('__GOODS__ gd','gd.goods_id=g.goods_id');
+                        $db->join('__GOODS_ATTR_VAL__ t','gd.goods_id=t.goods_id');
+                        $db->where($attr_sql_or);
+                    }else{
+                        $db->join('__GOODS_ATTR_VAL__ t','gd.goods_id=t.goods_id');
+                        $db->where($attr_sql_or);
+                    }
                 }
             }
-            $attr_sql_or = mb_substr($attr_sql_or, 0,-4);
-            if (!empty($attr_sql_or)){
-                if ($flag){
-                    $flag = false;
-                    $db->join('__GOODS__ gd','gd.goods_id=g.goods_id');
-                    $db->join('__GOODS_ATTR_VAL__ t','gd.goods_id=t.goods_id');
-                    $db->where($attr_sql_or);
-                }else{
-                    $db->join('__GOODS_ATTR_VAL__ t','gd.goods_id=t.goods_id');
-                    $db->where($attr_sql_or);
+            
+            if ($catename != ''){
+                $sqlOR = '';
+                $catename = explode(',', $catename);
+                foreach ($catename as $str){
+                    $sqlOR .= "gc.category_name='{$str}' OR ";
+                }
+                $sqlOR = mb_substr($sqlOR, 0,-4);
+                if (!empty($sqlOR)){
+                    if ($flag){
+                        $db->join('__GOODS__ gd','gd.goods_id=g.goods_id');
+                        $db->join('__GOODS_CATEGORY__ gc','gc.category_id=gd.category_id');
+                        $db->where($sqlOR);
+                    }else{
+                        $db->join('__GOODS_CATEGORY__ gc','gc.category_id=gd.category_id');
+                        $db->where($sqlOR);
+                    }
                 }
             }
+        }else{
+            $db->field('o.*,o.id as oid');
         }
-        
-        if ($catename != ''){
-            $sqlOR = '';
-            $catename = explode(',', $catename);
-            foreach ($catename as $str){
-                $sqlOR .= "gc.category_name='{$str}' OR ";
-            }
-            $sqlOR = mb_substr($sqlOR, 0,-4);
-            if (!empty($sqlOR)){
-                if ($flag){
-                    $db->join('__GOODS__ gd','gd.goods_id=g.goods_id');
-                    $db->join('__GOODS_CATEGORY__ gc','gc.category_id=gd.category_id');
-                    $db->where($sqlOR);
-                }else{
-                    $db->join('__GOODS_CATEGORY__ gc','gc.category_id=gd.category_id');
-                    $db->where($sqlOR);
-                }
-            }
-        }
-
         $db->order('o.create_time desc');
         $data = $db->paginate(config('PAGE_SIZE'), false, ['query' => $this->request->param() ]);
-//         echo $db->getLastSql();exit;
+//      echo $db->getLastSql();exit;
         //获取分页显示
         $this->assign('current_page', $data->getCurrentPage());
         $this->assign('total_page', $data->lastPage());

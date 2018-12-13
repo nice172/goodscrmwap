@@ -348,7 +348,8 @@ class Purchase extends Base {
     <td>购货方：'.config('syc_webname').'</td>
     </tr>
     <tr>
-    <td style="width:50%;">地址：'.$supplier['supplier_province'].$supplier['supplier_city'].$supplier['supplier_area'].$supplier['supplier_address'].'</td>
+    <!--<td style="width:50%;">地址：'.$supplier['supplier_province'].$supplier['supplier_city'].$supplier['supplier_area'].$supplier['supplier_address'].'</td>-->
+    <td style="width:50%;">联系人：'.$purchase['contacts'].'</td>
     <td>联系人：'.config('syc_contacts').'</td>
     </tr>
 	
@@ -444,8 +445,7 @@ class Purchase extends Base {
 		$mpdf->SetTitle("采购单");
 		// 	   $mpdf->SetHTMLHeader( '头部' );
 		$mpdf->SetHTMLFooter( $strContentFooter );
-		$stylesheet='
-body{padding:0;margin:0;font-family:"宋体";}
+		$stylesheet='body{padding:0;margin:0;font-family:"宋体";}
 h1,h2,h3,p,div,span{padding:0;margin:0;}
 .entitle{text-align:center;}
 .noborder{font-size: 13px;background: #FFF;width:95%;margin: 0 auto;border-spacing: 0;border-collapse: collapse;}
