@@ -282,7 +282,7 @@ class Baojia extends Base {
 	    $this->assign('page_l','');
 	    $this->assign('title','报价单详情');
 	    
-	    $mpdf = new mPDF('zh-CN/utf-8','A4', 0, '宋体', 15, 15);
+	    $mpdf = new mPDF('zh-CN/utf-8','A4', 0, '宋体', 0, 0);
 	    $mpdf->SetWatermarkText(getTextParams(14),0.1);
 	    $logo = getFileParams(12);
 	    if (empty($logo)) {

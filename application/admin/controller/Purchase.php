@@ -325,7 +325,7 @@ class Purchase extends Base {
 		
 		$order = db('order')->where(['id' => $purchase['order_id']])->find();
 		
-		$mpdf = new mPDF('zh-CN/utf-8','A4', 0, '宋体', 15, 15);
+		$mpdf = new mPDF('zh-CN/utf-8','A4', 0, '宋体', 0, 0);
 		$mpdf->SetWatermarkText(getTextParams(14),0.1);
 		$logo = getFileParams(12);
 		if (empty($logo)) {
@@ -442,6 +442,8 @@ class Purchase extends Base {
 </table>';
 		
 		$mpdf->showWatermarkText = true;
+		$mpdf->SetDisplayMode('fullpage');
+		$mpdf->Image($img, 200, 200);
 		$mpdf->SetTitle("采购单");
 		// 	   $mpdf->SetHTMLHeader( '头部' );
 		$mpdf->SetHTMLFooter( $strContentFooter );
