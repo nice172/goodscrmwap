@@ -162,7 +162,7 @@ class Delivery extends Base {
     	    $db->where(['g.category_id' => $category_id]);
     	}
     	//$db->where(['i.is_cancel' => 0]);
-    	$db->where('i.is_cancel=0');
+    	$db->where('i.is_cancel=0 and ig.goods_number>ig.out_number');
     	$db->field('i.*,p.order_id,p.delivery_type,p.cus_order_sn,g.category_id,ig.goods_id,ig.goods_name,ig.goods_price,ig.unit,ig.goods_number,ig.out_number,ig.remark,s.supplier_name,s.supplier_short');
     	$result = $db->order('i.create_time asc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
     	$data = $result->all();
@@ -171,6 +171,7 @@ class Delivery extends Base {
     	foreach ($data as $key => $value) {
     	    $data[$key]['category_name'] = $categoryModel->where(['category_id' => $value['category_id']])->value('category_name');
     	    $data[$key]['purchase_number'] = $purchaseGoods->where(['purchase_id' => $value['po_id'],'goods_id' => $value['goods_id']])->value('goods_number');
+    	    $data[$key]['create_format_date'] = date('Y-m-d H:i:s',$value['create_time']);
     	}
     	$cate_lists = db('goods_category')->select();
     	$this->assign('lists',$cate_lists);

@@ -71,6 +71,7 @@
                             </thead>
                             <tbody>
                             {volist name="data" id="vo" empty="$empty"}
+                            <?php if (($vo['goods_number']-$vo['out_number']) > 0){?>
                                 <tr style="cursor: pointer;" index="{$key}" class="selected_po">
                                     <td>{$vo.po_sn}</td>
                                     <td>{$vo.store_sn}</td>
@@ -85,6 +86,7 @@
                                     <td>正常</td>
                                     <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
                                 </tr>
+                               <?php }?>
                             {/volist}
                             </tbody>
                             <tfoot>
