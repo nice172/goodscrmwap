@@ -246,7 +246,7 @@ class Baojia extends Base {
 	    if ($id <= 0) $this->error('参数错误');
 	    $order = db('baojia')->where(['id' => $id,'status' => ['neq','-1']])->find();
 	    if (empty($order)) $this->error('报价单不存在');
-	    $goodsInfo = db('baojia_goods')->where(['baojia_id' => $order['id']])->order('goods_id asc')->select();
+	    $goodsInfo = db('baojia_goods')->where(['baojia_id' => $order['id']])->order('id asc')->select();
 	    $cus = db('customers')->where(['cus_id' => $order['cus_id']])->find();
 	    $this->assign('client',$cus);
 	    $order['order_remark'] = str_replace("\n", '<br />', str_replace(chr(32), "&nbsp;&nbsp;", $order['order_remark']));
@@ -268,7 +268,7 @@ class Baojia extends Base {
 	protected function _createPDF($id,$type=0){
 	    $order = db('baojia')->where(['id' => $id,'status' => ['neq','-1']])->find();
 	    if (empty($order)) $this->error('报价单不存在');
-	    $goodsInfo = db('baojia_goods')->where(['baojia_id' => $order['id']])->order('goods_id asc')->select();
+	    $goodsInfo = db('baojia_goods')->where(['baojia_id' => $order['id']])->order('id asc')->select();
 	    $cus = db('customers')->where(['cus_id' => $order['cus_id']])->find();
 	    $this->assign('client',$cus);
 	    $this->assign('data',$order);
@@ -349,7 +349,7 @@ class Baojia extends Base {
 	    $mpdf->showWatermarkText = true;
 	    $mpdf->SetTitle("报价单");
 	    // 	   $mpdf->SetHTMLHeader( '头部' );
-	    $mpdf->SetHTMLFooter( $strContentFooter );
+	    //$mpdf->SetHTMLFooter( $strContentFooter );
 	    $stylesheet='body{padding:0;margin:0;}
 h1,h2,h3,p,div,span{padding:0;margin:0;}
 .entitle{text-align:center;}
@@ -378,7 +378,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 ';
 	    $mpdf->WriteHTML($stylesheet, 1);
 	    // 	   $mpdf->WriteHTML('h1{font-size:106px;}',1);
-	    $mpdf->WriteHTML($strContent);
+	    $mpdf->WriteHTML($strContent.$strContentFooter);
 	    if ($type == 1){
 	        $savePath = './pdf/B'.str_replace('/', '-', $order['order_sn']).'.pdf';
 	        $mpdf->Output($savePath,'F');

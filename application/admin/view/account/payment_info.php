@@ -66,14 +66,14 @@
                                 {if condition="!$info['is_confirm']"}
 								<div class="form-group">
                                 	<label class="control-label" for="account_file">附件 :</label>
-                                	<input type="file" name="file" id="account_file" class="ipt form-control"/>
+                                	<input type="file" name="Filedata[]" multiple="multiple" id="account_file" class="ipt form-control"/>
                                 </div>
                                 {else}
                                 <div class="form-group">
                                 <label class="control-label" for="files">附件 :</label>
                                 <?php if (!empty($info['files'])){?>
                                 <a href="<?php echo $info['files']['path'];?>" target="_blank">
-                                <?php echo $info['files']['name'];?>
+                                <?php echo $info['files']['oldfilename'];?>
                                 </a>
                                 <?php }?>
                                 </div>

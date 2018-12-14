@@ -571,6 +571,7 @@ class Order extends Base {
     
     public function create(){
     	$id = $this->request->param('id',0,'intval');
+    	$supplier_id = $this->request->param('supplier_id',0,'intval');
     	if ($id <= 0) $this->error('参数错误');
     	$order = db('order')->where(['id' => $id,'status' => ['neq','-1']])->find();
     	if (empty($order)) $this->error('订单不存在');
@@ -578,10 +579,19 @@ class Order extends Base {
     	if (!empty($goodsInfo)){
     		foreach ($goodsInfo as $key => $value){
     			$cus_id = $order['cus_id'];
+    			/*
     			$last_order_price = db('order o')->join('__ORDER_GOODS__ og','o.id=og.order_id')
     			->where(['o.cus_id' => $cus_id,'og.goods_id' => $value['goods_id']])
     			->where("o.status=2 OR o.status=3 OR o.status=6")->value('goods_price');
+    			*/
+    			$last_order_price = 0;
+    			if ($this->request->isAjax()){
+        			$last_order_price = db('purchase o')->join('__PURCHASE_GOODS__ og','o.id=og.purchase_id')
+        			->where(['o.cus_id' => $cus_id,'og.goods_id' => $value['goods_id']])
+        			->where("o.status!='-1'")->order('o.id desc')->value('goods_price');
+    			}
     			$value['shop_price'] = _formatMoney($last_order_price);
+    			
     			//$value['shop_price'] = $value['goods_price']; //实际价格
     			//$value['purchase_number'] = 0;
     			$value['purchase_number'] = $value['goods_number'];
@@ -589,6 +599,10 @@ class Order extends Base {
     			$value['totalMoney'] = _formatMoney($value['goods_price']*$value['purchase_number']);
     			$goodsInfo[$key] = json_encode($value);
     		}
+    	}
+    	if ($this->request->isAjax()){
+    	    $this->success('','',$goodsInfo);
+    	    return;
     	}
     	$order['goodsInfo'] = $goodsInfo;
     	$this->assign('data',$order);

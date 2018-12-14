@@ -106,7 +106,7 @@ class Purchase extends Base {
 		if ($id <= 0) $this->error('参数错误');
 		$purchase = db('purchase')->where(['id' => $id,'status' => ['neq','-1']])->find();
 		if (empty($purchase)) $this->error('采购单不存在');
-		$goodsInfo = db('purchase_goods')->where(['purchase_id' => $purchase['id']])->order('goods_id asc')->select();
+		$goodsInfo = db('purchase_goods')->where(['purchase_id' => $purchase['id']])->order('id asc')->select();
 		$cus = db('customers')->where(['cus_id' => $purchase['cus_id']])->find();
 		$purchase['supplier_name'] = db('supplier')->where(['id' => $purchase['supplier_id']])->value('supplier_name');
 		$supplier = db('supplier_contacts')->where(['supplier_id' => $purchase['supplier_id']])->select();
@@ -315,7 +315,7 @@ class Purchase extends Base {
 		if ($id <= 0) $this->error('参数错误');
 		$purchase = db('purchase')->where(['id' => $id,'status' => ['neq','-1']])->find();
 		if (empty($purchase)) $this->error('采购单不存在');
-		$goodsInfo = db('purchase_goods')->where(['purchase_id' => $purchase['id']])->order('goods_id asc')->select();
+		$goodsInfo = db('purchase_goods')->where(['purchase_id' => $purchase['id']])->order('id asc')->select();
 		$cus = db('customers')->where(['cus_id' => $purchase['cus_id']])->find();
 		$this->assign('client',$cus);
 		$this->assign('data',$purchase);
@@ -389,8 +389,8 @@ class Purchase extends Base {
         <tbody>
             <tr>
             <td width="8%">序号</td>
-            <td width="24%">产品名称</td>
-			<td width="25%">产品规格</td>
+            <td width="15%">产品名称</td>
+			<td width="34%">产品规格</td>
             <td width="8%">单位</td>
 			<td width="8%">数量</td>
             <td width="10%">单价</td>
@@ -446,7 +446,7 @@ class Purchase extends Base {
 		$mpdf->Image($img, 200, 200);
 		$mpdf->SetTitle("采购单");
 		// 	   $mpdf->SetHTMLHeader( '头部' );
-		$mpdf->SetHTMLFooter( $strContentFooter );
+		//$mpdf->SetHTMLFooter( $strContentFooter );
 		$stylesheet='body{padding:0;margin:0;font-family:"宋体";}
 h1,h2,h3,p,div,span{padding:0;margin:0;}
 .entitle{text-align:center;}
@@ -474,7 +474,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 }
 ';
 		$mpdf->WriteHTML($stylesheet, 1);
-		$mpdf->WriteHTML($strContent);
+		$mpdf->WriteHTML($strContent.$strContentFooter);
 		if ($type == 1){
 			$savePath = './pdf/P'.str_replace('/', '-', $purchase['po_sn']).'.pdf';
 			$mpdf->Output($savePath,'F');

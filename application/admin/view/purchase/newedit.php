@@ -257,7 +257,6 @@ function _formatMoney(num){
 			});
 		});
         
-
         $(".search_company").click(function () {
             var title = '查找客户';
             bDialog.open({

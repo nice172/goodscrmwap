@@ -228,11 +228,11 @@ class Account extends Base {
             $confirm_money = $this->request->post('confirm_money');
             if (empty($confirm_money)) $this->error('确认金额不能为空');
             if (!is_numeric($confirm_money) || $confirm_money < 0) $this->error('确认金额不正确');
-            $file = $this->upload_file('',false);
+            $file = $this->upload_file();
             $data = [
                 'confirm_money' => _formatMoney($confirm_money),
                 'is_confirm' => 1,
-                'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
+                'files' => json_encode($file),
                 'update_time' => time()
             ];
             if (db('receivables')->where(['id' => $id])->update($data)){
@@ -647,11 +647,11 @@ class Account extends Base {
             $confirm_money = $this->request->post('pay_money');
             if (empty($confirm_money)) $this->error('确认金额不能为空');
             if (!is_numeric($confirm_money) || $confirm_money < 0) $this->error('确认金额不正确');
-            $file = $this->upload_file('',false);
+            $file = $this->upload_file();
             $data = [
                 'pay_money' => _formatMoney($confirm_money),
                 'is_confirm' => 1,
-                'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
+                'files' => json_encode($file),
                 'update_time' => time()
             ];
             if (db('payment_order')->where(['id' => $id])->update($data)){

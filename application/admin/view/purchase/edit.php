@@ -245,6 +245,7 @@ function _formatMoney(num){
 
 	return (((sign)?'':'-') + num + '.' + cents);
 }
+var goods_info = new Array();
     $(document).ready(function() {
         layui.use('laydate', function() {
             var laydate = layui.laydate;
@@ -283,6 +284,14 @@ function _formatMoney(num){
 						$('#contacts').val(data.contacts);
 						$('#email').val(data.email);
 					}
+				});
+				$.get('{:url(\'Order/create\')}',{id:{$data.id},supplier_id:supplier_id},function(data){
+					var temp = data.data;
+					goods_info = [];
+					for(var i in temp){
+						goods_info.push($.parseJSON(temp[i]));
+					}
+					goodsList(goods_info);
 				});
 			}else{
 				$('#cus_phome,#fax,#contacts,#email,#payment_type').val('');
@@ -353,7 +362,6 @@ function client_info(data){
 	$('#payment_type').val(data.supplier_payment);
 }
 
-var goods_info = new Array();
 <?php if(!empty($data['goodsInfo'])){ foreach ($data['goodsInfo'] as $goods){?>
 goods_info.push(<?php echo $goods;?>);
 <?php }}?>

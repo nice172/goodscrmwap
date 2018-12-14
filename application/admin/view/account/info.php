@@ -54,14 +54,14 @@
                                 {if condition="!$receivables['is_confirm']"}
 								<div class="form-group">
                                 	<label class="control-label" for="account_file">附件 :</label>
-                                	<input type="file" name="file" id="account_file" class="ipt form-control"/>
+                                	<input type="file" name="Filedata[]" multiple="multiple" id="account_file" class="ipt form-control"/>
                                 </div>
                                 {else}
                                 <div class="form-group">
                                 <label class="control-label" for="files">附件 :</label>
                                 <?php if (!empty($receivables['files'])){?>
                                 <a href="<?php echo $receivables['files']['path'];?>" target="_blank">
-                                <?php echo $receivables['files']['name'];?>
+                                <?php echo $receivables['files']['oldfilename'];?>
                                 </a>
                                 <?php }?>
                                 </div>

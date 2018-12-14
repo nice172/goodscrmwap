@@ -429,6 +429,14 @@ $(function() {
 						$('#payment_type').val(data.supplier_payment);
 					}
 				});
+				$.get('{:url(\'create\')}',{id:{$data.id},supplier_id:supplier_id},function(data){
+					var temp = data.data;
+					goods_info = [];
+					for(var i in temp){
+						goods_info.push($.parseJSON(temp[i]));
+					}
+					goodsList(goods_info);
+				});
 			}else{
 				$('#cus_phome,#fax,#contacts,#email,#payment_type').val('');
 			}
