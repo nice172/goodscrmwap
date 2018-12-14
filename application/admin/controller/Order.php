@@ -402,6 +402,7 @@ class Order extends Base {
             'list'  => [],
             'page'  => '',
         ];
+        $this->assign('order_sn',self::create_sn("SO", 'order'));
         $this->assign($assign);
         return $this->fetch();
         

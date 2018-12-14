@@ -84,6 +84,10 @@ class Baojia extends Base {
 		    if (!$validate->check($data)){
 		        $this->error($validate->getError());
 		    }
+		    $in = db('baojia')->where(['order_sn' => $data['order_sn']])->find();
+		    if (!empty($in)){
+		        $data['order_sn'] = self::create_sn('QR', 'baojia');
+		    }
 		    $goodsInfo = $this->request->param('goods_info/a');
 		    if (empty($goodsInfo)){
 		        $this->error('请选择商品');
@@ -130,6 +134,9 @@ class Baojia extends Base {
 		$this->assign('order_handle',$order_handle);
 		$this->assign('order_handle_json',json_encode($order_handle));
 		$this->assign('title','新增报价单');
+
+		$this->assign('order_sn',self::create_sn('QR', 'baojia'));
+		
 		return $this->fetch();
 	}
 	
@@ -139,7 +146,7 @@ class Baojia extends Base {
 	        $data = [
 	            'id' => $this->request->post('id'),
 	            'cus_id' => $this->request->post('cus_id'),
-	            'order_sn' => $this->request->post('order_sn'),
+	            //'order_sn' => $this->request->post('order_sn'),
 	            'company_name' => $this->request->post('company_name'),
 	            'company_short' => $this->request->post('company_short'),
 	            'fax' => $this->request->post('fax'),

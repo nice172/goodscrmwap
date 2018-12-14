@@ -49,6 +49,15 @@
 </div>');
          
      }
+     
+     protected function create_sn($alt,$tableName){
+         $start_time = strtotime(date('Y-m-d'));
+         $end_time = strtotime(date('Y-m-d',strtotime('1 day')));
+         $num = db($tableName)->where("create_time>=$start_time and create_time<$end_time")->count();
+         $num += 1;
+         $date = (int)date('Ymd');
+         return $alt.($date*1000+$num);
+     }
 
      private function menu(){
      	$URL = strtolower(MODULE_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME);

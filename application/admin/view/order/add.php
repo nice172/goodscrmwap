@@ -36,7 +36,7 @@
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>订单号码:</span></td>
                                     <td width="35%">
-                                        <input type="text" class="form-control w300" readonly="readonly" value="SO<?php echo date('Ymdis').date('sms');?>" name="order_sn" id="order_sn">
+                                        <input type="text" class="form-control w300" readonly="readonly" value="{$order_sn}" name="order_sn" id="order_sn">
                                     </td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>下单日期:</span></td>
                                     <td width="35%"><input type="text" class="form-control w300" readonly="readonly" value="<?php echo date('Y-m-d');?>" name="create_date" id="create_date"></td>
