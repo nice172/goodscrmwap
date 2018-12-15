@@ -48,7 +48,7 @@
                         <div class="col-lg-12">
                               <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">对账单号 :</label>
-                                	<input name="invoice_sn" id="invoice_sn" class="ipt form-control" value="PR{:StrOrderOne()}" style="width: 188px;"  data-toggle="tooltip" data-placement="top" title="发票号码">
+                                	<input name="invoice_sn" id="invoice_sn" class="ipt form-control" readonly="readonly" value="{$invoice_sn}" style="width: 188px;"  data-toggle="tooltip" data-placement="top" title="发票号码">
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="invoice_date">对账日期 :</label>

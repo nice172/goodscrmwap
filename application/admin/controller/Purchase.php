@@ -609,6 +609,10 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 	            $totalMoney += $countMoney;
 	        }
 	        $data['total_money'] = _formatMoney($totalMoney);
+	        $in = db('purchase')->where(['po_sn' => $data['po_sn']])->find();
+	        if (!empty($in)){
+	        	$data['po_sn'] = self::create_sn('PO', 'purchase');
+	        }
 	        if (db('purchase')->insert($data)){
 	            $purchase_id = db('purchase')->getLastInsID();
 	            foreach ($purchseGoods as $value){
@@ -629,7 +633,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         
 	    $this->_showParams();
 	    $this->assign('title','新建采购单');
-	    $this->assign('po_sn','PO'.date('Ymdis').date('sms'));
+	    $this->assign('po_sn',self::create_sn('PO', 'purchase'));
 	    return $this->fetch();
 	}
 	

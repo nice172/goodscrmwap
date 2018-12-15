@@ -362,7 +362,10 @@ class Order extends Base {
                 ];
             }
             $data['attachment'] = json_encode($attachment);
-            
+            $in = db('order')->where(['order_sn' => $data['order_sn']])->find();
+            if (!empty($in)){
+            	$data['order_sn'] = self::create_sn("SO", 'order');
+            }
             $order_id = db('order')->insertGetId($data);
             if ($order_id){
             	$total_money = 0;
@@ -556,6 +559,10 @@ class Order extends Base {
     			$totalMoney += $countMoney;
     		}
     		$data['total_money'] = _formatMoney($totalMoney);
+    		$in = db('purchase')->where(['po_sn' => $data['po_sn']])->find();
+    		if (!empty($in)){
+    			$data['po_sn'] = self::create_sn('PO', 'purchase');
+    		}
     		$purchase_id = db('purchase')->insertGetId($data);
     		if ($purchase_id){
     			db('order')->where(['id' => $data['order_id']])->update(['status' => 5,'is_create' => 1]);
@@ -640,7 +647,7 @@ class Order extends Base {
     	$this->assign('remark',$remark);
     	
     	$this->assign('title','创建采购单');
-    	$this->assign('po_sn','PO'.date('Ymdis').date('sms'));
+    	$this->assign('po_sn',self::create_sn('PO', 'purchase'));
     	return $this->fetch();
     }
     

@@ -555,8 +555,10 @@ class Account extends Base {
     			//$delivery_ids = $this->request->post('delivery_ids');
     			if (empty($invoice_sn)) $this->error('发票号码不能为空');
     			if (empty($invoice_date)) $this->error('开票日期不能为空');
-    			if (db('receivables')->where(['invoice_sn' => $invoice_sn])->find()){
-    			    $this->error('发票号码已存在');
+    			$isExist = db('receivables')->where(['invoice_sn' => $invoice_sn])->find();
+    			if (!empty($isExist)){
+    			    //$this->error('发票号码已存在');
+    				$invoice_sn = self::create_sn('AR', 'receivables');
     			}
     			//if (empty($confirm_money)) $this->error('确认金额不能为空');
     			$delivery_ids = [];
@@ -593,6 +595,7 @@ class Account extends Base {
     		$this->assign('list',$result);
     		$this->assign('title','新建应收账款');
     		$this->assign('soset',cookie('soset'));
+    		$this->assign('invoice_sn',self::create_sn('AR', 'receivables'));
     		return $this->fetch();
     	}
     	$this->error('数据错误');
@@ -922,8 +925,10 @@ class Account extends Base {
             if (empty($invoice_sn)) $this->error('发票号码不能为空');
             if (empty($invoice_date)) $this->error('开票日期不能为空');
             if (empty($last_date)) $this->error('到期日期不能为空');
-            if (db('payment_order')->where(['invoice_sn' => $invoice_sn])->find()){
-                $this->error('发票号码已存在');
+            $isExist = db('payment_order')->where(['invoice_sn' => $invoice_sn])->find();
+            if (!empty($isExist)){
+                //$this->error('发票号码已存在');
+            	$invoice_sn = self::create_sn('PR', 'payment_order');
             }
             $delivery_ids = [];
             foreach ($result as $key => $value){
@@ -996,6 +1001,7 @@ class Account extends Base {
         $this->assign('list',$result);
         $this->assign('title','应付账款');
         $this->assign('sub_class','viewFramework-product-col-1');
+        $this->assign('invoice_sn',self::create_sn('PR', 'payment_order'));
         return $this->fetch();
     }
     

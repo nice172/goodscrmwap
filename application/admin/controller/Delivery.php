@@ -446,7 +446,7 @@ class Delivery extends Base {
             $delivery = db('delivery_order')->where(['id' => $id,'status' => ['neq','-1']])->find();
             if (empty($delivery)) $this->error('送货单不存在');
             $title = '送货单';
-            $goodsInfo = db('delivery_goods')->where(['delivery_id' => $delivery['id']])->order('goods_id asc')->select();
+            $goodsInfo = db('delivery_goods')->where(['delivery_id' => $delivery['id']])->order('id asc')->select();
             $cus = db('customers')->where(['cus_id' => $delivery['cus_id']])->find();
             $this->assign('client',$cus);
             $this->assign('data',$delivery);
@@ -529,7 +529,7 @@ class Delivery extends Base {
             
             $strContent .= '</tbody></table>';
             $img = getFileParams(20);
-            $strContentFooter = '<table class="noborder" style="height:100px;">
+            $strContentFooter = '<table class="noborder" style="margin-top:20px;height:100px;">
 <tbody>
     <tr>
     <td width="10%" align="left">发货人签章：</td>
@@ -543,7 +543,7 @@ class Delivery extends Base {
             $mpdf->showWatermarkText = true;
             $mpdf->SetTitle($title);
             // 	   $mpdf->SetHTMLHeader( '头部' );
-            $mpdf->SetHTMLFooter( $strContentFooter );
+            //$mpdf->SetHTMLFooter( $strContentFooter );
             $stylesheet='
 body{padding:0;margin:0;font-family:"宋体";}
 h1,h2,h3,p,div,span{padding:0;margin:0;}
@@ -572,7 +572,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 }
 ';
             $mpdf->WriteHTML($stylesheet, 1);
-            $mpdf->WriteHTML($strContent);
+            $mpdf->WriteHTML($strContent.$strContentFooter);
             $type = 0;
             if ($type == 1){
                 $savePath = './pdf/P'.str_replace('/', '-', $order['order_sn']).'.pdf';
@@ -608,8 +608,10 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             if (db('delivery_order')->where(['delivery_sn' => $data['delivery_sn']])->find()){
                 $this->error('物流单号已存在');
             }
-            if (db('delivery_order')->where(['order_dn' => $data['order_dn']])->find()){
-                $this->error('送货单号已存在');
+            $isExist = db('delivery_order')->where(['order_dn' => $data['order_dn']])->find();
+            if (!empty($isExist)){
+                //$this->error('送货单号已存在');
+            	$data['order_dn'] = self::create_sn('DN', 'delivery_order');
             }
             db()->startTrans();
             $delivery_id = db('delivery_order')->insertGetId($data);
@@ -658,6 +660,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             return;
         }
         $this->assign('title','送货单');
+        $this->assign('order_dn',self::create_sn('DN', 'delivery_order'));
         return $this->fetch();
     }
     

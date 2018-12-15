@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">对账单号 :</label>
-                                	<input name="invoice_sn" id="invoice_sn" class="ipt form-control" readonly="readonly" value="AR{:StrOrderOne()}" data-toggle="tooltip" data-placement="top" title="对账单号">
+                                	<input name="invoice_sn" id="invoice_sn" class="ipt form-control" readonly="readonly" value="{$invoice_sn}" data-toggle="tooltip" data-placement="top" title="对账单号">
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="invoice_date">对账日期 :</label>

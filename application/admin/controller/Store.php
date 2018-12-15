@@ -320,7 +320,10 @@ class Store extends Base {
                     $this->error('“'.$value['goods_name'].'”不存在');
                 }
             }
-            
+            $isExist = db('input_store')->where(['store_sn' => $data['store_sn']])->find();
+            if (!empty($isExist)){
+            	$data['store_sn'] = self::create_sn('ST', 'input_store');
+            }
             db()->startTrans();
             $input_id = db('input_store')->insertGetId($data);
             if ($input_id && !empty($goods)){
@@ -380,6 +383,7 @@ class Store extends Base {
             return;
         }
         $this->assign('title','新增采购入库');
+        $this->assign('store_sn',self::create_sn('ST', 'input_store'));
         return $this->fetch();
     }
     
