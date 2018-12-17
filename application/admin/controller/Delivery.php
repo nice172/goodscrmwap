@@ -746,7 +746,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             $db->where('o.company_short|o.company_name','like',"%{$supplier_name}%");
         }
         if ($cus_order_sn != ''){
-            $db->where(['o.cus_order_sn' => $cus_order_sn]);
+            $db->where(['o.cus_order_sn' => ['like',"%{$cus_order_sn}%"]]);
         }
         //判断采购单是否取消关联订单
         //if ($purchase['is_cancel']){
