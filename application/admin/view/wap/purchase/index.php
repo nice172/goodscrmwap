@@ -96,13 +96,13 @@
         <div class="button-block">
         	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('info',['id' => $v['id']])}'">查看</button>
         	{if condition="$v['status']==0"}
+        		<button class="weui-btn weui-btn_mini weui-btn_plain-primary _confirm" order-id="{$v.id}">确认</button>
         		{if condition="$v['create_type']==0"}
             	<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('edit',['id' => $v['id']])}'">编辑</button>
           		{else}
           		<button class="weui-btn weui-btn_mini weui-btn_plain-primary" onclick="window.location.href='{:url('newedit',['id' => $v['id']])}'">编辑</button>
           		{/if}
-          	
-          	<button class="weui-btn weui-btn_mini weui-btn_plain-primary _confirm" order-id="{$v.id}">确认</button>
+          		<button class="weui-btn weui-btn_mini weui-btn_plain-primary _delete" order-id="{$v.id}">删除</button>
           	{/if}
           	
           	{if condition="$v['status']>=1"}
@@ -175,18 +175,22 @@
 	function _delete(){
 	    $('body').on('click','._delete',function(){
 	        var _this = $(this);
-	        var orderid = $(_this).attr('order-id');
-			$.get("{:url('delete')}",{id:orderid},function(res){
-				if(res.code){
-					$(_this).remove();
-					$.toptip(res.msg,'success');
-					//$(_this).parents('.list').remove();
-					setTimeout(function(){
-						window.location.reload();
-						},2000);
-				}else{
-					$.toptip(res.msg);
-				}
+	        $.confirm('确认删除吗？',function(){
+    	        var orderid = $(_this).attr('order-id');
+    			$.get("{:url('delete')}",{id:orderid},function(res){
+    				if(res.code){
+    					$(_this).remove();
+    					$.toptip(res.msg,'success');
+    					//$(_this).parents('.list').remove();
+    					setTimeout(function(){
+    						window.location.reload();
+    						},2000);
+    				}else{
+    					$.toptip(res.msg);
+    				}
+    			});
+	        },function(){
+
 			});
 	    });
 	}

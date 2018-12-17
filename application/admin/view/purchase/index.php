@@ -99,14 +99,14 @@
                                 <td>
                                 	<a href="{:url('info',['id' => $vo['id']])}">详情</a>
                                 	{if condition="$vo['status']==0"}
-                                	<span class="text-explode">|</span>
-                                	
-                                	{if condition="$vo['create_type']==0"}
-                                	<a href="{:url('edit',['id' => $vo['id']])}">编辑</a>
-                                	{else}
-                                	<a href="{:url('newedit',['id' => $vo['id']])}">编辑</a>
-                                	{/if}
-                                	
+                                    	<span class="text-explode">|</span>
+                                    	{if condition="$vo['create_type']==0"}
+                                    	<a href="{:url('edit',['id' => $vo['id']])}">编辑</a>
+                                    	{else}
+                                    	<a href="{:url('newedit',['id' => $vo['id']])}">编辑</a>
+                                    	{/if}
+                                		<span class="text-explode">|</span>
+                                		<a href="javascript:deleteOrdersOne({$vo['id']});">删除</a>
                                 	{/if}
                                 	{if condition="$vo['status']>=1"}
                                 	<span class="text-explode">|</span>
@@ -220,10 +220,10 @@
 
     //单条删除订单操作
     function deleteOrdersOne(e) {
-        if(confirm("确定删除订单？")){
+        if(confirm("确定删除？")){
             if (!isNaN(e) && e !== null && e !== '') {
-                var data={name:'scrap',pid:e};
-                $.sycToAjax("{:Url('orders/delete')}", data);
+                var data={name:'scrap',id:e};
+                $.sycToAjax("{:url('delete')}", data);
             }
         };
         return false;

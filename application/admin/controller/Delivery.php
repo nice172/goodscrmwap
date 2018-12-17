@@ -55,6 +55,7 @@ class Delivery extends Base {
         $start_time = strtotime($this->request->param('start_time'));
         $end_time = strtotime($this->request->param('end_time'));
         $db = db('delivery_order do');
+        $db->where(['do.status' => ['neq','-1']]);
         if (!empty($cus_name)) {
             $db->where(['do.cus_name' => ['like',"%{$cus_name}%"]]);
         }
@@ -196,7 +197,7 @@ class Delivery extends Base {
         if ($this->request->isAjax()){
             $id = $this->request->param('id',0,'intval');
             if ($id <= 0) $this->error('参数错误');
-            if (db('delivery_order')->where(['id' => $id])->delete()){
+            if (db('delivery_order')->where(['id' => $id])->setField('status','-1')){
                 db('delivery_goods')->where(['delivery_id' => $id])->delete();
                 $this->success('删除成功');
             }

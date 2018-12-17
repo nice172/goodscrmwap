@@ -65,6 +65,22 @@ class Purchase extends Base {
 		return $this->fetch();
 	}
 	
+	public function delete(){
+	    if ($this->request->isAjax()){
+	        $id = $this->request->param('id',0,'intval');
+	        if ($id <= 0) $this->error('参数错误');
+	        if (db('purchase')->where(['id' => $id])->setField('status',-1)){
+	            $data = db('purchase')->where(['id' => $id])->find();
+	            //1直接新建
+	            if (!$data['create_type']){
+	                db('order')->where(['id' => $data['order_id']])->update(['status' => 1,'is_create' => 0]);
+	            }
+	            $this->success('删除成功');
+	        }
+	        $this->error('删除失败');
+	    }
+	}
+	
 	public function query(){
 		$supplier_name = $this->request->param('supplier_name');
 		$start_time = $this->request->param('start_time');

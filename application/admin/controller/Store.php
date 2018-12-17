@@ -425,6 +425,7 @@ class Store extends Base {
         $page = '';
         //if ($po_sn != '' || $supplier_name != '' || ($start_time!='' && $end_time!='') || $delivery_company != '' || $goods_name != ''){
 	        $db = db('purchase p');
+	        $db->where(['p.status' => ['>',0]]);
 	        if ($po_sn != '') {
 	        	$db->where(['p.po_sn' => $po_sn]);
 	        }
