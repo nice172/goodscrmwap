@@ -168,7 +168,7 @@
                             <tfoot>
                             	<tr>
                             	<td colspan="20"><a href="javascript:;" class="get_goods">请选择商品</a>
-                            	<div class="pull-right page-box" style="display: none;"><button type="button" class="btn btn-primary saveAll">全部保存</button></div>
+                            	<div class="pull-right page-box"><button type="button" class="btn btn-primary saveAll">全部保存</button></div>
                             	</td>
                             	</tr>
                             </tfoot>
@@ -431,6 +431,35 @@ function _delete(index){
 	goods_info = newGoodsList;
 	goodsList(goods_info);
 }
+
+function saveOther(eIndex,is_show){
+	var shop_price = $('.goods_'+eIndex+' input[name=shop_price]').val();
+	if(shop_price == ''){
+		shop_price = $('.goods_'+eIndex+' input[name=shop_price]').attr('data-shop_price');
+	}
+	var purchase_number = $('.goods_'+eIndex+' input[name=purchase_number]').val();
+	if(purchase_number == ''){
+		purchase_number = $('.goods_'+eIndex+' input[name=purchase_number]').attr('data-purchase_number');
+	}
+	goods_info[eIndex]['purchase_number'] = parseInt(purchase_number);
+	goods_info[eIndex]['shop_price'] = _formatMoney(parseFloat(shop_price));
+	if(!goods_info[eIndex]['show_input']){
+		goods_info[eIndex]['show_input'] = false;
+	}else{
+		goods_info[eIndex]['show_input'] = is_show;
+	}
+}
+
+$('.saveAll').click(function(){
+	$('tbody.goodsList tr').each(function(index){
+		var eIndex = $('tbody.goodsList tr').eq(index).attr('data-index');
+		if(goods_info[eIndex]['show_input']){
+			saveOther(eIndex,false);
+		}
+	});
+	goodsList(goods_info);
+});
+
 $('button[type=submit]').click(function(){
 	var send = $(this).attr('send');
 	$('.ajaxForm2').ajaxSubmit({

@@ -731,6 +731,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
     	$purchase_id = $this->request->param('purchase_id',0,'intval');
     	$purchase = db('purchase')->where(['id' => $purchase_id])->find();
         $supplier_name = $this->request->param('supplier_name');
+        $cus_order_sn = $this->request->param('cus_order_sn');
         $start_time = $this->request->param('start_date');
         $end_time = $this->request->param('end_date');
         $db = db('order o');
@@ -738,7 +739,10 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         //$where = ['o.is_create' => 1,'o.status' => ['>=',1]];
         $where = "o.status=1 OR o.status=5 OR o.status=6";
         if ($supplier_name != ''){
-            $db->where('o.company_short|s.compnay_name','like',"%{$supplier_name}%");
+            $db->where('o.company_short|o.company_name','like',"%{$supplier_name}%");
+        }
+        if ($cus_order_sn != ''){
+            $db->where(['o.cus_order_sn' => $cus_order_sn]);
         }
         //判断采购单是否取消关联订单
         //if ($purchase['is_cancel']){
@@ -783,8 +787,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         $order_id = $this->request->param('order_id');
         $input_id = $this->request->param('input_id');
         $po_id = $this->request->param('po_id');
-        $order_goods = db('order_goods')->where(['order_id' => $order_id])->select();
-        $input_goods = db('input_goods')->where(['input_id' => ['in',$input_id]])->select();
+        $order_goods = db('order_goods')->where(['order_id' => $order_id])->order('id asc')->select();
+        $input_goods = db('input_goods')->where(['input_id' => ['in',$input_id]])->order('id asc')->select();
 
         $goods_list = [];
         foreach ($order_goods as $key => $value){

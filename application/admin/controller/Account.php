@@ -29,7 +29,6 @@ class Account extends Base {
     	    }else{
     	        $db->where(['status' => $invoice_status]);
     	    }
-    		
     	}
     	if ($invoice_status == 9){
     	    $db->where(['is_confirm' => 1,'status' => ['NEQ',2]]);

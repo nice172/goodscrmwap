@@ -18,6 +18,10 @@
                                     <label class="control-label" for="cus_short">客户名称 :</label>
                                     <input name="supplier_name" id="supplier_name" class="ipt form-control" <?php if (isset($_GET['supplier_name'])):?>value="<?php echo $_GET['supplier_name'];?>"<?php endif;?> />
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="cus_short">客户订单号 :</label>
+                                    <input name="cus_order_sn" id="cus_order_sn" class="ipt form-control" <?php if (isset($_GET['cus_order_sn'])):?>value="<?php echo $_GET['cus_order_sn'];?>"<?php endif;?> />
+                                </div>
                             	<div class="form-group">
                                     <label class="control-label">送货日期 :</label>
                                     <input name="start_date" id="start_date" <?php if (isset($_GET['start_date'])):?>value="<?php echo $_GET['start_date'];?>"<?php endif;?> class="ipt form-control">
@@ -42,6 +46,7 @@
                                 <tr>
                                     
                                     <th>订单号码</th>
+                                    <th>客户订单号</th>
                                     <th>下单时间</th>
                                     <th>送货日期</th>
                                     <th>客户名称</th>
@@ -56,6 +61,7 @@
                             {volist name="data" id="vo" empty="$empty"}
                                 <tr style="cursor: pointer;" index="{$key}" class="selected_po">
                                     <td>{$vo.order_sn}</td>
+                                    <td>{$vo.cus_order_sn}</td>
                                     <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
                                     <td>{$vo.require_time}</td>
                                     <td>{$vo.company_short}</td>
