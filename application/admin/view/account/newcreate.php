@@ -35,8 +35,8 @@
                                 <input name="cus_name" id="cus_name" class="ipt form-control" value="<?php if(isset($_GET['cus_name'])){echo $_GET['cus_name'];}?>" data-toggle="tooltip" data-placement="top" title="客户名称">
                             </div>
                                 <div class="form-group">
-                                	<label class="control-label" for="order_sn">订单号码 :</label>
-                                	<input name="order_sn" id="order_sn" class="ipt form-control" value="<?php if(isset($_GET['order_sn'])){echo $_GET['order_sn'];}?>" data-toggle="tooltip" data-placement="top" title="订单号码">
+                                	<label class="control-label" for="order_sn">客户订单号 :</label>
+                                	<input name="cus_order_sn" id="cus_order_sn" class="ipt form-control" value="<?php if(isset($_GET['cus_order_sn'])){echo $_GET['cus_order_sn'];}?>" data-toggle="tooltip" data-placement="top" title=">客户订单号">
                                 </div>
                             	<div class="form-group">
                                     <label class="control-label" for="start_time">送货日期 :</label>
