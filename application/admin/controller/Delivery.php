@@ -155,7 +155,7 @@ class Delivery extends Base {
     	$db->join('__GOODS__ g','ig.goods_id=g.goods_id');
     	$db->join('__PURCHASE__ p','i.po_id=p.id');
     	if ($cus_order_sn != '') {
-    	    $db->where(['p.cus_order_sn' => $cus_order_sn]);
+    	    $db->where(['p.cus_order_sn' => ['like',"%{$cus_order_sn}%"]]);
     	}
     	if ($supplier_name != '') {
     	    $db->where('s.supplier_name|s.supplier_short','like',"%{$supplier_name}%");
@@ -167,7 +167,7 @@ class Delivery extends Base {
     	    $db->where(['g.category_id' => $category_id]);
     	}
     	//$db->where(['i.is_cancel' => 0]);
-    	$db->where('i.is_cancel=0 and ig.goods_number>ig.out_number');
+    	$db->where('i.is_cancel=0 and (ig.goods_number>ig.out_number)');
     	$db->field('i.*,p.order_id,p.delivery_type,p.cus_order_sn,g.category_id,ig.goods_id,ig.goods_name,ig.goods_price,ig.unit,ig.goods_number,ig.out_number,ig.remark,s.supplier_name,s.supplier_short');
     	$result = $db->order('i.create_time asc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
     	$data = $result->all();
