@@ -456,7 +456,7 @@ class Account extends Base {
     		$db->where(['do.cus_name' => ['like',"%{$cus_name}%"]]);
     	}
     	if (!empty($cus_order_sn)){
-    	    $db->where(['do.cus_order_sn' => $cus_order_sn]);
+    	    $db->where(['do.cus_order_sn' => ['like',"%{$cus_order_sn}%"]]);
     	}
     	if (strtotime($start_time) && strtotime($end_time)){
     		$db->where(['do.delivery_date' => ['>=',$start_time]]);
