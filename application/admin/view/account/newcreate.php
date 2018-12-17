@@ -65,7 +65,7 @@
                                 <th>商品名称</th>
                                 <th>送货单号</th>
                                 <th>送货日期</th>
-                                <th>订单号</th>
+                                <th>客户订单号</th>
                                 <th>下单日期</th>
                                 <th>单位</th>
                                 <th>单价</th>
@@ -82,7 +82,7 @@
                                 <td>{$vo.goods_name}</td>
                                 <td>{$vo.order_dn}</td>
                                 <td>{$vo.delivery_date}</td>
-                                <td>{$vo.order_sn}</td>
+                                <td>{$vo.cus_order_sn}</td>
                                 <td>{$vo.order_create_time|date='Y-m-d',###}</td>
                                 <td>{$vo.unit}</td>
                                 <td>{$vo.goods_price}</td>
