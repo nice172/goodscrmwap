@@ -451,7 +451,7 @@ class Account extends Base {
     	$start_time = $this->request->param('start_time');
     	$end_time = $this->request->param('end_time');
     	$db = db('delivery_order do');
-    	$db->where(['do.is_invoice' => 0]);
+    	$db->where(['do.is_invoice' => 0,'do.is_confirm' => 1]);
     	if (!empty($cus_name)) {
     		$db->where(['do.cus_name' => ['like',"%{$cus_name}%"]]);
     	}
@@ -882,7 +882,7 @@ class Account extends Base {
         $start_time = $this->request->param('start_time');
         $end_time = $this->request->param('end_time');
         $db = db('input_store do');
-        $db->where(['do.is_payment' => 0]);
+        $db->where(['do.is_payment' => 0,'do.is_cancel' => 0]);
         if ($supplier_name != '') {
             $db->where(['s.supplier_name|s.supplier_short','like',"%{$supplier_name}%"]);
         }

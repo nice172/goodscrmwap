@@ -278,8 +278,12 @@ class Delivery extends Base {
                     //一个送货单商品多个入库单商品
                     foreach ($relation_input_arr as $k => $val){
                         //10 8
-                        $that_goods = db('input_goods')->where(['input_id' => $val,'goods_id' => $value['goods_id']])->setInc('out_number',$value['current_send_number']);
-                        
+                        $that_goods = db('input_goods')->where(['input_id' => $val,'goods_id' => $value['goods_id']])->find();
+                        if ($that_goods['goods_number'] < $value['current_send_number']){
+                            db('input_goods')->where(['input_id' => $val,'goods_id' => $value['goods_id']])->setInc('out_number',$that_goods['goods_number']);
+                        }else{
+                        db('input_goods')->where(['input_id' => $val,'goods_id' => $value['goods_id']])->setInc('out_number',$value['current_send_number']);
+                        }
                     }
                     
                 }
