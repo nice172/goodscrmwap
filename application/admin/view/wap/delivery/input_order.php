@@ -12,6 +12,7 @@
 .content{margin-top:160px;}
 .weui-loadmore_line{margin-top:130px;}
 #category_id{outline: none;background-color: #ffffff; background-image: none !important; filter: none !important; border: 1px solid #e5e5e5; outline: none; height: 28px !important; line-height: 28px;}
+.weui-form-preview__bd{text-align:left;}
 </style>
 {/block}
 {block name="main"}
@@ -106,10 +107,10 @@
         </div>
         <div class="weui-form-preview__item">
           <label class="weui-form-preview__label">出库数量：</label>
-          <span class="weui-form-preview__value">{$vo.goods_number}</span>
+          <span class="weui-form-preview__value">{$vo.out_number}</span>
         </div>
         <div class="weui-form-preview__item">
-          <label class="weui-form-preview__label">状态：</label>
+          <label class="weui-form-preview__label">　　状态：</label>
           <span class="weui-form-preview__value">正常</span>
         </div>
         <div class="weui-form-preview__item">
@@ -207,10 +208,10 @@ $(function() {
                     html += '</div>';
                     html += '<div class="weui-form-preview__item">';
                     html += '<label class="weui-form-preview__label">出库数量：</label>';
-                    html += '<span class="weui-form-preview__value">'+data[i]['goods_number']+'</span>';
+                    html += '<span class="weui-form-preview__value">'+data[i]['out_number']+'</span>';
                     html += '</div>';
                     html += '<div class="weui-form-preview__item">';
-                    html += '<label class="weui-form-preview__label">状态：</label>';
+                    html += '<label class="weui-form-preview__label">　　状态：</label>';
                     html += '<span class="weui-form-preview__value">正常</span>';
                     html += '</div>';
                     html += '<div class="weui-form-preview__item">';

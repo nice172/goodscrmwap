@@ -44,42 +44,44 @@
                                 	<label class="control-label" for="total_money">付款期 :</label>
                                 	<input name="total_money" id="total_money" disabled="disabled" value="{$info.payment_date}" class="ipt form-control" />
                                 </div>
-								<div class="form-group">
-                                	<label class="control-label" for="confirm_money">确认金额 :</label>
-                                	<input name="pay_money" {if condition="$info['is_confirm']"}disabled="disabled" value="{$info.pay_money}"{else}{/if}id="pay_money" style="width: 110px;" class="ipt form-control" />
-                                </div>
-                                 
-                        </div>
-                        <div class="col-lg-12">
-                              <div class="form-group">
+								
+                                <div class="form-group">
                                 	<label class="control-label" for="invoice_sn">发票号码 :</label>
                                 	<input name="invoice_sn" id="invoice_sn" disabled="disabled" value="{$info.invoice_sn}" class="ipt form-control" style="width: 188px;"  data-toggle="tooltip" data-placement="top" title="发票号码">
                                 </div>
-                            	<div class="form-group">
+                                 <div class="form-group">
                                     <label class="control-label" for="invoice_date">发票日期 :</label>
                                     <input name="invoice_date" id="invoice_date" disabled="disabled" value="{$info.invoice_date}" class="ipt form-control">
                                 </div>
-                                <div class="form-group">
+                        </div>
+                        
+                        <div class="col-lg-12">
+                        <div class="form-group">
+                                	<label class="control-label" for="confirm_money">确认金额 :</label>
+                                	<input name="pay_money" {if condition="$info['is_confirm']"}disabled="disabled" value="{$info.pay_money}"{else}{/if}id="pay_money" style="width: 110px;" class="ipt form-control" />
+                                </div>
+                        <div class="form-group">
                                     <label class="control-label" for="last_date">到期日期 :</label>
                                     <input name="last_date" id="last_date" disabled="disabled" value="{$info.last_date}" class="ipt form-control" style="width: 145px;">
                                 </div>
                                 {if condition="!$info['is_confirm']"}
 								<div class="form-group">
                                 	<label class="control-label" for="account_file">附件 :</label>
-                                	<input type="file" name="Filedata[]" multiple="multiple" id="account_file" class="ipt form-control"/>
+                                	<input type="file" name="Filedata[]" multiple="multiple" id="account_file" style="width:180px;" class="ipt form-control"/>
                                 </div>
                                 {else}
                                 <div class="form-group">
                                 <label class="control-label" for="files">附件 :</label>
-                                <?php if (!empty($info['files'])){foreach ($info['files'] as $f){?>
+                                <?php if (!empty($info['files'])){foreach ($info['files'] as $k=>$f){echo $k+1;?>、
                                 <a href="<?php echo $f['path'];?>" target="_blank">
                                 <?php echo $f['oldfilename'];?>
-                                </a><br/>
+                                </a>&nbsp;&nbsp;
                                 <?php }}?>
                                 </div>
                                 {/if}
+                                <div class="form-group filist"></div>
                         </div>
-                        <div class="col-lg-12 filist"></div>
+                        
                     </div>
                 </div>
 
@@ -218,11 +220,11 @@
     				//toastr.success(res.msg);
     				var html = '';
     				for(var i in res.data){
-    					html += '<p style="padding-bottom: 0px;">';
+    					html += '<span style="padding-left:15px;">';
     					html += '<input type="hidden" name="ext[]" value="'+res.data[i]['ext']+'" />';
     					html += '<input type="hidden" name="oldfilename[]" value="'+res.data[i]['oldfilename']+'" />';
     					html += '<input type="hidden" name="files[]" value="'+res.data[i]['path']+'" />';
-    					html += '<a target="_blank" href="'+res.data[i]['path']+'">'+res.data[i]['oldfilename']+'</a><span style="padding-left:5px;cursor:pointer;">删除</span></p>';
+    					html += '<a target="_blank" href="'+res.data[i]['path']+'">'+res.data[i]['oldfilename']+'</a><span style="padding-left:5px;cursor:pointer;">删除</span></span>';
     				}
     				//_this.after(html);
     				$('.filist').append(html);
@@ -232,8 +234,8 @@
     		}
     	});
     });
-    $('body').on('click','.filist p span',function(){
-    	$(this).parents('p').remove();
+    $('body').on('click','.filist span span',function(){
+    	$(this).parents('span').remove();
     });
 </script>
 {/block}

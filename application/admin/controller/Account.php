@@ -597,7 +597,7 @@ class Account extends Base {
     				'pay_money' => 0,'diff_money' => 0,
     				'is_open' => 0,'status' => 1,
     				//'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
-    				'update_time' => time(),'create_time' => time()
+    			    'update_time' => time(),'create_time' => time()
     			];
     			if (db('receivables')->insert($data)){
     				db('delivery_order')->where(['id' => ['in',$delivery_ids]])->setField('is_invoice',1);

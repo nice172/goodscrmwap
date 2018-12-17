@@ -404,14 +404,15 @@ function goods(data){
 function goods_merge(data){
 	var po_sn = $('#po_sn').val();
 	var purchase_id = $('#purchase_id').val();
-	if((purchase_id != '' && purchase_id != data.po_id) || purchase_id == ''){
+	//if((purchase_id != '' && purchase_id != data.po_id) || purchase_id == ''){
 		$('#po_sn').val(data.po_sn);
 		$('#input_sn').val(data.store_sn);
 		$('#delivery_way').val(data.delivery_type);
 		$('#purchase_id').val(data.po_id);
 		$('#input_id').val(data.id);
 		var input_id = $('#input_id').val();
-	}
+	//}
+	/*
 	if(purchase_id == data.po_id) {
 		var inputsn_arr = $('#input_sn').val().split(',');
 		var flag = true;
@@ -426,7 +427,7 @@ function goods_merge(data){
 		$('#input_id').val($('#input_id').val()+','+data.id);
 		$('#input_sn').val($('#input_sn').val()+','+data.store_sn);
 		var input_id = $('#input_id').val();
-	}
+	}*/
 	var order_id = $('#order_id').val();
 	$.get('<?php echo url('goods_merge');?>',{input_id:input_id,order_id:order_id,po_id:data.po_id},function(res){
 		if(res.length <= 0){

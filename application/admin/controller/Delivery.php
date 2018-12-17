@@ -797,28 +797,15 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
         $goods_list = [];
         foreach ($order_goods as $key => $value){
         	$value['diff_number'] = $value['goods_number'] - $value['send_num'];
+        	$value['current_send_number'] = $value['goods_number'] - $value['send_num'];
             foreach ($input_goods as $k => $val) {
                 if ($value['goods_id'] == $val['goods_id']) {
-                    if (!isset($value['diff_number'])){
-                        //$value['diff_number'] = 0;
-                    }
-                	//$value['diff_number'] += $val['goods_number'] - $val['out_number']; //剩下未送货
-                    //$value['diff_number'] += $value['goods_number'] - $value['send_num'];
-                	if (!isset($value['current_send_number'])){
-                	    $value['current_send_number'] = 0;
-                	}
-                	$value['current_send_number'] += $value['goods_number'] - $value['send_num']; //本次送货
-                	/*
-                	if (!isset($value['out_number'])) {
-                	    $value['out_number'] = 0;
-                	}
-                	$value['out_number'] += $val['goods_number'];
-                    */
+                	$value['input_number'] = $val['goods_number']-$val['out_number'];
                     $goods_list[$value['goods_id']] = $value;
                 }
             }
         }
-        
+
         $goods_db = db('goods g');
         foreach ($goods_list as $key => $value) {
         	$goodsInfo = $goods_db->join('__GOODS_CATEGORY__ gc','g.category_id=gc.category_id')
@@ -829,8 +816,8 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
             
             //库存数量大于未交货数量，本次送货数量和出库数量就是未交货数量
             if ($store_number >= $value['diff_number']){
-                $goods_list[$key]['out_number'] = $value['diff_number'];
-                $goods_list[$key]['current_send_number'] = $value['diff_number'];
+                $goods_list[$key]['out_number'] = $value['input_number'];
+                $goods_list[$key]['current_send_number'] = $value['input_number'];
             }else{
             	//库存数量小于未交货数量，本次送货数量和出库数量就是实际库存数量
                 $goods_list[$key]['out_number'] = $store_number;

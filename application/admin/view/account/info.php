@@ -47,27 +47,31 @@
                                     <label class="control-label" for="invoice_date">对账日期 :</label>
                                     <input name="invoice_date" id="invoice_date" disabled="disabled" value="{$receivables.invoice_date}" style="width: 100px;" class="ipt form-control">
                                 </div>
-                                <div class="form-group">
+                                
+                        </div>
+                        <div class="col-lg-12">
+								<div class="form-group">
                                 	<label class="control-label" for="confirm_money">确认金额 :</label>
                                 	<input name="confirm_money" {if condition="$receivables['is_confirm']"}disabled="disabled" value="{$receivables.confirm_money}"{else}{/if}id="confirm_money" style="width: 110px;" class="ipt form-control" />
                                 </div>
                                 {if condition="!$receivables['is_confirm']"}
 								<div class="form-group">
                                 	<label class="control-label" for="account_file">附件 :</label>
-                                	<input type="file" name="Filedata[]" multiple="multiple" id="account_file" class="ipt form-control"/>
+                                	<input type="file" name="Filedata[]" multiple="multiple" style="width:180px;" id="account_file" class="ipt form-control"/>
                                 </div>
                                 {else}
                                 <div class="form-group">
                                 <label class="control-label" for="files">附件 :</label>
-                                <?php if (!empty($receivables['files'])){foreach ($receivables['files'] as $f){?>
+                                <?php if (!empty($receivables['files'])){foreach ($receivables['files'] as $k=>$f){echo $k+1;?>、
                                 <a href="<?php echo $f['path'];?>" target="_blank">
                                 <?php echo $f['oldfilename'];?>
-                                </a><br/>
+                                </a>&nbsp;&nbsp;
                                 <?php }}?>
                                 </div>
                                 {/if}
+                                <div class="form-group filist"></div>
                         </div>
-                        <div class="col-lg-12 filist"></div>
+                        
                     </div>
                     
                 </div>
@@ -208,11 +212,11 @@
     				//toastr.success(res.msg);
     				var html = '';
     				for(var i in res.data){
-    					html += '<p style="padding-bottom: 0px;">';
+    					html += '<span style="padding-left:15px;">';
     					html += '<input type="hidden" name="ext[]" value="'+res.data[i]['ext']+'" />';
     					html += '<input type="hidden" name="oldfilename[]" value="'+res.data[i]['oldfilename']+'" />';
     					html += '<input type="hidden" name="files[]" value="'+res.data[i]['path']+'" />';
-    					html += '<a target="_blank" href="'+res.data[i]['path']+'">'+res.data[i]['oldfilename']+'</a><span style="padding-left:5px;cursor:pointer;">删除</span></p>';
+    					html += '<a target="_blank" href="'+res.data[i]['path']+'">'+res.data[i]['oldfilename']+'</a><span style="padding-left:5px;cursor:pointer;">删除</span></span>';
     				}
     				//_this.after(html);
     				$('.filist').append(html);
@@ -222,8 +226,8 @@
     		}
     	});
     });
-    $('body').on('click','.filist p span',function(){
-    	$(this).parents('p').remove();
+    $('body').on('click','.filist span span',function(){
+    	$(this).parents('span').remove();
     });
 </script>
 {/block}
