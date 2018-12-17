@@ -39,7 +39,7 @@ body{background:#fff;}
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">报价单号：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" readonly="readonly" value="CS-Q-<?php echo date('m/dHis').date('sms');?>" name="order_sn" id="order_sn"/>
+          <input class="weui-input" type="text" readonly="readonly" value="{$order_sn}" name="order_sn" id="order_sn"/>
         </div>
       </div>
       

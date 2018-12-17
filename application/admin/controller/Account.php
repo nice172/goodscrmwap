@@ -222,17 +222,36 @@ class Account extends Base {
     public function info(){
         $id = $this->request->param('id',0,'intval');
         if (empty($id)) $this->error('参数错误');
+        $type = $this->request->param('type');
+        if ($type == 'file'){
+            $file = $this->upload_file();
+            if (is_array($file) && !empty($file)){
+                $this->success('ok','',$file);
+            }else{
+                $this->error('error');
+            }
+            return;
+        }
         $receivables = db('receivables')->where(['id' => $id,'is_delete' => 0])->find();
         if (empty($receivables)) $this->error('数据信息不存在');
         if ($this->request->isAjax() && $this->request->isPost()){
             $confirm_money = $this->request->post('confirm_money');
             if (empty($confirm_money)) $this->error('确认金额不能为空');
             if (!is_numeric($confirm_money) || $confirm_money < 0) $this->error('确认金额不正确');
-            $file = $this->upload_file();
+            $ext = $this->request->param('ext/a');
+            $oldfilename = $this->request->param('oldfilename/a');
+            $attachment = isset($_POST['files']) ? $_POST['files'] : [];
+            foreach ($attachment as $key => $name){
+                $attachment[$key] = [
+                    'ext' => $ext[$key],
+                    'oldfilename' => $oldfilename[$key],
+                    'path' => $name
+                ];
+            }
             $data = [
                 'confirm_money' => _formatMoney($confirm_money),
                 'is_confirm' => 1,
-                'files' => json_encode($file),
+                'files' => json_encode($attachment),
                 'update_time' => time()
             ];
             if (db('receivables')->where(['id' => $id])->update($data)){
@@ -644,17 +663,36 @@ class Account extends Base {
     public function payment_info(){
         $id = $this->request->param('id',0,'intval');
         if (!$id) $this->error('参数错误');
+        $type = $this->request->param('type');
+        if ($type == 'file'){
+            $file = $this->upload_file();
+            if (is_array($file) && !empty($file)){
+                $this->success('ok','',$file);
+            }else{
+                $this->error('error');
+            }
+            return;
+        }
         $payment_order = db('payment_order')->where(['id' => $id])->find();
         if (empty($payment_order)) $this->error('应付账款信息不存在');
         if ($this->request->isAjax() && $this->request->isPost()){
             $confirm_money = $this->request->post('pay_money');
             if (empty($confirm_money)) $this->error('确认金额不能为空');
             if (!is_numeric($confirm_money) || $confirm_money < 0) $this->error('确认金额不正确');
-            $file = $this->upload_file();
+            $ext = $this->request->param('ext/a');
+            $oldfilename = $this->request->param('oldfilename/a');
+            $attachment = isset($_POST['files']) ? $_POST['files'] : [];
+            foreach ($attachment as $key => $name){
+                $attachment[$key] = [
+                    'ext' => $ext[$key],
+                    'oldfilename' => $oldfilename[$key],
+                    'path' => $name
+                ];
+            }
             $data = [
                 'pay_money' => _formatMoney($confirm_money),
                 'is_confirm' => 1,
-                'files' => json_encode($file),
+                'files' => json_encode($attachment),
                 'update_time' => time()
             ];
             if (db('payment_order')->where(['id' => $id])->update($data)){

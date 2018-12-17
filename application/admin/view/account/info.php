@@ -4,7 +4,7 @@
 {/block}
 
 {block name="main"}
-<form class="ajaxForm" action="" method="post" enctype="multipart/form-data">
+<form class="ajaxForm ajaxForm2" action="" method="post" enctype="multipart/form-data">
 <input type="hidden" name="id" value="{$receivables.id}"/>
             <div class="container-fluid">
                 <!--内容开始-->
@@ -59,14 +59,15 @@
                                 {else}
                                 <div class="form-group">
                                 <label class="control-label" for="files">附件 :</label>
-                                <?php if (!empty($receivables['files'])){?>
-                                <a href="<?php echo $receivables['files']['path'];?>" target="_blank">
-                                <?php echo $receivables['files']['oldfilename'];?>
-                                </a>
-                                <?php }?>
+                                <?php if (!empty($receivables['files'])){foreach ($receivables['files'] as $f){?>
+                                <a href="<?php echo $f['path'];?>" target="_blank">
+                                <?php echo $f['oldfilename'];?>
+                                </a><br/>
+                                <?php }}?>
                                 </div>
                                 {/if}
                         </div>
+                        <div class="col-lg-12 filist"></div>
                     </div>
                     
                 </div>
@@ -198,5 +199,31 @@
         };
         return false;
     }
+    $('#account_file').change(function(){
+    	var _this = $(this);
+    	$('.ajaxForm2').ajaxSubmit({
+    		data:{type:'file'},
+    		success: function(res){
+    			if(res.code == 1){
+    				//toastr.success(res.msg);
+    				var html = '';
+    				for(var i in res.data){
+    					html += '<p style="padding-bottom: 0px;">';
+    					html += '<input type="hidden" name="ext[]" value="'+res.data[i]['ext']+'" />';
+    					html += '<input type="hidden" name="oldfilename[]" value="'+res.data[i]['oldfilename']+'" />';
+    					html += '<input type="hidden" name="files[]" value="'+res.data[i]['path']+'" />';
+    					html += '<a target="_blank" href="'+res.data[i]['path']+'">'+res.data[i]['oldfilename']+'</a><span style="padding-left:5px;cursor:pointer;">删除</span></p>';
+    				}
+    				//_this.after(html);
+    				$('.filist').append(html);
+    			}else{
+    				toastr.error(res.msg);
+    			}
+    		}
+    	});
+    });
+    $('body').on('click','.filist p span',function(){
+    	$(this).parents('p').remove();
+    });
 </script>
 {/block}

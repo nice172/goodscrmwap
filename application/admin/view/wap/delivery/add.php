@@ -48,7 +48,7 @@ body{background:#fff;}
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">订单号码：</label></div>
         <div class="weui-cell__bd">
-          <input class="weui-input" type="text" readonly="readonly" value="DN{:StrOrderOne()}" name="order_dn" id="order_dn"/>
+          <input class="weui-input" type="text" readonly="readonly" value="{$order_dn}" name="order_dn" id="order_dn"/>
         </div>
       </div>
       

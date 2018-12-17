@@ -48,7 +48,7 @@ body{background:#fff;}
       <div class="weui-cell">
         <div class="weui-cell__hd"><label class="weui-label">入库单号：</label></div>
         <div class="weui-cell__bd">
-          <input type="text" class="weui-input" readonly="readonly" value="ST{:StrOrderOne()}" name="store_sn" id="store_sn">
+          <input type="text" class="weui-input" readonly="readonly" value="{$data.store_sn}" name="store_sn" id="store_sn">
         </div>
       </div>
 

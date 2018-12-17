@@ -37,7 +37,7 @@
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>入库单号:</span></td>
                                     <td width="35%">
-                                        <input type="text" class="form-control w300" readonly="readonly" value="ST{:StrOrderOne()}" name="store_sn" id="store_sn">
+                                        <input type="text" class="form-control w300" readonly="readonly" value="{$data.store_sn}" name="store_sn" id="store_sn">
                                     </td>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>入库时间:</span></td>
                                     <td width="35%"><input type="text" class="form-control w300" readonly="readonly" value="<?php echo date('Y-m-d');?>" name="create_date" id="create_date"></td>
