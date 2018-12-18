@@ -18,7 +18,14 @@
          define('ACTION_NAME', $request->action());
          define('REQUEST_URL', $request->url());
          if ($request->isMobile()){
-         	$this->view = $this->view->config('view_path',APP_PATH.MODULE_NAME.'/view/wap/');
+            $mobileController = ['login','index','baojia','delivery','order','purchase','store'];
+            if (!in_array(strtolower($request->controller()), $mobileController)){
+                if (!Session::has("user_name") && !Session::has("user_id")) {
+                    $this->redirect("login/index");
+                } 
+                $this->redirect("index/index");
+            }
+            $this->view = $this->view->config('view_path',APP_PATH.MODULE_NAME.'/view/wap/');
          }
          
          if (!Session::has("user_name") && !Session::has("user_id")) {
