@@ -13,7 +13,7 @@ return [
         'NO_AUTH_URL' => array(
             'admin/baojia/sendemail','admin/order/sendemail',
             'admin/baojia/email','admin/supplier/adduser',
-            'admin/purchase/email',
+            'admin/purchase/email','admin/store/load',
             'admin/delivery/sendemail','admin/purchase/sendemail',
             'admin/users/check_nick','admin/users/check_name',
             'admin/users/user_do','admin/users/update',

@@ -208,6 +208,7 @@ class Purchase extends Base {
 				//end
 	            'status' => 0,
 	            'remark' => $this->request->post('remark'),
+	            'require_date' => $this->request->post('require_date'),
 	            'update_time' => time()
 	        ];
 	           if ($data['id'] <= 0) $this->error('保存采购单失败');
@@ -587,6 +588,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 				'receivernum' => $this->request->post('receivernum'),
 				// end
 	            'status' => 0,
+	            'require_date' => $this->request->post('require_date'),
 	            'remark' => $this->request->post('remark'),
 	            'create_type' => 1,
 	            'create_time' => time(),
@@ -708,6 +710,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 				// end
 	            'status' => 0,
 	            'remark' => $this->request->post('remark'),
+	            'require_date' => $this->request->post('require_date'),
 	            'update_time' => time()
 	        ];
 	        $validate = new Validate($this->create_rule,$this->create_message);

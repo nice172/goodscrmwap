@@ -126,9 +126,32 @@ class Order extends Base {
         $this->assign('total_page', $data->lastPage());
         $this->assign('params', $this->request->query());
         $page = $data->render();
-        $this->assign('page',$page);
-        $this->assign('list',$data);
         
+        $list = $data->all();
+        $cus_id = array();
+        foreach ($list as $k => $val) {
+            $cid = db('goods')->where(['goods_id' => $val['goods_id']])->value('category_id');
+            $list[$k]['category_id'] = $cid;
+            $list[$k]['category_name'] = db('goods_category')->where(['category_id' => $cid])->value('category_name');
+            $cus_id[] = $val['cus_id'];
+            $list[$k]['payment_way'] = '';
+            
+            $list[$k]['money_a'] = _formatMoney($val['goods_price']*$val['send_num']);
+            $list[$k]['money_b'] = _formatMoney($val['goods_price']*$val['goods_number'] - $list[$k]['money_a']);
+        }
+        $cusInfo = db('customers')->where(['cus_id' => ['in',array_unique($cus_id)]])->field("cus_id,payment_way")->select();
+        foreach ($list as $k => $val) {
+            foreach ($cusInfo as $u) {
+                if ($val['cus_id'] == $u['cus_id']) {
+                    $list[$k]['payment_way'] = $u['payment_way'];
+                    break;
+                }
+            }
+        }
+
+        $this->assign('page',$page);
+        $this->assign('list',$list);
+
         $attr = getParams(19); //查询属性
         if (!empty($attr)){
             $attr = $attr['params_value'];
@@ -509,6 +532,7 @@ class Order extends Base {
     		        'receiver' => $this->request->post('receiver'),
     		        'receivernum' => $this->request->post('receivernum'),
     				'status' => $type == 'confirm' ? 1 : 0,
+    		        'require_date' => $this->request->post('require_date'),
     				'remark' => $this->request->post('remark'),
     				'create_time' => time(),
     				'update_time' => time()

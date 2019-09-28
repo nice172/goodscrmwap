@@ -135,8 +135,12 @@
                                     <td width="15%" class="right-color"><span>收货人电话:</span></td>
                                     <td width="35%"><input type="text" class="form-control w300" name="receivernum" value="" id="receivernum"></td>
                                 </tr>
-								
-                                
+                                 <tr>
+                                <td width="15%" class="right-color"><span class="text-danger">*</span><span>要求交货日期:</span></td>
+                                <td width="35%" colspan="3">
+                                	<input type="text" class="form-control w300" required="required" name="require_date" id="LAY-component-form-group-date">
+                                </td>
+                                </tr>
                                  <tr>
                                     <td width="15%" class="right-color"><span>备注:</span></td>
                                     <td colspan="3"><textarea class="form-control" name="remark" id="remark" rows="6">{$remark}</textarea> </td>

@@ -70,6 +70,7 @@
                                     <td width="15%" class="right-color"><span>QQ:</span></td>
                                     <td width="35%"><input type="text" class="form-control w300" name="con_qq" id="con_qq" placeholder=""></td>
                                 </tr>
+
                                 <tr>
                                     <td width="15%" class="right-color"><span class="text-danger">*</span><span>部门:</span></td>
                                     <td width="35%">
@@ -112,7 +113,17 @@
                                             </select>
                                     </td>
                                 </tr>
-
+                                 <tr>
+                                    <td width="15%" class="right-color"><span class="text-danger">*</span><span>付款方式:</span></td>
+                                    <td width="35%" colspan="3">
+                                            <select class="syc-select w300" name="payment_way">
+                                            <option value="0">--请选择付款方式--</option>
+                                            <?php foreach ($payment as $val){?>
+                                            <option value="<?php echo $val;?>"><?php echo $val;?></option>
+                                            <?php }?>
+                                            </select>
+                                    </td>
+                                </tr>
                                 <!--备注信息-->
                                 <tr>
                                     <td colspan="4">

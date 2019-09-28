@@ -73,6 +73,13 @@ class Customers extends Base{
         if (!empty($order_ren)){
         	$order_ren= $order_ren['params_value'];
         }
+        
+        $payment = getParams(1); //获取付款方式
+        if (!empty($payment)){
+            $payment = $payment['params_value'];
+        }
+        $this->assign('payment',$payment);
+        
         $this->assign('order_ren',$order_ren);
         $this->assign('business',$business);
         $this->assign('section',$section);
@@ -118,6 +125,7 @@ class Customers extends Base{
                 'cus_post' => $request->post('con_post'),
                 'cus_short' => $request->param('con_short'),
                 'cus_street' => $request->param('con_street'),
+                'payment_way' => $request->param('payment_way'),
                 'status' => 1
             ];
             $content = cutstr_html($request->param('con_content'));
@@ -182,6 +190,13 @@ class Customers extends Base{
         if (!empty($order_ren)){
         	$order_ren= $order_ren['params_value'];
         }
+        
+        $payment = getParams(1); //获取付款方式
+        if (!empty($payment)){
+            $payment = $payment['params_value'];
+        }
+        $this->assign('payment',$payment);
+        
         $this->assign('order_ren',$order_ren);
         $this->assign('business',$business);
         $this->assign('section',$section);
@@ -232,7 +247,8 @@ class Customers extends Base{
             'cus_section' => $request->param('con_section'),
             'cus_post' => $request->post('con_post'),
             'cus_short' => $request->param('con_short'),
-            'cus_street' => $request->param('con_street')
+            'cus_street' => $request->param('con_street'),
+            'payment_way' => $request->param('payment_way')
         ];
         
         Db::name('customers')->where('cus_id', $id)->update($data);

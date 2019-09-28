@@ -29,7 +29,7 @@
                         	<form action="" method="get">
                         
                             <div class="form-group">
-                                <label class="control-label" for="company_short">客户简称 :</label>
+                                <label class="control-label" for="company_short">客户名称 :</label>
                                 <input name="company_short" id="company_short" class="ipt form-control" value="<?php if(isset($_GET['company_short'])){echo $_GET['company_short'];}?>" data-toggle="tooltip" data-placement="top" title="客户简称">
                                 
                             </div>
@@ -61,13 +61,13 @@
                                 	<label class="control-label" for="">商品分类 :</label>
                                 	<select name="categroy_id" id="categroy_id" class="ipt form-control">
                                 		<option value="">全部</option>
-                                        <?php foreach ($category as $key => $value):?>
+                                        <?php foreach ($category as $key => $value){ ?>
                                         <option {if condition="isset($_GET['categroy_id']) && $_GET['categroy_id']==$value['category_id']"}selected="selected"{/if} value="<?php echo $value['category_id'];?>" path="<?php echo $value['path'].'_'.$value['category_id'];?>">
 			              		<?php echo str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', substr_count($value['path'], '_'));?>
 			              		└<?php echo str_repeat('─', substr_count($value['path'], '_'));?>
 			              		<?php echo $value['category_name'];?>
 			              		</option>
-                                        <?php endforeach;?>
+                                        <?php }?>
                                 	</select>
                                 </div>
                                 
@@ -84,16 +84,18 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>订单号</th>
+                                <th>订单内控号</th>
                                 <th>下单日期</th>
-                                <th>简称</th>
-                                <th>商品名称</th>
-                                <th>单位</th>
-                                <th>单价</th>
-                                <th>数量</th>
+                                <th>客户名称</th>
+                                <th>客户订单号</th>
+                                <th>商品类别</th>
+                                <th>订单金额</th>
+                                <th>交易条件</th>
+<!--                                 <th>数量</th> -->
                                 <th>要求送货日期</th>
                                 <th>实际送货日期</th>
-                                <th>创建时间</th>
+<!--                                 <th>创建时间</th> -->
+								<th>交货金额</th><th>未交货金额</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -105,13 +107,16 @@
                                 <td>{$vo.order_sn}</td>
                                 <td>{$vo.create_time|date='Y-m-d',###}</td>
                                 <td>{$vo.company_short}</td>
-                                <td style="text-align:left;">{$vo.goods_name}</td>
-                                <td>{$vo.unit}</td>
-                                <td>{$vo.goods_price}</td>
-                                <td>{$vo.goods_number}</td>
+                                <td>{$vo.cus_order_sn}</td>
+                                <td style="text-align:left;">{$vo.category_name}</td>
+                                <td>{$vo.total_money}</td>
+                                <td>{$vo.payment_way}</td>
+<!--                                 <td>{$vo.goods_number}</td> -->
                                 <td>{$vo.require_time|date='Y-m-d',###}</td>
                                 <td>{if condition="$vo['deliver_time']"}{$vo.deliver_time|date='Y-m-d',###}{else}--{/if}</td>
-                                <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+<!--                                 <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td> -->
+                                <td>{$vo.money_a}</td>
+                                <td>{$vo.money_b}</td>
                                 <td>
 								{if condition="$vo['status'] eq -1"}
 								已删除
