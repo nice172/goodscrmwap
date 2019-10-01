@@ -56,13 +56,18 @@
                             <tr>
                                 <th>ID编号</th>
                                 <th>采购单号</th>
-                                <th>定购日期</th>
-                                <th>供应商</th>
-                                <th>关联订单号</th>
-                                <th>采购金额</th>
-                                <th>要求送货日期</th>
-                                <th>付款条件</th>
-                                <th>创建时间</th>
+                                <th>采购日期</th>
+                                <th>关联内控号</th>
+                                <th>关联客户</th>
+                                <th>关联客户单号</th>
+                                <th>供应商名称</th>
+                                <th>商品类别</th>
+                                <th>订单金额</th>
+                                <th>交易条件</th>
+                                <th>要求交货日期</th>
+                                <th>实际交货日期</th>
+                                <th>交货金额</th>
+                                <th>未交金额</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -73,12 +78,17 @@
                                 <td>{$vo.id}</td>
                                 <td>{$vo.po_sn}</td>
                                 <td>{$vo.create_time|date='Y-m-d',###}</td>
-                                <td>{$vo.supplier_name}</td>
                                 <td>{if condition="$vo['is_cancel']"}已取消关联{else}{$vo.order_sn}{/if}</td>
+                                <td>{$vo.delivery_company}</td>
+                                <td>{$vo.cus_order_sn}</td>
+                                <td>{$vo.supplier_name}</td>
+                                <td>{$vo.catename}</td>
                                 <td>{$vo.total_money}</td>
-                                <td>{$vo.require_time|date='Y-m-d',###}</td>
                                 <td>{$vo.payment}</td>
+                                <td>{$vo.require_time|date='Y-m-d',###}</td>
                                 <td>{$vo.create_time|date='Y-m-d H:i:s',###}</td>
+                                <td>{$vo.moenycount}</td>
+                                <td>{$vo.totalmoney}</td>
                                 <td>
 								{if condition="$vo['status'] eq -1"}
 								已删除

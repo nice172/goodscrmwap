@@ -13,6 +13,9 @@ class Purchase extends Base {
 		$end_time = $this->request->param('end_time');
 		$status = $this->request->param('status');
 		$categroy_id = $this->request->param('categroy_id');
+		$category = db('goods_category')->select();
+		$this->assign('category',$category);
+		
 		$db = db('purchase p');
 		$db->order('p.create_time desc');
 		//$db->field('p.*,s.supplier_name,o.order_sn,o.require_time');
@@ -36,6 +39,8 @@ class Purchase extends Base {
 		//$db->join('__ORDER__ o','o.id=p.order_id');
 		$result = $db->paginate(config('PAGE_SIZE'), false, ['query' => $this->request->param() ]);
 		$data = $result->all();
+		$purchaseGoods = db('purchase_goods');
+		$goodsDb = db('goods');
 		foreach ($data as $key => $value){
 		    if ($value['order_id']){
 		        $order = db('order')->where(['id' => $value['order_id']])->find();
@@ -44,6 +49,26 @@ class Purchase extends Base {
 		        $data[$key]['require_time'] = $value['create_time'];
 		        $data[$key]['order_sn'] = '--';
 		    }
+		    
+		    $goods_id = $purchaseGoods->where('purchase_id','=', $value['id'])->value('goods_id');
+		    $cid = $goodsDb->where('goods_id','=', $goods_id)->value('category_id');
+		    foreach ($category as $val) {
+		        if($val['category_id'] == $cid) {
+		            $data[$key]['catename'] = $val['category_name'];
+		            break;
+		        }
+		    }
+		    
+		    $goodsAll = $purchaseGoods->where('purchase_id','=', $value['id'])->field('goods_number,count_money,send_num,goods_price')->select();
+		    $MoenyCount = 0;
+		    $totalMoney = 0;
+		    foreach ($goodsAll as $g) {
+		        $totalMoney += $g['count_money'];
+		        $MoenyCount += $g['send_num'] * $g['goods_price'];
+		    }
+		    $data[$key]['moenycount'] = _formatMoney($MoenyCount);
+		    $data[$key]['totalmoney'] = _formatMoney($totalMoney - $MoenyCount);
+		    
 		}
 		$this->assign('current_page', $result->getCurrentPage());
 		$this->assign('total_page', $result->lastPage());
@@ -60,8 +85,6 @@ class Purchase extends Base {
 		}else{
 		    $this->assign('title','采购单');
 		}
-		$category = db('goods_category')->where(array('status' => 1))->select();
-		$this->assign('category',$category);
 		return $this->fetch();
 	}
 	

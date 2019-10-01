@@ -68,13 +68,17 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>商品名称</th>
                                 <th>商品分类</th>
                                 <th>供应商</th>
-                                <!--<th>商品品牌</th>-->
+                                <th>商品名称</th>
                                 <th>单位</th>
-                                <th>采购价</th>
-                                <th>销售价</th>
+<!--                                 <th>采购价</th> -->
+<!--                                 <th>销售价</th> -->
+								<th>上月结存</th>
+								<th>本月入库</th>
+								<th>本月出货</th>
+								<th>现结存数</th>
+								<th>本月变动</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -82,12 +86,15 @@
                             {volist name="$list" id="vo" empty="$empty"}
                             <tr>
                                 <td>{$vo.goods_id}</td>
-                                <td style="text-align:left;">{$vo.goods_name}</td>
                                 <td>{$vo.category_name}</td>
                                 <td>{$vo.supplier_name}</td>
+                                <td style="text-align:left;">{$vo.goods_name}</td>
                                 <!--<td>{$vo.brand_name}</td>-->
                                 <td>{$vo.unit}</td>
                                 <td>{$vo.shop_price}</td>
+                                <td>{$vo.market_price}</td>
+                                <td>{$vo.shop_price}</td>
+                                <td>{$vo.market_price}</td>
                                 <td>{$vo.market_price}</td>
                                 <td>
                                 	<a href="{:url('goodsinfo',['gid'=>$vo.goods_id])}">详情</a>
