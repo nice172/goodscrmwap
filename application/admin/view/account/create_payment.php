@@ -54,6 +54,10 @@
                                     <label class="control-label" for="invoice_date">对账日期 :</label>
                                     <input name="invoice_date" id="invoice_date" value="<?php echo date('Y-m-d');?>" class="ipt form-control">
                                 </div>
+                                                                <div class="form-group">
+                                	<label class="control-label" for="tax">税率 :</label>
+                                	<input name="tax" id="tax" style="width: 110px;" class="ipt form-control" />
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label" for="last_date">到期日期 :</label>
                                     <input name="last_date" id="last_date" class="ipt form-control" style="width: 145px;">

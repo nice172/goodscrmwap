@@ -81,13 +81,17 @@
                             <tr>
                             	<th>ID</th>
 								<th>对账单号</th>
+								<th>供应商名称</th>
+								<th>付款条件</th>
                             	<th>对账日期</th>
-                            	<th>供应商</th>
-                            	<th>是否开票</th>
-                                <th>对账状态</th>
-                                <th>对账金额</th>
+                            	<th>对账金额</th>
+                                <th>所含税率</th>
                                 <th>已开票金额</th>
-                                <th>冲减金额</th>
+                                <th>待开票金额</th>
+                                <th>制单日期</th>
+                                <th>制单人</th>
+                                <th>确认日期</th>
+                                <th>审核人</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -96,19 +100,17 @@
                                 <tr>
                                 <td>{$vo.id}</td>
 								<td>{$vo.invoice_sn}</td>
+								<td>{$vo.supplier_name}</td>
+								<td>{$vo.payment_date}</td>
                                 <td>{$vo.invoice_date}</td>
-                                <td>{$vo.supplier_name}</td>
-                                <td>{if condition="$vo['is_open']"}已开票{else}未开票{/if}</td>
-                                <td>
-                                {if condition="$vo['is_confirm']"}
-                                	{if condition="$vo['status']==2"}已核销{else}已确认{/if}
-                                {else}
-                                	{if condition="$vo['status']==1"}已创建{elseif condition="$vo['status']==2"}已核销{else}已取消{/if}
-                                {/if}
-                                </td>
-                                <td>{$vo.total_money}</td>
+                                 <td>{$vo.total_money}</td>
+                                <td>{$vo.tax}</td>
                                 <td>{$vo.count_money}</td>
-                                <td>{$vo.diff_money}</td>
+                                <td>{$vo.wait_pay_money}</td>
+                                <td>{$vo.create_time|date='Y-m-d',###}</td>
+                                <td>{$vo.uname}</td>
+                                <td>{$vo.confirm_time|date='Y-m-d',###}</td>
+                                <td>{$vo.uname}</td>
                                 <td>
 									<a href="{:url('payment_info',['id' => $vo['id']])}">详情</a>
                                 	<!--

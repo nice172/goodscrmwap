@@ -91,11 +91,11 @@
                                 <td style="text-align:left;">{$vo.goods_name}</td>
                                 <!--<td>{$vo.brand_name}</td>-->
                                 <td>{$vo.unit}</td>
-                                <td>{$vo.shop_price}</td>
-                                <td>{$vo.market_price}</td>
-                                <td>{$vo.shop_price}</td>
-                                <td>{$vo.market_price}</td>
-                                <td>{$vo.market_price}</td>
+                                <td>{$vo.prev_num}</td>
+                                <td>{$vo.m_sum}</td>
+                                <td>{$vo.m_sum2}</td>
+                                <td>{$vo.prev_num}</td>
+                                <td><a href="javascript:;" onclick="viewLog({$vo['goods_id']})">查看</a></td>
                                 <td>
                                 	<a href="{:url('goodsinfo',['gid'=>$vo.goods_id])}">详情</a>
                                 	<span class="text-explode">|</span>
@@ -122,6 +122,20 @@
 {/block}
 {block name="footer"}
 <script type="text/javascript">
+function viewLog(goods_id){
+    var title = '变动记录';
+    bDialog.open({
+        title : title,
+        height: 630,
+        width:'85%',
+        url : '{:url(\'store/log\')}?goods_id='+goods_id,
+        callback:function(data){
+            if(data && data.results && data.results.length > 0 ) {
+                window.location.reload();
+            }
+        }
+    });
+}
     $(document).ready(function() {
         // 当前页面分类高亮
         $("#sidebar-storage").addClass("sidebar-nav-active"); // 大分类

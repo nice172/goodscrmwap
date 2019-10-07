@@ -45,13 +45,35 @@ class Goods extends Base {
 		
 		$lists = $result->all();
 		
+		$supplierDb = db('supplier');
+		$categoryDb = db('goods_category');
+		$brandDb = db('goods_brand');
+		$store_logDb = db('store_log');
+		$BeginDate = date('Y-m-01');
+	    $endDate = date('Y-m-d', strtotime("$BeginDate +1 month -1 day"))." 23:59:59";
+	    
+	    $prevMonthStartDate = date('Y-m-d', strtotime(date('Y-m-01') . ' -1 month'));
+	    $prevMonthEndDate = date('Y-m-d', strtotime(date('Y-m-01') . ' -1 day'))." 23:59:59";
+	    
 		foreach ($lists as $key => $value){
-			$supplier = db('supplier')->where(['id' => $value['supplier_id']])->find();
+		    $supplier = $supplierDb->where(['id' => $value['supplier_id']])->find();
 			$lists[$key]['supplier_name'] = $supplier['supplier_name'];
-			$category = db('goods_category')->where(['category_id' => $value['category_id']])->find();
+			$category = $categoryDb->where(['category_id' => $value['category_id']])->find();
 			$lists[$key]['category_name'] = $category['category_name'];
-			$brand = db('goods_brand')->where(['brand_id' => $value['brand_id']])->find();
+			$brand = $brandDb->where(['brand_id' => $value['brand_id']])->find();
 			$lists[$key]['brand_name'] = $brand['brand_name'];
+			
+			//本月入库
+			$m_sum = $store_logDb->where("type=1 and goods_id=".$value['goods_id']." and create_time>=".strtotime($BeginDate)." and create_time<=".strtotime($endDate))->sum('number');
+			$lists[$key]['m_sum'] = $m_sum;
+			//本月出库
+			$m_sum2 = $store_logDb->where("type=2 and goods_id=".$value['goods_id']." and create_time>=".strtotime($BeginDate)." and create_time<=".strtotime($endDate))->sum('number');
+			$lists[$key]['m_sum2'] = $m_sum2;
+			
+			//上月结存
+			$num1 = $store_logDb->where("type=1 and goods_id=".$value['goods_id']." and create_time>=".strtotime($prevMonthStartDate)." and create_time<=".strtotime($prevMonthEndDate))->sum('number');
+			$num2 = $store_logDb->where("type=2 and goods_id=".$value['goods_id']." and create_time>=".strtotime($prevMonthStartDate)." and create_time<=".strtotime($prevMonthEndDate))->sum('number');
+			$lists[$key]['prev_num'] = $num1-$num2;
 		}
 		
 		$this->assign('list',$lists);

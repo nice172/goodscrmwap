@@ -128,6 +128,7 @@ class Order extends Base {
         $page = $data->render();
         
         $list = $data->all();
+        if(!$this->request->isMobile()){
         $cus_id = array();
         foreach ($list as $k => $val) {
             $cid = db('goods')->where(['goods_id' => $val['goods_id']])->value('category_id');
@@ -139,6 +140,7 @@ class Order extends Base {
             $list[$k]['money_a'] = _formatMoney($val['goods_price']*$val['send_num']);
             $list[$k]['money_b'] = _formatMoney($val['goods_price']*$val['goods_number'] - $list[$k]['money_a']);
         }
+        
         $cusInfo = db('customers')->where(['cus_id' => ['in',array_unique($cus_id)]])->field("cus_id,payment_way")->select();
         foreach ($list as $k => $val) {
             foreach ($cusInfo as $u) {
@@ -148,7 +150,7 @@ class Order extends Base {
                 }
             }
         }
-
+        }
         $this->assign('page',$page);
         $this->assign('list',$list);
 

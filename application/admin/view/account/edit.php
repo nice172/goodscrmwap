@@ -45,6 +45,10 @@
                                     <label class="control-label" for="invoice_date">对账日期 :</label>
                                     <input name="invoice_date" id="invoice_date" value="{$receivables.invoice_date}" style="width: 100px;" class="ipt form-control">
                                 </div>
+                                <div class="form-group">
+                                	<label class="control-label" for="tax">税率 :</label>
+                                	<input name="tax" id="tax" value="{$receivables.tax}" style="width: 110px;" class="ipt form-control" />
+                                </div>
                                 <!--<div class="form-group">
                                 	<label class="control-label" for="confirm_money">确认金额 :</label>
                                 	<input name="confirm_money" value="{$receivables.confirm_money}" id="confirm_money" style="width: 110px;" class="ipt form-control" />

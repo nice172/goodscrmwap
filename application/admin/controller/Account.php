@@ -37,8 +37,13 @@ class Account extends Base {
         $this->assign('page',$result->render());
         $list = $result->all();
         $receivable_ticket_db = db('receivable_ticket');
+        $cusDb = db('customers');
+        $usersDb = db('users');
         foreach ($list as $key => $value) {
             $list[$key]['pay_money'] = _formatMoney($receivable_ticket_db->where(['rec_id' => $value['id']])->sum('money'));
+            $list[$key]['payment_way'] = $cusDb->where(['cus_id' => $value['cus_id']])->value('payment_way');
+            $list[$key]['uname'] = $usersDb->where(['id' => $value['admin_uid']])->value('user_nick');
+            $list[$key]['wait_pay_money'] = _formatMoney($value['total_money'] - $list[$key]['pay_money']);
         }
         $this->assign('list',$list);
         $this->assign('title','应收账款');
@@ -250,6 +255,7 @@ class Account extends Base {
             $data = [
                 'confirm_money' => _formatMoney($confirm_money),
                 'is_confirm' => 1,
+                'confirm_time' => time(),
                 'files' => json_encode($attachment),
                 'update_time' => time()
             ];
@@ -401,6 +407,7 @@ class Account extends Base {
         if ($this->request->isAjax()){
             $invoice_sn = $this->request->post('invoice_sn');
             $invoice_date = $this->request->post('invoice_date');
+            $tax = $this->request->post('tax');
             //$confirm_money = $this->request->post('confirm_money');
             $id = $this->request->post('id');
             if (empty($invoice_sn)) $this->error('发票号码不能为空');
@@ -412,6 +419,7 @@ class Account extends Base {
                 'invoice_sn' => $invoice_sn,
                 'invoice_date' => $invoice_date,
             	//'confirm_money' => $confirm_money,
+                'tax' => $tax,
                 'update_time' => time()
             ];
             //if (is_array($file) && !empty($file)){
@@ -569,6 +577,7 @@ class Account extends Base {
     		if ($this->request->isAjax()){
     			$invoice_sn = $this->request->post('invoice_sn');
     			$invoice_date = $this->request->post('invoice_date');
+    			$tax = $this->request->post('tax');
     			//$confirm_money = $this->request->post('confirm_money');
     			//$delivery_ids = $this->request->post('delivery_ids');
     			if (empty($invoice_sn)) $this->error('发票号码不能为空');
@@ -594,6 +603,7 @@ class Account extends Base {
     				'invoice_date' => $invoice_date,
     				'total_money' => _formatMoney($total_money),
     				//'confirm_money' => $confirm_money,
+    			    'tax' => $tax,
     				'pay_money' => 0,'diff_money' => 0,
     				'is_open' => 0,'status' => 1,
     				//'files' => (is_array($file) && !empty($file)) ? json_encode(['path' => $file['path'],'name' => $file['oldfilename']]) : '',
@@ -649,8 +659,12 @@ class Account extends Base {
         $result = $db->order('id desc')->paginate(config('page_size'),false,['query' => $this->request->param()]);
         $this->assign('page',$result->render());
         $list = $result->all();
+        $cusDb = db('customers');
+        $usersDb = db('users');
         foreach ($list as $key => $value){
             $list[$key]['count_money'] = _formatMoney(db('payment_ticket')->where(['rec_id' => $value['id']])->sum('money'));
+            $list[$key]['uname'] = $usersDb->where(['id' => $value['admin_uid']])->value('user_nick');
+            $list[$key]['wait_pay_money'] = _formatMoney($value['total_money'] - $list[$key]['count_money']);
         }
         $this->assign('list',$list);
         $this->assign('title','应付账款');
@@ -691,6 +705,7 @@ class Account extends Base {
             $data = [
                 'pay_money' => _formatMoney($confirm_money),
                 'is_confirm' => 1,
+                'confirm_time' => time(),
                 'files' => json_encode($attachment),
                 'update_time' => time()
             ];
@@ -959,6 +974,7 @@ class Account extends Base {
             $invoice_sn = $this->request->post('invoice_sn');
             $invoice_date = $this->request->post('invoice_date');
             $last_date = $this->request->post('last_date');
+            $tax = $this->request->post('tax');
             if (empty($invoice_sn)) $this->error('发票号码不能为空');
             if (empty($invoice_date)) $this->error('开票日期不能为空');
             if (empty($last_date)) $this->error('到期日期不能为空');
@@ -979,6 +995,7 @@ class Account extends Base {
                 'delivery_ids' => implode(',', $delivery_ids),
                 'invoice_sn' => $invoice_sn,
                 'invoice_date' => $invoice_date,
+                'tax' => $tax,
                 'total_money' => _formatMoney($totalMoney),
                 //'pay_money' => _formatMoney($totalMoney),
                 'diff_money' => 0,
