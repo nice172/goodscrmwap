@@ -109,7 +109,9 @@
                                 <td>{$vo.wait_pay_money}</td>
                                 <td>{$vo.create_time|date='Y-m-d',###}</td>
                                 <td>{$vo.uname}</td>
-                                <td>{$vo.confirm_time|date='Y-m-d',###}</td>
+                                <td>{if condition="$vo['confirm_time']"}
+                                {$vo.confirm_time|date='Y-m-d',###}
+                                {/if}</td>
                                 <td>{$vo.uname}</td>
                                 <td>
 									<a href="{:url('payment_info',['id' => $vo['id']])}">详情</a>

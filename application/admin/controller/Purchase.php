@@ -516,7 +516,7 @@ h1,h2,h3,p,div,span{padding:0;margin:0;}
 		$mpdf->WriteHTML($stylesheet, 1);
 		$mpdf->WriteHTML($strContent.$strContentFooter);
 		if ($type == 1){
-			$savePath = './pdf/P'.str_replace('/', '-', $purchase['po_sn']).'.pdf';
+			$savePath = './pdf/'.str_replace('/', '-', $purchase['po_sn']).'.pdf';
 			$mpdf->Output($savePath,'F');
 			return $savePath;
 		}
